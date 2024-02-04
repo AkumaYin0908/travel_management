@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -88,5 +89,23 @@ public class TravelOrder {
         this.purpose = purpose;
         this.vehicle = vehicle;
         this.lastTravel=lastTravel;
+    }
+
+
+    public void addPlace(Place place){
+        if(places == null){
+            places=new ArrayList<>();
+        }
+
+        places.add(place);
+    }
+
+
+    public void addReportTos(ReportTo reportTo){
+        if(reportTos == null){
+            reportTos=new ArrayList<>();
+        }
+
+        reportTos.add(reportTo);
     }
 }
