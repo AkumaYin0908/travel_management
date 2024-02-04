@@ -5,14 +5,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name="dept_head")
-public class DepartmentHead {
+public class TeamLeader {
 
 
 
@@ -31,12 +30,12 @@ public class DepartmentHead {
     private boolean active;
 
 
-    public DepartmentHead(String name, String position) {
+    public TeamLeader(String name, String position) {
         this.name = name;
         this.position = position;
     }
 
-    public DepartmentHead(String name, String position, boolean active) {
+    public TeamLeader(String name, String position, boolean active) {
         this.name = name;
         this.position = position;
         this.active = active;

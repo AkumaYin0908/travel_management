@@ -16,7 +16,6 @@ import java.util.List;
 public class Driver  extends Employee{
 
 
-
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<TripTicket> tripTickets;
 
