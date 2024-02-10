@@ -8,12 +8,12 @@ public interface ProvinceService {
 
     Province findByName(String name);
 
-    List<Province> getAllProvince();
+    List<Province> getAll();
 
-    Province addProvince(Province province);
+    Province add(Province province);
 
-    Province updateProvince(Province province);
+    Province update(Province province);
 
-    void deleteProvince(Long id);
+    void delete(Long id);
 
 }

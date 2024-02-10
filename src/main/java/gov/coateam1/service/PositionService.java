@@ -2,15 +2,19 @@ package gov.coateam1.service;
 
 import gov.coateam1.model.Position;
 
+import java.util.List;
+
 public interface PositionService {
 
-    Position findPositionByName(String name);
+    Position findByName(String name);
 
-    Position  addPosition(Position position);
+    List<Position> findAll();
 
-    Position updatePosition(Position position);
+    Position  add(Position position);
 
-    void deletePosition(Long id);
+    Position update(Position position);
+
+    void delete(Long id);
 
 
 

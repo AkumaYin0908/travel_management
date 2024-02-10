@@ -9,12 +9,12 @@ public interface DriverService {
 
     Driver findByName(String name) throws EmployeeNotFoundException;
 
-    Driver addDriver(Driver driver);
+    Driver add(Driver driver);
 
-    List<Driver> findAllDrivers();
+    List<Driver> findAll();
 
-    Driver updateDriver(Driver driver);
+    Driver update(Driver driver);
 
-    void deleteDriver(Long id);
+    void delete(Long id);
 
 }

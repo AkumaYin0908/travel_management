@@ -20,13 +20,13 @@ public interface PlaceService {
 
     Place findByDefaultPlace(String defaultPlace)throws PlaceNotFoundException;
 
-    List<Place> findAllPlaces();
+    List<Place> findAll();
 
-    Place addPlace(Place place);
+    Place add(Place place);
 
-    Place updatePlace(Place place);
+    Place update(Place place);
 
-    void deletePlace(Long id);
+    void delete(Long id);
 
 
 }

@@ -2,16 +2,20 @@ package gov.coateam1.service;
 
 import gov.coateam1.model.TeamLeader;
 
+import java.util.List;
+
 public interface TeamLeaderService {
 
 
-    TeamLeader findTeamLeaderByActiveStatus(boolean active);
+    List<TeamLeader> findAll();
 
-    TeamLeader addTeamLeader(TeamLeader teamLeader);
+    TeamLeader findByActiveStatus(boolean active);
 
-    TeamLeader updateTeamLeader(TeamLeader teamLeader);
+    TeamLeader add(TeamLeader teamLeader);
 
-    TeamLeader updateTeamLeaderByActiveStatus(boolean active, long id);
+    TeamLeader update(TeamLeader teamLeader);
 
-    void deleteTeamLeader(Long id);
+    TeamLeader updateByActiveStatus(boolean active, long id);
+
+    void delete(Long id);
 }

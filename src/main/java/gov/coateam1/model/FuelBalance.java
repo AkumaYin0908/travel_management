@@ -19,4 +19,8 @@ public class FuelBalance {
 
     @Column(name="fuel")
     private BigDecimal fuel;
+
+    public FuelBalance(BigDecimal fuel) {
+        this.fuel = fuel;
+    }
 }

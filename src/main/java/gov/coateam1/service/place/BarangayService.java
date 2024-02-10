@@ -8,11 +8,11 @@ public interface BarangayService {
 
     Barangay findByName(String name);
 
-    List<Barangay> findAllBarangays();
+    List<Barangay> findAll();
 
-    Barangay addBarangay(Barangay barangay);
+    Barangay add(Barangay barangay);
 
-    Barangay updateBarangay(Barangay barangay);
+    Barangay update(Barangay barangay);
 
-    void deleteBarangay(Long id);
+    void delete(Long id);
 }

@@ -4,7 +4,11 @@ import gov.coateam1.model.Distance;
 
 public interface DistanceService {
 
-    Distance addDistance(Distance distance);
 
-    Distance updateDistance(Distance distance);
+
+    Distance add(Distance distance);
+
+    Distance update(Distance distance);
+
+    Distance findDistance(Long startDistance);
 }

@@ -9,11 +9,11 @@ public interface MunicipalityService {
 
     Municipality findByName(String name);
 
-    List<Municipality> findAllMunicipality();
+    List<Municipality> findAll();
 
-    Municipality addMunicipality(Municipality municipality);
+    Municipality add(Municipality municipality);
 
-    Municipality updateMunicipality(Municipality municipality);
+    Municipality update(Municipality municipality);
 
-    void deleteMunicipality(Long id);
+    void delete(Long id);
 }

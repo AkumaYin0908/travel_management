@@ -18,4 +18,8 @@ public class Distance {
 
     @Column(name="distance")
     private Long distance;
+
+    public Distance(Long distance) {
+        this.distance = distance;
+    }
 }

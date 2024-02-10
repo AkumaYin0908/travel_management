@@ -1,13 +1,17 @@
 package gov.coateam1.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -26,12 +30,18 @@ public class TripTicket {
 
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name="employee")
-    private Employee employee;
+    @JoinColumn(name="driver")
+    private Driver driver;
 
-    @Column(name="date")
+    @Column(name="date_departure")
     @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate date;
+    private LocalDate dateDeparture;
+
+    @Column(name="date_return")
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    private LocalDate dateReturn;
+
+
 
     @ManyToMany(fetch = FetchType.LAZY,
     cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
@@ -73,9 +83,11 @@ public class TripTicket {
     @Column(name="purchased_Fuel")
     private BigDecimal purchasedFuel;
 
+    @Getter(AccessLevel.NONE)
     @Column(name="consumed_fuel")
     private BigDecimal consumedFuel;
 
+    @Getter(AccessLevel.NONE)
     @Column(name="remaining_fuel")
     private BigDecimal remainingFuel;
 
@@ -91,6 +103,7 @@ public class TripTicket {
     @Column(name="end_distance")
     private Long endDistance;
 
+    @Getter(AccessLevel.NONE)
     @Column(name="distance_travelled")
     private Integer distanceTravelled;
 
@@ -107,7 +120,19 @@ public class TripTicket {
     private Vehicle vehicle;
 
 
+    public Integer getDistanceTravelled() {
+        return Math.toIntExact(this.endDistance - this.startDistance);
+    }
 
+    public BigDecimal getConsumedFuel() {
+        BigDecimal divisor = new BigDecimal(7);
+        return  new BigDecimal(this.getDistanceTravelled()).divide(divisor,2,RoundingMode.DOWN);
+    }
 
-
+    public BigDecimal getRemainingFuel() {
+        BigDecimal consumedFuel = this.getConsumedFuel();
+        BigDecimal fuelBalance=this.fuelBalance;
+        BigDecimal issuedFuel = this.issuedFuel;
+        return fuelBalance.add(issuedFuel).subtract(consumedFuel);
+    }
 }

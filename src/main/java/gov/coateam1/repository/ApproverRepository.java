@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface ApproverRepository extends JpaRepository<Approver,Long> {
 
     @Query("SELECT a FROM Approver a WHERE a.active = :active")
-    Optional<Approver> findApproverByActiveStatus(@Param("active") boolean active);
+    Optional<Approver> findByActiveStatus(@Param("active") boolean active);
 
 
     @Query("UPDATE Approver a SET  a.active = :active WHERE a.id = :id")
     @Modifying
-    Approver updateApproverActiveStatus(@Param("active") boolean active, @Param("id")Long id);
+    Approver updateActiveStatus(@Param("active") boolean active, @Param("id")Long id);
 }

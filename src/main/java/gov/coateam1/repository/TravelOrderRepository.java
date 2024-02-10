@@ -9,17 +9,27 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TravelOrderRepository extends JpaRepository<TravelOrder,Long> {
 
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.reportTos WHERE travelOrder.id= :id")
-    TravelOrder findTravelOrderAndReportTosById(@Param("id")Long id);
+    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.reportTos where travelOrder.id = :id")
+    List <TravelOrder> findTravelOrderAndReportTosById(@Param("id")Long id);
 
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places WHERE travelOrder.id = :id")
-    TravelOrder findTravelOrderAndPlacesById(@Param("id")Long id);
+    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.employee.name = :name")
+    List<TravelOrder> findByDriverName(@Param("name") String name);
 
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.dateDeparture = : dateDeparture")
-    TravelOrder findTravelOrderByDateDeparture(@Param("dateDeparture")LocalDate dateDeparture);
+    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE MONTH(travelOrder.dateDeparture) = :month")
+    List<TravelOrder> findByMonthDateDeparture(@Param("month") Integer month);
+
+    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places  WHERE travelOrder.id = :id")
+    List<TravelOrder> findTravelOrderAndPlacesById(@Param("id")Long id);
+
+    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.dateDeparture = :dateDeparture AND travelOrder.dateReturn = :dateReturn")
+    Optional<TravelOrder> findByDateDepartureAndDateReturn(@Param("dateDeparture")LocalDate dateDeparture, @Param("dateReturn") LocalDate dateReturn);
+
+    @Query("SELECT travelOrder.dateReturn FROM TravelOrder travelOrder WHERE travelOrder.employee.name =:name ORDER BY travelOrder.dateReturn DESC")
+    Optional<LocalDate> findByNameOrderByDateReturnDESC(@Param("name") String name);
 
 }

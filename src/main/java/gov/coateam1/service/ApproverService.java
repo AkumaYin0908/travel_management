@@ -4,19 +4,22 @@ package gov.coateam1.service;
 import gov.coateam1.model.Approver;
 import gov.coateam1.repository.ApproverRepository;
 
+import java.util.List;
 
 
 public interface ApproverService {
 
 
-    Approver findApproverByActiveStatus(boolean active);
+    List<Approver> findAll();
 
-    Approver addApprover(Approver approver);
+    Approver findByActiveStatus(boolean active);
 
-    Approver updateApprover(Approver approver);
+    Approver add(Approver approver);
 
-    Approver updateApproverActiveStatus(boolean active,long id);
+    Approver update(Approver approver);
 
-    void deleteApprover(Long id);
+    Approver updateActiveStatus(boolean active,long id);
+
+    void delete(Long id);
 
 }

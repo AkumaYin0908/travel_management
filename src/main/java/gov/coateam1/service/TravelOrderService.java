@@ -3,21 +3,27 @@ package gov.coateam1.service;
 import gov.coateam1.model.TravelOrder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TravelOrderService {
 
 
-    TravelOrder findTravelOrderByDateDeparture(LocalDate dateDeparture);
+    List<TravelOrder> findAll();
+    TravelOrder findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
 
-    TravelOrder addTravelOrder(TravelOrder travelOrder);
+    TravelOrder add(TravelOrder travelOrder);
 
-    TravelOrder updateTravelOrder(TravelOrder travelOrder);
+    TravelOrder update(TravelOrder travelOrder);
 
-    TravelOrder findTravelOrderAndReportTosById(Long id);
+    List<TravelOrder> findTravelOrderAndReportTosById(Long id);
 
-    TravelOrder findTravelOrderAndPlacesById(Long id);
+    List<TravelOrder> findTravelOrderAndPlacesById(Long id);
 
-    void deleteTravelOrder(Long id);
+    LocalDate findByNameOrderByDateReturnDESC(String name,LocalDate dateReturn);
+
+
+
+    void delete(Long id);
 
 
 }

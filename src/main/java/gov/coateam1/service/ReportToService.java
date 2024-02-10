@@ -8,13 +8,14 @@ import java.util.List;
 public interface ReportToService {
 
 
-    ReportTo findReportToByName(String name);
+    List<ReportTo> findAll();
+    ReportTo findByName(String name);
 
-    ReportTo addReportTo(ReportTo reportTo);
+    ReportTo add(ReportTo reportTo);
 
-    ReportTo updateReportTo(ReportTo reportTo);
+    ReportTo update(ReportTo reportTo);
 
-    void deleteReportTo(Long id);
+    void delete(Long id);
 
 
 

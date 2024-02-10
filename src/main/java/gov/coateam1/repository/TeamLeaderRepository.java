@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface TeamLeaderRepository extends JpaRepository<TeamLeader,Long> {
 
     @Query("SELECT tl FROM TeamLeader tl WHERE tl.active = :active")
-    Optional<TeamLeader> findTeamLeaderByActiveStatus(@Param("active") boolean active);
+    Optional<TeamLeader> findByActiveStatus(@Param("active") boolean active);
 
 
     @Query("UPDATE TeamLeader tl SET tl.active = :active WHERE tl.id = :id")
-    TeamLeader updateTeamLeaderByActiveStatus(@Param("active") boolean active, @Param("id") Long id);
+    TeamLeader updateByActiveStatus(@Param("active") boolean active, @Param("id") Long id);
 }

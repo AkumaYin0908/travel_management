@@ -9,14 +9,12 @@ public interface PassengerService {
 
     Passenger findByName(String name) throws EmployeeNotFoundException;
 
+    Passenger add(Passenger passenger);
 
-    Passenger addPassenger(Passenger passenger);
+    List<Passenger> findAll();
 
+    Passenger update(Passenger passenger);
 
-    List<Passenger> findAllPassenger();
-
-    Passenger updatePassenger(Passenger passenger);
-
-    void deletePassenger(Long id);
+    void delete(Long id);
 
 }

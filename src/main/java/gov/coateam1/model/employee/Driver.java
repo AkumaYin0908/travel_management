@@ -5,18 +5,20 @@ import gov.coateam1.model.TripTicket;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
 @Data
 @DiscriminatorValue(value = "DRIVER")
 public class Driver  extends Employee{
 
 
-    @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "driver",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<TripTicket> tripTickets;
 
     public Driver(Long id, String name, Position position) {

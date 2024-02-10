@@ -65,11 +65,10 @@ public class TravelOrder {
     private List<Place> places;
 
 
-    @Column(name="last_travel")
-    private String lastTravel;
+
 
     public TravelOrder(Long id, Employee employee, LocalDate dateIssued, LocalDate dateDeparture,
-                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle, String lastTravel) {
+                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle) {
         this.id = id;
         this.employee = employee;
         this.dateIssued = dateIssued;
@@ -77,18 +76,16 @@ public class TravelOrder {
         this.dateReturn = dateReturn;
         this.purpose = purpose;
         this.vehicle = vehicle;
-        this.lastTravel=lastTravel;
     }
 
     public TravelOrder(Employee employee, LocalDate dateIssued, LocalDate dateDeparture,
-                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle, String lastTravel) {
+                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle) {
         this.employee = employee;
         this.dateIssued = dateIssued;
         this.dateDeparture = dateDeparture;
         this.dateReturn = dateReturn;
         this.purpose = purpose;
         this.vehicle = vehicle;
-        this.lastTravel=lastTravel;
     }
 
 
