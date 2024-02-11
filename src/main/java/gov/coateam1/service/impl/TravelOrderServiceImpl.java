@@ -19,7 +19,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     private final TravelOrderRepository travelOrderRepository;
 
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 
     @Override
     public List<TravelOrder> findAll() {

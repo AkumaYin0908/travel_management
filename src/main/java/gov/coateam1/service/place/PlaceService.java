@@ -10,15 +10,20 @@ import java.util.List;
 
 public interface PlaceService {
 
-    Place findByBarangay(Barangay barangay) throws PlaceNotFoundException;
+    Place findById(Long id);
 
-    Place findByMunicipality(Municipality municipality)throws PlaceNotFoundException;
+    Place findByBarangayName(String barangayName);
 
-    Place findByProvince(Province province) throws PlaceNotFoundException;
+    Place findByMunicipalityName(String municipalityName);
 
-    Place findByBuildingName(String buildingName) throws PlaceNotFoundException;
+    Place findByProvinceName(String provinceName);
 
-    Place findByDefaultPlace(String defaultPlace)throws PlaceNotFoundException;
+    Place findByBuildingName(String buildingName);
+
+    Place findByDefaultPlace(String defaultPlace);
+
+    Place findByCompletePlaceDetails(String buildingName, String barangay,
+                                                                  String municipality, String province);
 
     List<Place> findAll();
 

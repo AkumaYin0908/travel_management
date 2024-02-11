@@ -18,4 +18,8 @@ public class Municipality {
 
     @Column(name="name")
     private String name;
+
+    public Municipality(String name) {
+        this.name = name;
+    }
 }

@@ -8,7 +8,7 @@ public interface FuelBalanceService {
 
     FuelBalance add(FuelBalance fuelBalance);
 
-    FuelBalance update(FuelBalance fuelBalance);
+    FuelBalance update(BigDecimal remainingFuel);
 
-    FuelBalance findFuelBalance(BigDecimal fuelBalance);
+    FuelBalance findFuelBalance();
 }

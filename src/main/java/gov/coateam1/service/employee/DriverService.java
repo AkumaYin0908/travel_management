@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DriverService {
 
-    Driver findByName(String name) throws EmployeeNotFoundException;
+    Driver findByName(String name);
 
     Driver add(Driver driver);
 

@@ -21,6 +21,8 @@ public interface TripTicketService {
 
     List<TripTicket> findByBuildingName(String buildingName);
 
+    List<TripTicket> findByDefaultPlace(String defaultPlace);
+
     List<TripTicket> findByBarangay(String barangay);
 
     List<TripTicket> findByMunicipality(String municipality);

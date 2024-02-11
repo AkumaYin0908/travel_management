@@ -20,5 +20,7 @@ public class Barangay {
     @Column(name="name")
     private String name;
 
-
+    public Barangay(String name) {
+        this.name = name;
+    }
 }

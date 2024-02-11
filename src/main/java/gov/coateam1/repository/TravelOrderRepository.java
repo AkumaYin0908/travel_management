@@ -26,6 +26,8 @@ public interface TravelOrderRepository extends JpaRepository<TravelOrder,Long> {
     @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places  WHERE travelOrder.id = :id")
     List<TravelOrder> findTravelOrderAndPlacesById(@Param("id")Long id);
 
+    List<TravelOrder> findTravelOrderAndPlacesByBuildingName(@Param("buildingName")String buildingName);
+
     @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.dateDeparture = :dateDeparture AND travelOrder.dateReturn = :dateReturn")
     Optional<TravelOrder> findByDateDepartureAndDateReturn(@Param("dateDeparture")LocalDate dateDeparture, @Param("dateReturn") LocalDate dateReturn);
 

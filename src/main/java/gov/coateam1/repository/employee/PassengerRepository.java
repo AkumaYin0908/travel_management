@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface PassengerRepository extends JpaRepository<Passenger,Long> {
 
     @Query("from Passenger where name= :name")
-    Optional<Passenger> findPassengerByName(@Param("name")String name);
+    Optional<Passenger> findByName(@Param("name")String name);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PassengerService {
 
-    Passenger findByName(String name) throws EmployeeNotFoundException;
+    Passenger findByName(String name);
 
     Passenger add(Passenger passenger);
 

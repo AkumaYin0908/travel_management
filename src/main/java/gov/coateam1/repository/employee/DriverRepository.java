@@ -13,5 +13,7 @@ public interface DriverRepository extends JpaRepository<Driver,Long> {
 
 
     @Query("from Driver where name= :name")
-    Optional<Driver> findDriverByName(@Param("name")String name);
+    Optional<Driver> findByName(@Param("name")String name);
+
+
 }

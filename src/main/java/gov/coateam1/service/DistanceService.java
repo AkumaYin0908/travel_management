@@ -8,7 +8,7 @@ public interface DistanceService {
 
     Distance add(Distance distance);
 
-    Distance update(Distance distance);
+    Distance update(Long startDistance);
 
-    Distance findDistance(Long startDistance);
+    Distance findDistance();
 }

@@ -1,8 +1,10 @@
 package gov.coateam1.service.impl;
 
+import gov.coateam1.exception.NoStartDistanceSavedException;
 import gov.coateam1.model.Distance;
 import gov.coateam1.repository.DistanceRepository;
 import gov.coateam1.service.DistanceService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +16,23 @@ public class DistanceServiceImpl implements DistanceService {
     private final DistanceRepository distanceRepository;
 
     @Override
+    @Transactional
     public Distance add(Distance distance) {
         return distanceRepository.save(distance);
     }
 
     @Override
-    public Distance update(Distance distance) {
+    @Transactional
+    public Distance update(Long startDistance) {
+
+        Distance distance = this.findDistance();
+        distance.setDistance(startDistance);
         return distanceRepository.save(distance);
     }
 
     @Override
-    public Distance findDistance(Long startDistance) {
-        return distanceRepository.findDistance().orElse(new Distance(startDistance));
+    public Distance findDistance() {
+        return distanceRepository.findDistance().orElseThrow(()->
+                new NoStartDistanceSavedException("I assume that this is your first time using this app. Set start distance at the settings first!"));
     }
 }
