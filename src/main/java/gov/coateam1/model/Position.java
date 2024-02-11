@@ -1,6 +1,7 @@
 package gov.coateam1.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.employee.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Position {
     @Column(name="name")
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Employee> employees ;
 

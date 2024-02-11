@@ -3,6 +3,7 @@ package gov.coateam1.service.impl;
 import gov.coateam1.model.Position;
 import gov.coateam1.repository.PositionRepository;
 import gov.coateam1.service.PositionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,13 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    @Transactional
     public Position add(Position position) {
         return positionRepository.save(position);
     }
 
     @Override
+    @Transactional
     public Position update(Position position) {
         return positionRepository.save(position);
     }

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ReportToRepository extends JpaRepository<ReportTo,Long> {
 
-    @Query("SELECT reportTo ReportTo reportTo WHERE reportTo.name = :name")
+    @Query("SELECT reportTo  FROM ReportTo reportTo WHERE reportTo.name = :name")
     Optional<ReportTo> findByName(@Param("name") String name);
 
 

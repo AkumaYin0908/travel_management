@@ -19,6 +19,14 @@ public interface TravelOrderService {
 
     List<TravelOrder> findTravelOrderAndPlacesById(Long id);
 
+    List<TravelOrder> findByBuildingName(String buildingName);
+
+    List<TravelOrder> findByBarangay(String barangay);
+
+    List<TravelOrder> findByMunicipality(String municipality);
+
+    List<TravelOrder> findByProvince(String province);
+
 
     LocalDate findByNameOrderByDateReturnDESC(String name,LocalDate dateReturn);
 

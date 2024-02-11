@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="report_to")
 public class ReportTo {
@@ -31,10 +30,7 @@ public class ReportTo {
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
     private List<TravelOrder> travelOrders;
 
-    public ReportTo(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+
 
     public ReportTo(String name) {
         this.name = name;

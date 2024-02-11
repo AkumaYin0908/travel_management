@@ -1,6 +1,7 @@
 package gov.coateam1.model.employee;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.TravelOrder;
 import jakarta.persistence.*;
@@ -30,12 +31,13 @@ public abstract class Employee {
     @Column(name="name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="position")
     private Position position;
 
 
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JsonIgnore
     private List<TravelOrder> travelOrders;
 
     public Employee(Long id, String name, Position position) {

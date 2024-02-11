@@ -29,10 +29,10 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
     Optional<Place> findByDefaultPlace(@Param("defaultPlace") String defaultPlace);
 
 
-    @Query("SELECT p FROM Place p WHERE  p.buildingName = :buildingName AND p.barangay.name =: barangayName " +
+    @Query("SELECT p FROM Place p WHERE  p.buildingName = :buildingName AND p.barangay.name = :barangayName " +
             "AND p.municipality.name = :municipalityName AND p.province.name = :provinceName")
     Place findByCompletePlaceDetails(@Param("buildingName") String buildingName, @Param("barangayName") String barangay,
-                                     @Param("municipalityname") String municipality, @Param("provinceName") String province);
+                                     @Param("municipalityName") String municipality, @Param("provinceName") String province);
 
 
 

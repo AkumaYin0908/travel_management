@@ -1,10 +1,12 @@
 package gov.coateam1.model.employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.TripTicket;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @DiscriminatorValue(value = "PASSENGER")
+@NoArgsConstructor
 public class Passenger extends Employee {
 
 
@@ -21,6 +24,7 @@ public class Passenger extends Employee {
     @JoinTable(name="travel_passengers",
             joinColumns = @JoinColumn(name="employee_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
+    @JsonIgnore
     private List<TripTicket> tripTickets;
 
 

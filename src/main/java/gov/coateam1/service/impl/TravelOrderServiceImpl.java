@@ -58,6 +58,26 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     }
 
     @Override
+    public List<TravelOrder> findByBuildingName(String buildingName) {
+        return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName);
+    }
+
+    @Override
+    public List<TravelOrder> findByBarangay(String barangay) {
+        return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay);
+    }
+
+    @Override
+    public List<TravelOrder> findByMunicipality(String municipality) {
+        return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality);
+    }
+
+    @Override
+    public List<TravelOrder> findByProvince(String province) {
+        return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province);
+    }
+
+    @Override
     public LocalDate findByNameOrderByDateReturnDESC(String name, LocalDate dateReturn) {
         return travelOrderRepository.findByNameOrderByDateReturnDESC(name).orElse(dateReturn);
     }
