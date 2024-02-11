@@ -1,6 +1,7 @@
 package gov.coateam1.controller;
 
 
+import gov.coateam1.dto.EmployeeDTO;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.service.employee.DriverService;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +19,27 @@ public class DriverController {
     private final DriverService driverService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Driver>> getAllDrivers(){
+    public ResponseEntity<List<EmployeeDTO>> getAllDrivers(){
         return new ResponseEntity<>(driverService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Driver> saveDriver(@RequestBody Driver driver){
-        return new ResponseEntity<>(driverService.add(driver),HttpStatus.CREATED);
+    public ResponseEntity<?> saveDriver(@RequestBody EmployeeDTO employeeDTO){
+        try{
+            return new ResponseEntity<>(driverService.add(employeeDTO),HttpStatus.CREATED);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Driver> updateDriver(@RequestBody Driver driver){
-        return new ResponseEntity<>(driverService.update(driver), HttpStatus.OK);
+    public ResponseEntity<?> updateDriver(@RequestBody EmployeeDTO employeeDTO){
+        try{
+            return new ResponseEntity<>(driverService.update(employeeDTO),HttpStatus.CREATED);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/delete/{id}")

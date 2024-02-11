@@ -1,5 +1,6 @@
 package gov.coateam1.controller;
 
+import gov.coateam1.dto.EmployeeDTO;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Passenger;
@@ -21,21 +22,27 @@ public class PassengerController {
     private final PositionService positionService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Passenger>> getAllPassengers(){
+    public ResponseEntity<List<EmployeeDTO>> getAllPassengers(){
         return new ResponseEntity<>(passengerService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Passenger> savePassenger(@RequestBody Passenger passenger){
+    public ResponseEntity<?> savePassenger(@RequestBody EmployeeDTO employeeDTO){
+        try{
+            return new ResponseEntity<>(passengerService.add(employeeDTO),HttpStatus.CREATED);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        Position position=positionService.findByName(passenger.getPosition().getName());
-        passenger.setPosition(position);
-        return new ResponseEntity<>(passengerService.add(passenger),HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Passenger> updatePassenger(@RequestBody Passenger passenger){
-        return new ResponseEntity<>(passengerService.update(passenger), HttpStatus.OK);
+    public ResponseEntity<?> updatePassenger(@RequestBody EmployeeDTO employeeDTO){
+       try{
+           return new ResponseEntity<>(passengerService.update(employeeDTO), HttpStatus.OK);
+       }catch (Exception ex){
+           return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+       }
     }
 
     @DeleteMapping("/delete/{id}")

@@ -1,7 +1,10 @@
 package gov.coateam1.service.impl.employee;
 
+import gov.coateam1.dto.EmployeeDTO;
 import gov.coateam1.exception.EmployeeNotFoundException;
+import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Driver;
+import gov.coateam1.model.employee.Employee;
 import gov.coateam1.repository.employee.DriverRepository;
 import gov.coateam1.service.employee.DriverService;
 import jakarta.transaction.Transactional;
@@ -16,27 +19,35 @@ import java.util.List;
 public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
+    private final  EmployeeMapper employeeMapper;
 
     @Override
-    public Driver findByName(String name) {
-        return driverRepository.findByName(name).orElseThrow(()->new EmployeeNotFoundException("Driver not found!"));
+    public EmployeeDTO findByName(String name) {
+        Driver driver = driverRepository.findByName(name).orElseThrow(()->new EmployeeNotFoundException("Driver not found!"));
+        return employeeMapper.mapToDTO(driver);
     }
 
     @Override
     @Transactional
-    public Driver add(Driver driver) {
-        return driverRepository.save(driver);
+    public EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception {
+        Driver driver = employeeMapper.maptoModel(employeeDTO,Driver.class);
+        Driver dbDriver = driverRepository.save(driver);
+        employeeDTO.setId(dbDriver.getId());
+        return employeeDTO;
     }
 
     @Override
-    public List<Driver> findAll() {
-        return driverRepository.findAll();
+    public List<EmployeeDTO> findAll() {
+
+        return driverRepository.findAll().stream().map(employeeMapper::mapToDTO).toList();
     }
 
     @Override
     @Transactional
-    public Driver update(Driver driver) {
-        return driverRepository.save(driver);
+    public EmployeeDTO update(EmployeeDTO employeeDTO) throws Exception {
+        Driver driver = employeeMapper.maptoModel(employeeDTO,Driver.class);
+        driverRepository.save(driver);
+        return employeeDTO;
     }
 
     @Override

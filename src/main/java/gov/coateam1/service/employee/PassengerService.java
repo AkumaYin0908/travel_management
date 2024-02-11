@@ -1,5 +1,6 @@
 package gov.coateam1.service.employee;
 
+import gov.coateam1.dto.EmployeeDTO;
 import gov.coateam1.exception.EmployeeNotFoundException;
 import gov.coateam1.model.employee.Passenger;
 
@@ -7,13 +8,13 @@ import java.util.List;
 
 public interface PassengerService {
 
-    Passenger findByName(String name);
+    EmployeeDTO findByName(String name);
 
-    Passenger add(Passenger passenger);
+    EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception;
 
-    List<Passenger> findAll();
+    List<EmployeeDTO> findAll();
 
-    Passenger update(Passenger passenger);
+    EmployeeDTO update(EmployeeDTO employeeDTO) throws Exception;
 
     void delete(Long id);
 
