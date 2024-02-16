@@ -19,7 +19,6 @@ import java.util.List;
 public class PassengerController {
 
     private final PassengerService passengerService;
-    private final PositionService positionService;
 
     @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllPassengers(){

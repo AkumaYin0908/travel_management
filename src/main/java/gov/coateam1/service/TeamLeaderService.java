@@ -9,13 +9,17 @@ public interface TeamLeaderService {
 
     List<TeamLeader> findAll();
 
+    TeamLeader findByName(String name);
+
+    TeamLeader findById(Long id);
+
     TeamLeader findByActiveStatus(boolean active);
 
     TeamLeader add(TeamLeader teamLeader);
 
     TeamLeader update(TeamLeader teamLeader);
 
-    TeamLeader updateByActiveStatus(boolean active, long id);
+    void updateByActiveStatus(boolean active, long id);
 
     void delete(Long id);
 }

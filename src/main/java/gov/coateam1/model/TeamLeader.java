@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="dept_head")
+@Table(name="team_leader")
 public class TeamLeader {
 
 
