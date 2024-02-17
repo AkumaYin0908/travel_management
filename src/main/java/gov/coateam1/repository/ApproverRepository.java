@@ -1,6 +1,6 @@
 package gov.coateam1.repository;
 
-import gov.coateam1.model.Approver;
+import gov.coateam1.model.signatory.Approver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

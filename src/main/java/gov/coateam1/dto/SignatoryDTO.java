@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PositionDTO {
+public class SignatoryDTO {
 
-    private int id;
+    private Long id;
     private String name;
-    private List<EmployeeDTO> employees=new ArrayList<>();
+    private String position;
+    private boolean active;
+
 }

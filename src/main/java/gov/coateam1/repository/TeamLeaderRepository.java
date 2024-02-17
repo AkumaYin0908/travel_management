@@ -1,6 +1,6 @@
 package gov.coateam1.repository;
 
-import gov.coateam1.model.TeamLeader;
+import gov.coateam1.model.signatory.TeamLeader;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

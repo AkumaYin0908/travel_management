@@ -2,14 +2,10 @@ package gov.coateam1.mapper;
 
 import gov.coateam1.dto.EmployeeDTO;
 import gov.coateam1.model.Position;
-import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
-import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Component
 @RequiredArgsConstructor
@@ -35,6 +31,8 @@ public class EmployeeMapper {
         employee.setName(employeeDTO.getName());
         employee.setPosition(position);
     }
+
+
 
 
 

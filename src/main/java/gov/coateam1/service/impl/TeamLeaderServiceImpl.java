@@ -1,7 +1,9 @@
 package gov.coateam1.service.impl;
 
+import gov.coateam1.dto.SignatoryDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.model.TeamLeader;
+import gov.coateam1.mapper.SignatoryMapper;
+import gov.coateam1.model.signatory.TeamLeader;
 import gov.coateam1.repository.TeamLeaderRepository;
 import gov.coateam1.service.TeamLeaderService;
 
@@ -18,44 +20,59 @@ import java.util.Optional;
 public class TeamLeaderServiceImpl implements TeamLeaderService {
 
     private final TeamLeaderRepository teamLeaderRepository;
+    private final SignatoryMapper signatoryMapper;
+
+
 
     @Override
-    public List<TeamLeader> findAll() {
-        return teamLeaderRepository.findAll();
+    public List<SignatoryDTO> findAll() {
+        return teamLeaderRepository.findAll().stream().map(signatoryMapper::mapToDTO).toList();
     }
 
     @Override
-    public TeamLeader findByName(String name) {
-        return teamLeaderRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",name));
+    public SignatoryDTO findByName(String name) {
+        TeamLeader teamLeader = teamLeaderRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",name));
+        return signatoryMapper.mapToDTO(teamLeader);
     }
 
     @Override
-    public TeamLeader findById(Long id) {
-        return teamLeaderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",id));
+    public SignatoryDTO findById(Long id) {
+        TeamLeader teamLeader = teamLeaderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",id));
+        return signatoryMapper.mapToDTO(teamLeader);
     }
 
     @Override
-    public TeamLeader findByActiveStatus(boolean active) {
-        return teamLeaderRepository.findByActiveStatus(active).orElseThrow(()-> new ResourceNotFoundException("No Team Leader is currently active!"));
+    public SignatoryDTO findByActiveStatus(boolean active) {
+        TeamLeader teamLeader = teamLeaderRepository.findByActiveStatus(active).orElseThrow(()-> new ResourceNotFoundException("No Team Leader is currently active!"));
+        return signatoryMapper.mapToDTO(teamLeader);
     }
 
     @Override
-    public TeamLeader add(TeamLeader teamLeader) {
+    public SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception {
         Optional<TeamLeader> teamLeaderOptional = teamLeaderRepository.findByActiveStatus(true);
+        TeamLeader teamLeader = signatoryMapper.mapToModel(signatoryDTO,TeamLeader.class);
         teamLeader.setActive(teamLeaderOptional.isEmpty());
-        return teamLeaderRepository.save(teamLeader);
+        TeamLeader dbTeamLeader = teamLeaderRepository.save(teamLeader);
+        signatoryDTO.setId(dbTeamLeader.getId());
+        return signatoryDTO;
     }
 
     @Override
     @Transactional
-    public TeamLeader update(TeamLeader teamLeader) {
-        return teamLeaderRepository.save(teamLeader);
+    public SignatoryDTO update(SignatoryDTO signatoryDTO, Long id) {
+        TeamLeader teamLeader = teamLeaderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TeamLeader","id",id));
+        signatoryMapper.mapToModel(signatoryDTO,teamLeader);
+        teamLeaderRepository.save(teamLeader);
+        signatoryDTO.setId(id);
+        return signatoryDTO;
     }
 
     @Override
     @Transactional
-    public void updateByActiveStatus(boolean active, long id) {
+    public SignatoryDTO updateByActiveStatus(boolean active, long id) {
         teamLeaderRepository.updateByActiveStatus(active,id);
+        TeamLeader teamLeader = teamLeaderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TeamLeader","id",id));
+        return signatoryMapper.mapToDTO(teamLeader);
     }
 
     @Override

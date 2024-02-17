@@ -1,7 +1,9 @@
 package gov.coateam1.service.impl;
 
+import gov.coateam1.dto.SignatoryDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.model.Approver;
+import gov.coateam1.mapper.SignatoryMapper;
+import gov.coateam1.model.signatory.Approver;
 import gov.coateam1.repository.ApproverRepository;
 import gov.coateam1.service.ApproverService;
 import jakarta.transaction.Transactional;
@@ -16,37 +18,50 @@ import java.util.Optional;
 public class ApproverServiceImpl implements ApproverService {
 
     private final ApproverRepository approverRepository;
+    private final SignatoryMapper signatoryMapper;
+
+
 
     @Override
-    public List<Approver> findAll() {
-        return approverRepository.findAll();
+    public List<SignatoryDTO> findAll() {
+        return approverRepository.findAll().stream().map(signatoryMapper::mapToDTO).toList();
     }
 
     @Override
-    public Approver findByActiveStatus(boolean active) {
-        return approverRepository.findByActiveStatus(active).orElseThrow(()-> new ResourceNotFoundException("Approver","active",String.valueOf(active)));
+    public SignatoryDTO findByActiveStatus(boolean active) {
+        Approver approver = approverRepository.findByActiveStatus(active).orElseThrow(()-> new ResourceNotFoundException("Approver","active",String.valueOf(active)));
+        return signatoryMapper.mapToDTO(approver);
     }
 
     @Override
     @Transactional
-    public Approver add(Approver approver) {
+    public SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception {
 
         Optional<Approver> approverOptional = approverRepository.findByActiveStatus(true);
+        Approver approver = signatoryMapper.mapToModel(signatoryDTO,Approver.class);
         approver.setActive(approverOptional.isEmpty());
-        return approverRepository.save(approver);
+        Approver dbApprover = approverRepository.save(approver);
+        signatoryDTO.setId(dbApprover.getId());
+        return signatoryDTO;
     }
 
     @Override
     @Transactional
-    public Approver update(Approver approver) {
-        return approverRepository.save(approver);
+    public SignatoryDTO update(SignatoryDTO signatoryDTO, Long id) {
+        Approver approver = approverRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Approver","id",id));
+        signatoryMapper.mapToModel(signatoryDTO,approver);
+        approverRepository.save(approver);
+        signatoryDTO.setId(id);
+        return signatoryDTO;
     }
 
 
     @Override
     @Transactional
-    public void updateByActiveStatus(boolean active, long id) {
+    public SignatoryDTO updateByActiveStatus(boolean active, Long id) {
         approverRepository.updateByActiveStatus(active,id);
+        Approver approver=approverRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Approver","id",id));
+        return signatoryMapper.mapToDTO(approver);
     }
 
     @Override
@@ -56,9 +71,9 @@ public class ApproverServiceImpl implements ApproverService {
     }
 
 
-
     @Override
-    public Approver findByName(String name) {
-        return approverRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Approver","name",name));
+    public SignatoryDTO findByName(String name) {
+        Approver approver = approverRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Approver","name",name));
+        return  signatoryMapper.mapToDTO(approver);
     }
 }

@@ -1,25 +1,25 @@
 package gov.coateam1.service;
 
-import gov.coateam1.model.TeamLeader;
+import gov.coateam1.dto.SignatoryDTO;
 
 import java.util.List;
 
 public interface TeamLeaderService {
 
 
-    List<TeamLeader> findAll();
+    List<SignatoryDTO> findAll();
 
-    TeamLeader findByName(String name);
+    SignatoryDTO findByName(String name);
 
-    TeamLeader findById(Long id);
+    SignatoryDTO findById(Long id);
 
-    TeamLeader findByActiveStatus(boolean active);
+    SignatoryDTO findByActiveStatus(boolean active);
 
-    TeamLeader add(TeamLeader teamLeader);
+    SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception;
 
-    TeamLeader update(TeamLeader teamLeader);
+    SignatoryDTO update(SignatoryDTO signatoryDTO, Long id);
 
-    void updateByActiveStatus(boolean active, long id);
+    SignatoryDTO updateByActiveStatus(boolean active, long id);
 
     void delete(Long id);
 }

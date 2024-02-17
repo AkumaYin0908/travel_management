@@ -1,12 +1,11 @@
 package gov.coateam1.controller;
 
-import gov.coateam1.model.Approver;
+import gov.coateam1.dto.SignatoryDTO;
 import gov.coateam1.service.ApproverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,19 +16,19 @@ public class ApproverController {
     private final ApproverService approverService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Approver>> getAllApprovers(){
+    public ResponseEntity<List<SignatoryDTO>> getAllApprover(){
         return new ResponseEntity<>(approverService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Approver> saveApprover(@RequestBody Approver approver){
-        return new ResponseEntity<>(approverService.add(approver),HttpStatus.CREATED);
+    public ResponseEntity<SignatoryDTO> saveApprover(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
+        return new ResponseEntity<>(approverService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/update")
-    public ResponseEntity<Approver> updateApprover(@RequestBody Approver approver){
-        return new ResponseEntity<>(approverService.update(approver), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SignatoryDTO> updateApprover(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
+        return new ResponseEntity<>(approverService.update(signatoryDTO,id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -38,13 +37,13 @@ public class ApproverController {
         return new ResponseEntity<>("Team Leader has been successfully deleted!",HttpStatus.OK);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<String> updateApproverStatus(@PathVariable Long id, @RequestParam("active") boolean active){
-        approverService.updateByActiveStatus(active,id);
-        return new ResponseEntity<>("Update success!",HttpStatus.OK);
+    @PutMapping("/update/status/{id}")
+    public ResponseEntity<SignatoryDTO> updateApproverStatus(@PathVariable("id") Long id, @RequestParam("active") boolean active){
+
+        return new ResponseEntity<>( approverService.updateByActiveStatus(active,id),HttpStatus.OK);
     }
 
-    @GetMapping("find/{name}")
+    @GetMapping("/find/{name}")
     public ResponseEntity<?> findApproverByName(@PathVariable("name")String name){
         try{
             return new ResponseEntity<>(approverService.findByName(name),HttpStatus.FOUND);

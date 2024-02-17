@@ -1,18 +1,15 @@
-package gov.coateam1.model;
-
+package gov.coateam1.model.signatory;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@MappedSuperclass
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name="approver")
-public class Approver {
-
+@NoArgsConstructor
+public abstract class SignatoryModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -26,18 +23,4 @@ public class Approver {
 
     @Column(name="active")
     private boolean active;
-
-
-    public Approver(String name, String position, boolean active) {
-        this.name = name;
-        this.position = position;
-        this.active = active;
-    }
-
-    public Approver(String name, String position) {
-        this.name = name;
-        this.position = position;
-    }
-
-
 }

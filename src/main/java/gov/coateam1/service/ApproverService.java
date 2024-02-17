@@ -1,8 +1,7 @@
 package gov.coateam1.service;
 
 
-import gov.coateam1.model.Approver;
-import gov.coateam1.repository.ApproverRepository;
+import gov.coateam1.dto.SignatoryDTO;
 
 import java.util.List;
 
@@ -10,18 +9,19 @@ import java.util.List;
 public interface ApproverService {
 
 
-    List<Approver> findAll();
+    List<SignatoryDTO> findAll();
 
-    Approver findByActiveStatus(boolean active);
+    SignatoryDTO findByActiveStatus(boolean active);
 
-    Approver add(Approver approver);
-
-    Approver update(Approver approver);
+    SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception;
 
 
     void delete(Long id);
 
-    void updateByActiveStatus(boolean active, long id);
 
-    Approver findByName(String name);
+    SignatoryDTO update(SignatoryDTO signatoryDTO, Long id);
+
+    SignatoryDTO updateByActiveStatus(boolean active, Long id);
+
+    SignatoryDTO findByName(String name);
 }

@@ -1,6 +1,7 @@
 package gov.coateam1.controller;
 
-import gov.coateam1.model.TeamLeader;
+import gov.coateam1.dto.SignatoryDTO;
+import gov.coateam1.model.signatory.TeamLeader;
 import gov.coateam1.service.TeamLeaderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,19 +19,19 @@ public class TeamLeaderController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<TeamLeader>> getAllTeamLeaders(){
+    public ResponseEntity<List<SignatoryDTO>> getAllTeamLeaders(){
         return new ResponseEntity<>(teamLeaderService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<TeamLeader> saveTeamLeader(@RequestBody TeamLeader teamLeader){
-        return new ResponseEntity<>(teamLeaderService.add(teamLeader),HttpStatus.CREATED);
+    public ResponseEntity<SignatoryDTO> saveTeamLeader(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
+        return new ResponseEntity<>(teamLeaderService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/update")
-    public ResponseEntity<TeamLeader> updateTeamLeader(@RequestBody TeamLeader teamLeader){
-        return new ResponseEntity<>(teamLeaderService.update(teamLeader), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<SignatoryDTO> updateTeamLeader(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
+        return new ResponseEntity<>(teamLeaderService.update(signatoryDTO,id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -39,10 +40,10 @@ public class TeamLeaderController {
         return new ResponseEntity<>("Team Leader has been successfully deleted!",HttpStatus.OK);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<String> updateTeamLeaderStatus(@PathVariable Long id, @RequestParam(value = "active") boolean active){
-        teamLeaderService.updateByActiveStatus(active,id);
-        return new ResponseEntity<>("Update success!",HttpStatus.OK);
+    @PutMapping("update/status/{id}")
+    public ResponseEntity<SignatoryDTO> updateTeamLeaderStatus(@PathVariable Long id, @RequestParam(value = "active") boolean active){
+
+        return new ResponseEntity<>(teamLeaderService.updateByActiveStatus(active,id),HttpStatus.OK);
     }
 
     @GetMapping("find/{name}")

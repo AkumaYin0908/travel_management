@@ -18,7 +18,7 @@ import java.util.List;
 public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
-    private final  EmployeeMapper employeeMapper;
+    private final EmployeeMapper employeeMapper;
 
     @Override
     public EmployeeDTO findByName(String name) {
