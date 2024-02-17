@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class Passenger extends Employee {
             joinColumns = @JoinColumn(name="employee_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
     @JsonIgnore
-    private List<TripTicket> tripTickets;
+    private List<TripTicket> tripTickets=new ArrayList<>();
 
 
     public Passenger(Long id, String name, Position position) {

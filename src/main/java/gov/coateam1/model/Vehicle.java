@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -34,12 +35,12 @@ public class Vehicle {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},fetch = FetchType.LAZY)
-    private List<TravelOrder> travelOrders;
+    private List<TravelOrder> travelOrders = new ArrayList<>();
 
     @ToString.Exclude
 
     @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TripTicket> tripTickets;
+    private List<TripTicket> tripTickets = new ArrayList<>();
 
     public Vehicle(Long id, String brand, String model, String type, String plateNo) {
         this.id = id;

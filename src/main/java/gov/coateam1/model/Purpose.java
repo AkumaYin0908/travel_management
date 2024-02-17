@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,10 +29,10 @@ public class Purpose {
     private String purpose;
 
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TravelOrder> travelOrders;
+    private List<TravelOrder> travelOrders = new ArrayList<>();
 
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TripTicket> tripTickets;
+    private List<TripTicket> tripTickets = new ArrayList<>();
 
 
     public Purpose(Long id, String purpose) {

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,14 +49,14 @@ public class TripTicket {
     @JoinTable(name="place_tripticket",
     joinColumns = @JoinColumn(name="tripticket_id"),
     inverseJoinColumns = @JoinColumn(name="place_id"))
-    private List<Place> places;
+    private List<Place> places = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="travel_passengers",
             joinColumns = @JoinColumn(name="tripticket_id"),
             inverseJoinColumns = @JoinColumn(name="employee_id"))
-    private List<Employee> passengers;
+    private List<Employee> passengers = new ArrayList<>();
 
 
     @Column(name="time_office_departure")

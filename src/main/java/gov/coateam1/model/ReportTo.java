@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,7 +29,7 @@ public class ReportTo {
     @JoinTable(name="reportto_travelorder",
             joinColumns = @JoinColumn(name="reportto_id"),
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
-    private List<TravelOrder> travelOrders;
+    private List<TravelOrder> travelOrders = new ArrayList<>();
 
 
 

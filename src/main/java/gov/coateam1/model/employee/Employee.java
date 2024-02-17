@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,7 +39,7 @@ public abstract class Employee {
 
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JsonIgnore
-    private List<TravelOrder> travelOrders;
+    private List<TravelOrder> travelOrders=new ArrayList<>();
 
     public Employee(Long id, String name, Position position) {
         this.id = id;

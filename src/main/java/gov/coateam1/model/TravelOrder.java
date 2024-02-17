@@ -55,14 +55,14 @@ public class TravelOrder {
     @JoinTable(name="reportto_travelorder",
     joinColumns = @JoinColumn(name="travelorder_id"),
     inverseJoinColumns = @JoinColumn(name="reportto_id"))
-    private List<ReportTo> reportTos;
+    private List<ReportTo> reportTos = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="travelorder_id"),
             inverseJoinColumns = @JoinColumn(name="place_id"))
-    private List<Place> places;
+    private List<Place> places = new ArrayList<>();
 
 
 

@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -45,14 +46,14 @@ public class Place {
     @JoinTable(name="place_tripticket",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
-    private List<TripTicket> tripTickets;
+    private List<TripTicket> tripTickets = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
-    private List<TravelOrder> travelOrders;
+    private List<TravelOrder> travelOrders = new ArrayList<>();
 
     public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province) {
         this.id = id;
