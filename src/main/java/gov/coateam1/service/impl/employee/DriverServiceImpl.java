@@ -43,9 +43,12 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     @Transactional
-    public EmployeeDTO update(EmployeeDTO employeeDTO) throws Exception {
-        Driver driver = employeeMapper.maptoModel(employeeDTO,Driver.class);
+    public EmployeeDTO update(EmployeeDTO employeeDTO,Long id) throws Exception {
+
+        Driver driver = driverRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Driver","id",id));
+        employeeMapper.maptoModel(employeeDTO,driver);
         driverRepository.save(driver);
+        employeeDTO.setId(id);
         return employeeDTO;
     }
 

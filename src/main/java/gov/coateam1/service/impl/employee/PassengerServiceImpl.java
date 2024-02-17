@@ -44,12 +44,12 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public EmployeeDTO update(EmployeeDTO employeeDTO) throws Exception {
+    public EmployeeDTO update(EmployeeDTO employeeDTO, Long id) throws Exception {
 
-      Passenger passenger=employeeMapper.maptoModel(employeeDTO,Passenger.class);
-
+      Passenger passenger=passengerRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Passenger","id",id));
+      employeeMapper.maptoModel(employeeDTO,passenger);
       passengerRepository.save(passenger);
-
+      employeeDTO.setId(id);
       return  employeeDTO;
 
 

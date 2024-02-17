@@ -33,10 +33,10 @@ public class DriverController {
 
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updateDriver(@RequestBody EmployeeDTO employeeDTO){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id){
         try{
-            return new ResponseEntity<>(driverService.update(employeeDTO),HttpStatus.CREATED);
+            return new ResponseEntity<>(driverService.update(employeeDTO,id),HttpStatus.CREATED);
         }catch (Exception ex){
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }

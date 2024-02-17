@@ -35,10 +35,10 @@ public class PassengerController {
 
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> updatePassenger(@RequestBody EmployeeDTO employeeDTO){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id){
        try{
-           return new ResponseEntity<>(passengerService.update(employeeDTO), HttpStatus.OK);
+           return new ResponseEntity<>(passengerService.update(employeeDTO,id), HttpStatus.OK);
        }catch (Exception ex){
            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
        }

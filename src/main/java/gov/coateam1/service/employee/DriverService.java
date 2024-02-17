@@ -12,7 +12,7 @@ public interface DriverService {
 
     List<EmployeeDTO> findAll();
 
-    EmployeeDTO update(EmployeeDTO employeeDTO) throws Exception;
+    EmployeeDTO update(EmployeeDTO employeeDTO, Long id) throws Exception;
 
     void delete(Long id);
 

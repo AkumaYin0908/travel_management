@@ -30,6 +30,12 @@ public class EmployeeMapper {
         return  employee;
     }
 
+    public <T extends Employee> void maptoModel(EmployeeDTO employeeDTO, T employee) throws Exception{
+        Position position = positionService.findByName(employeeDTO.getPosition());
+        employee.setName(employeeDTO.getName());
+        employee.setPosition(position);
+    }
+
 
 
 
