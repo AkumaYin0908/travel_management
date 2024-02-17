@@ -1,8 +1,6 @@
 package gov.coateam1.service.employee;
 
 import gov.coateam1.dto.EmployeeDTO;
-import gov.coateam1.exception.EmployeeNotFoundException;
-import gov.coateam1.model.employee.Driver;
 
 import java.util.List;
 

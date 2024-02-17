@@ -1,7 +1,6 @@
 package gov.coateam1.service.impl;
 
-import gov.coateam1.exception.NoActiveTeamLeaderException;
-import gov.coateam1.exception.TeamLeaderNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.TeamLeader;
 import gov.coateam1.repository.TeamLeaderRepository;
 import gov.coateam1.service.TeamLeaderService;
@@ -27,17 +26,17 @@ public class TeamLeaderServiceImpl implements TeamLeaderService {
 
     @Override
     public TeamLeader findByName(String name) {
-        return teamLeaderRepository.findByName(name).orElseThrow(()->new TeamLeaderNotFoundException("Team Leader not found!"));
+        return teamLeaderRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",name));
     }
 
     @Override
     public TeamLeader findById(Long id) {
-        return teamLeaderRepository.findById(id).orElseThrow(()->new TeamLeaderNotFoundException("Team Leader not found!"));
+        return teamLeaderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TeamLeader","name",id));
     }
 
     @Override
     public TeamLeader findByActiveStatus(boolean active) {
-        return teamLeaderRepository.findByActiveStatus(active).orElseThrow(()-> new NoActiveTeamLeaderException("No Team Leader is currently active!"));
+        return teamLeaderRepository.findByActiveStatus(active).orElseThrow(()-> new ResourceNotFoundException("No Team Leader is currently active!"));
     }
 
     @Override

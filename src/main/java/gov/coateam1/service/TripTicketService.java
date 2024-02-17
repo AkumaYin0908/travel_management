@@ -14,6 +14,8 @@ public interface TripTicketService {
 
     TripTicket findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
 
+    TripTicket findById(Long id);
+
 
     List<TripTicket> findTripTicketAndPlacesById(Long id);
 

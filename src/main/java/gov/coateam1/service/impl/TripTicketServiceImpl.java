@@ -1,11 +1,9 @@
 package gov.coateam1.service.impl;
 
-import gov.coateam1.exception.TripTicketNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.Distance;
 import gov.coateam1.model.FuelBalance;
 import gov.coateam1.model.TripTicket;
-import gov.coateam1.repository.DistanceRepository;
-import gov.coateam1.repository.FuelBalanceRepository;
 import gov.coateam1.repository.TripTicketRepository;
 import gov.coateam1.service.DistanceService;
 import gov.coateam1.service.FuelBalanceService;
@@ -49,8 +47,13 @@ public class TripTicketServiceImpl implements TripTicketService {
                     String message = (dateDeparture.isEqual(dateReturn)) ? String.format("No Trip Ticket found with this following date: %s",dateTimeFormatter.format(dateDeparture))
                             : String.format("No Trip Ticket found with these following dates: departure: %s , return : %s",dateTimeFormatter.format(dateDeparture), dateTimeFormatter.format(dateReturn));
 
-                    return new TripTicketNotFoundException(message);
+                    return new ResourceNotFoundException(message);
                 });
+    }
+
+    @Override
+    public TripTicket findById(Long id) {
+        return tripTicketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TripTicket","id",id));
     }
 
     @Override

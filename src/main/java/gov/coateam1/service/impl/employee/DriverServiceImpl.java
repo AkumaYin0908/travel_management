@@ -1,10 +1,9 @@
 package gov.coateam1.service.impl.employee;
 
 import gov.coateam1.dto.EmployeeDTO;
-import gov.coateam1.exception.EmployeeNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Driver;
-import gov.coateam1.model.employee.Employee;
 import gov.coateam1.repository.employee.DriverRepository;
 import gov.coateam1.service.employee.DriverService;
 import jakarta.transaction.Transactional;
@@ -23,7 +22,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public EmployeeDTO findByName(String name) {
-        Driver driver = driverRepository.findByName(name).orElseThrow(()->new EmployeeNotFoundException("Driver not found!"));
+        Driver driver = driverRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Driver","name",name));
         return employeeMapper.mapToDTO(driver);
     }
 

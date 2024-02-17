@@ -1,20 +1,16 @@
 package gov.coateam1.service.impl.employee;
 
 import gov.coateam1.dto.EmployeeDTO;
-import gov.coateam1.exception.EmployeeNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
-import gov.coateam1.model.Position;
-import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.repository.employee.PassengerRepository;
-import gov.coateam1.service.PositionService;
 import gov.coateam1.service.employee.PassengerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +20,7 @@ public class PassengerServiceImpl implements PassengerService {
     private  final EmployeeMapper employeeMapper;
     @Override
     public EmployeeDTO findByName(String name) {
-        Passenger passenger = passengerRepository.findByName(name).orElseThrow(()->new EmployeeNotFoundException("Passenger not found!"));
+        Passenger passenger = passengerRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Passenger","name",name));
         return employeeMapper.mapToDTO(passenger);
     }
 

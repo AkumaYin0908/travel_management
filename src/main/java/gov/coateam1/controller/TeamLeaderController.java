@@ -40,7 +40,7 @@ public class TeamLeaderController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<String> updateTeamLeaderStatus(@PathVariable Long id, @RequestBody boolean active){
+    public ResponseEntity<String> updateTeamLeaderStatus(@PathVariable Long id, @RequestParam(value = "active") boolean active){
         teamLeaderService.updateByActiveStatus(active,id);
         return new ResponseEntity<>("Update success!",HttpStatus.OK);
     }

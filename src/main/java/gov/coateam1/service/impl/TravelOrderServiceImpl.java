@@ -1,7 +1,7 @@
 package gov.coateam1.service.impl;
 
 
-import gov.coateam1.exception.TravelOrderNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.TravelOrder;
 import gov.coateam1.repository.TravelOrderRepository;
 import gov.coateam1.service.TravelOrderService;
@@ -33,8 +33,13 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                         String message = (dateDeparture.isEqual(dateReturn)) ? String.format("No Travel Order found with this following date: %s",dateTimeFormatter.format(dateDeparture))
                                 : String.format("No Travel Order found with these following dates: departure: %s , return : %s",dateTimeFormatter.format(dateDeparture), dateTimeFormatter.format(dateReturn));
 
-                       return  new TravelOrderNotFoundException(message);
+                       return  new ResourceNotFoundException(message);
                 });
+    }
+
+    @Override
+    public TravelOrder findById(Long id) {
+        return travelOrderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TravelOrder","id",id));
     }
 
     @Override

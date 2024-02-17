@@ -18,8 +18,10 @@ public interface ApproverService {
 
     Approver update(Approver approver);
 
-    Approver updateActiveStatus(boolean active,long id);
 
     void delete(Long id);
 
+    void updateByActiveStatus(boolean active, long id);
+
+    Approver findByName(String name);
 }

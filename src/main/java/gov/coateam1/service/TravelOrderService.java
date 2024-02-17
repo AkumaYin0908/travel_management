@@ -11,6 +11,8 @@ public interface TravelOrderService {
     List<TravelOrder> findAll();
     TravelOrder findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
 
+    TravelOrder findById(Long id);
+
     TravelOrder add(TravelOrder travelOrder);
 
     TravelOrder update(TravelOrder travelOrder);

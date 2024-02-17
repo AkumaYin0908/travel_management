@@ -19,5 +19,8 @@ public interface ApproverRepository extends JpaRepository<Approver,Long> {
 
     @Query("UPDATE Approver a SET  a.active = :active WHERE a.id = :id")
     @Modifying
-    Approver updateActiveStatus(@Param("active") boolean active, @Param("id")Long id);
+    void updateByActiveStatus(@Param("active") boolean active, @Param("id")Long id);
+
+    @Query("SELECT a FROM  Approver a WHERE a.name = :name")
+    Optional<Approver> findByName(@Param("name")String name);
 }
