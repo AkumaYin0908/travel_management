@@ -1,5 +1,6 @@
 package gov.coateam1.controller;
 
+import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.service.TeamLeaderService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,10 @@ public class TeamLeaderController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTeamLeader(@PathVariable("id")Long id){
+    public ResponseEntity<APIResponse> deleteTeamLeader(@PathVariable("id")Long id){
         teamLeaderService.delete(id);
-        return new ResponseEntity<>("Team Leader has been successfully deleted!",HttpStatus.OK);
+        return new ResponseEntity<>(new APIResponse("Team Leader has been successfully deleted!",
+                true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
     @PutMapping("update/status/{id}")

@@ -1,5 +1,6 @@
 package gov.coateam1.controller;
 
+import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.service.employee.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +35,9 @@ public class PassengerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deletePassenger(@PathVariable("id")Long id){
+    public ResponseEntity<APIResponse> deletePassenger(@PathVariable("id")Long id){
         passengerService.delete(id);
-        return new ResponseEntity<>("Delete successful!",HttpStatus.OK);
+        return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
     @GetMapping("/find/{name}")

@@ -1,6 +1,7 @@
 package gov.coateam1.controller;
 
 
+import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.service.employee.DriverService;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class DriverController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteDriver(@PathVariable("id")Long id){
+    public ResponseEntity<APIResponse> deleteDriver(@PathVariable("id")Long id){
         driverService.delete(id);
-        return new ResponseEntity<>("Delete successful!",HttpStatus.OK);
+        return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
     @GetMapping("/find/{name}")
