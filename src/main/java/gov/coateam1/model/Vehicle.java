@@ -1,6 +1,8 @@
 package gov.coateam1.model;
 
 
+import gov.coateam1.payload.TravelOrderDTO;
+import gov.coateam1.payload.TripTicketDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +20,8 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="plate_no")
+    private String plateNo;
 
     @Column(name="brand")
     private String brand;
@@ -30,30 +32,15 @@ public class Vehicle {
     @Column(name="type")
     private String type;
 
-    @Column(name="plate_no")
-    private String plateNo;
+
 
     @ToString.Exclude
     @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},fetch = FetchType.LAZY)
-    private List<TravelOrder> travelOrders = new ArrayList<>();
+    private List<TravelOrderDTO> travelOrderDTOs;
 
     @ToString.Exclude
 
     @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TripTicket> tripTickets = new ArrayList<>();
+    private List<TripTicketDTO> tripTicketDTOs;
 
-    public Vehicle(Long id, String brand, String model, String type, String plateNo) {
-        this.id = id;
-        this.brand = brand;
-        this.model = model;
-        this.type = type;
-        this.plateNo = plateNo;
-    }
-
-    public Vehicle(String brand, String model, String type, String plateNo) {
-        this.brand = brand;
-        this.model = model;
-        this.type = type;
-        this.plateNo = plateNo;
-    }
 }
