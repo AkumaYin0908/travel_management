@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl.place;
 
-import gov.coateam1.exception.PlaceNotFoundException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.place.Place;
 import gov.coateam1.repository.place.PlaceRepository;
 import gov.coateam1.service.place.PlaceService;
@@ -18,7 +18,7 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     @Override
     public Place findById(Long id) {
-        return placeRepository.findById(id).orElseThrow(()->new PlaceNotFoundException("Place not found!"));
+        return placeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Place","id",id));
     }
 
     @Override
