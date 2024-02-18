@@ -1,6 +1,7 @@
 package gov.coateam1.service;
 
 import gov.coateam1.model.TravelOrder;
+import gov.coateam1.payload.TravelOrderDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,31 +9,29 @@ import java.util.List;
 public interface TravelOrderService {
 
 
-    List<TravelOrder> findAll();
-    TravelOrder findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
+    List<TravelOrderDTO> findAll();
+    TravelOrderDTO findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
 
-    TravelOrder findById(Long id);
+    TravelOrderDTO findById(Long id);
 
-    TravelOrder add(TravelOrder travelOrder);
+    TravelOrderDTO add(TravelOrderDTO travelOrderDTO);
 
-    TravelOrder update(TravelOrder travelOrder);
+    TravelOrderDTO update(TravelOrderDTO travelOrderDTO);
 
-    List<TravelOrder> findTravelOrderAndReportTosById(Long id);
+    List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id);
 
-    List<TravelOrder> findTravelOrderAndPlacesById(Long id);
+    List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id);
 
-    List<TravelOrder> findByBuildingName(String buildingName);
+    List<TravelOrderDTO> findByBuildingName(String buildingName);
 
-    List<TravelOrder> findByBarangay(String barangay);
+    List<TravelOrderDTO> findByBarangay(String barangay);
 
-    List<TravelOrder> findByMunicipality(String municipality);
+    List<TravelOrderDTO> findByMunicipality(String municipality);
 
-    List<TravelOrder> findByProvince(String province);
+    List<TravelOrderDTO> findByProvince(String province);
 
 
     LocalDate findByNameOrderByDateReturnDESC(String name,LocalDate dateReturn);
-
-
 
     void delete(Long id);
 

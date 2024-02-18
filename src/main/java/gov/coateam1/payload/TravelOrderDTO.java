@@ -2,6 +2,7 @@ package gov.coateam1.payload;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import gov.coateam1.model.ReportTo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,21 +31,16 @@ public class TravelOrderDTO {
 
     private String plateNo;
 
-    @JsonIgnore
-    private List<ReportToDTO> reportToDTOs;
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    private LocalDate lastTravel;
 
-    @JsonIgnore
+    private List<ReportTo> reportTos;
+
+
     private List<PlaceDTO> placeDTOs;
 
-    public TravelOrderDTO(Long id, String employeeName, LocalDate dateIssued, LocalDate dateDeparture, LocalDate dateReturn, String purpose, String plateNo) {
-        this.id = id;
-        this.employeeName = employeeName;
-        this.dateIssued = dateIssued;
-        this.dateDeparture = dateDeparture;
-        this.dateReturn = dateReturn;
-        this.purpose = purpose;
-        this.plateNo = plateNo;
-    }
+
+
 
     public void addPlaceDTO(PlaceDTO placeDTO){
         if(placeDTOs == null){
@@ -54,12 +50,12 @@ public class TravelOrderDTO {
         placeDTOs.add(placeDTO);
     }
 
-    public void addReportTos(ReportToDTO reportToDTO){
-        if(reportToDTOs == null){
-            reportToDTOs = new ArrayList<>();
+    public void addReportTos(ReportTo reportTo){
+        if(reportTos == null){
+            reportTos = new ArrayList<>();
         }
 
-        reportToDTOs.add(reportToDTO);
+        reportTos.add(reportTo);
     }
 
 

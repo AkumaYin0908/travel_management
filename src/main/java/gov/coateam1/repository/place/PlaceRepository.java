@@ -14,16 +14,16 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
 
 
     @Query("SELECT p FROM Place p WHERE p.buildingName = :buildingName")
-    Place findByBuildingName(@Param("buildingName") String buildingName);
+    Optional<Place> findByBuildingName(@Param("buildingName") String buildingName);
     @Query("SELECT p FROM Place p WHERE p.barangay.name = :name")
-    Place findByBarangayName(@Param("name") String barangay);
+    Optional<Place> findByBarangayName(@Param("name") String barangay);
 
     @Query("SELECT p FROM Place p WHERE  p.municipality.name = :name")
-    Place findByMunicipalityName(@Param("name") String name);
+    Optional<Place> findByMunicipalityName(@Param("name") String name);
 
 
     @Query("SELECT p FROM Place p WHERE  p.province.name = :name")
-    Place findByProvinceName(@Param("name") String name);
+    Optional<Place> findByProvinceName(@Param("name") String name);
 
     @Query("SELECT p FROM Place p WHERE  p.defaultPlace = :defaultPlace")
     Optional<Place> findByDefaultPlace(@Param("defaultPlace") String defaultPlace);
@@ -31,7 +31,7 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
 
     @Query("SELECT p FROM Place p WHERE  p.buildingName = :buildingName AND p.barangay.name = :barangayName " +
             "AND p.municipality.name = :municipalityName AND p.province.name = :provinceName")
-    Place findByCompletePlaceDetails(@Param("buildingName") String buildingName, @Param("barangayName") String barangay,
+    Optional<Place> findByCompletePlaceDetails(@Param("buildingName") String buildingName, @Param("barangayName") String barangay,
                                      @Param("municipalityName") String municipality, @Param("provinceName") String province);
 
 

@@ -1,5 +1,7 @@
 package gov.coateam1.mapper;
 
+import gov.coateam1.model.employee.Driver;
+import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.employee.Employee;
@@ -9,24 +11,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class EmployeeMapper {
+public class EmployeeMapper<T extends  Employee> {
 
     private final PositionService positionService;
+
+    private Class<T> type;
 
     public EmployeeDTO mapToDTO(Employee employee){
         return new EmployeeDTO(employee.getId(), employee.getName(),employee.getPosition().getName());
     }
 
-    public <T extends Employee> T maptoModel(EmployeeDTO employeeDTO,Class<T> instance) throws Exception{
+    public  T maptoModel(EmployeeDTO employeeDTO) throws Exception{
         Position position = positionService.findByName(employeeDTO.getPosition());
-        T employee=instance.getDeclaredConstructor().newInstance();
+        T employee=  type.getDeclaredConstructor().newInstance();
         employee.setId(employeeDTO.getId());
         employee.setName(employeeDTO.getName());
         employee.setPosition(position);
         return  employee;
     }
 
-    public <T extends Employee> void maptoModel(EmployeeDTO employeeDTO, T employee) throws Exception{
+    public  void maptoModel(EmployeeDTO employeeDTO, T employee) throws Exception{
         Position position = positionService.findByName(employeeDTO.getPosition());
         employee.setName(employeeDTO.getName());
         employee.setPosition(position);

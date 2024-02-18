@@ -30,5 +30,7 @@ public class PurposeDTO {
         this.purpose = purpose;
     }
 
-
+    public PurposeDTO(String purpose) {
+        this.purpose = purpose;
+    }
 }

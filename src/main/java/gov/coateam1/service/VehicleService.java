@@ -1,22 +1,23 @@
 package gov.coateam1.service;
 
 import gov.coateam1.model.Vehicle;
+import gov.coateam1.payload.VehicleDTO;
 
 import java.util.List;
 
 public interface VehicleService {
 
-    List<Vehicle> findAll();
-    Vehicle findByBrand(String brand);
+    List<VehicleDTO> findAll();
+    VehicleDTO findByBrand(String brand);
 
-    Vehicle findByPlateNo(String plateNo);
+    VehicleDTO findByPlateNo(String plateNo);
 
-    Vehicle findByModel(String model);
+    VehicleDTO findByModel(String model);
 
-    Vehicle findByType(String type);
+    VehicleDTO findByType(String type);
 
-    Vehicle add(Vehicle vehicle);
+    VehicleDTO add(VehicleDTO vehicleDTO);
 
-    Vehicle update(Vehicle vehicle);
+    VehicleDTO update(VehicleDTO vehicleDTO, Long id);
     void delete(Long id);
 }

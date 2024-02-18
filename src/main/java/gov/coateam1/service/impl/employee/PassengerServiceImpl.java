@@ -5,7 +5,7 @@ import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.repository.employee.PassengerRepository;
-import gov.coateam1.service.employee.PassengerService;
+import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PassengerServiceImpl implements PassengerService {
+public class PassengerServiceImpl implements EmployeeService {
 
     private final PassengerRepository passengerRepository;
-    private  final EmployeeMapper employeeMapper;
+    private  final EmployeeMapper<Passenger> employeeMapper;
     @Override
     public EmployeeDTO findByName(String name) {
         Passenger passenger = passengerRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Passenger","name",name));
@@ -28,7 +28,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception {
 
-        Passenger passenger = employeeMapper.maptoModel(employeeDTO,Passenger.class);
+        Passenger passenger = employeeMapper.maptoModel(employeeDTO);
         Passenger dbPassenger = passengerRepository.save(passenger);
         employeeDTO.setId(dbPassenger.getId());
 

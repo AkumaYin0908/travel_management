@@ -1,6 +1,7 @@
 package gov.coateam1.service.impl;
 
 import gov.coateam1.model.Purpose;
+import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.repository.PurposeRepository;
 import gov.coateam1.service.PurposeService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,18 @@ public class PurposeServiceImpl implements PurposeService {
 
     private final PurposeRepository purposeRepository;
 
+//    private Purpose mapToModel(PurposeDTO purposeDTO){
+//        return new Purpose(purposeDTO.getId(),purposeDTO.getPurpose());
+//    }
+//
+//    private PurposeDTO mapToDTO(Purpose purpose){
+//        return new PurposeDTO(purpose.getId(),purpose.getPurpose());
+//    }
+
     @Override
-    public Purpose findByPurpose(String purpose) {
-        return purposeRepository.findByPurpose(purpose).orElse(new Purpose(purpose));
+    public Purpose findByPurpose(String purposeDescription) {
+        return purposeRepository.findByPurpose(purposeDescription).orElse(new Purpose(purposeDescription));
+
     }
 
     @Override
@@ -27,7 +37,9 @@ public class PurposeServiceImpl implements PurposeService {
 
     @Override
     public Purpose save(Purpose purpose) {
-        return purposeRepository.save(purpose);
+
+       return  purposeRepository.save(purpose);
+
     }
 
     @Override

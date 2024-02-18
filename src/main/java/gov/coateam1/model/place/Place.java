@@ -55,5 +55,16 @@ public class Place {
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
     private List<TravelOrder> travelOrders;
 
+    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, String defaultPlace) {
+        this.id = id;
+        this.buildingName = buildingName;
+        this.barangay = barangay;
+        this.municipality = municipality;
+        this.province = province;
+        this.defaultPlace = defaultPlace;
+    }
 
+    public Place(String defaultPlace) {
+        this.defaultPlace  = defaultPlace;
+    }
 }

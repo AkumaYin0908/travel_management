@@ -14,16 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class VehicleDTO {
 
-    private String plateNo;
+    private Long id;
     private String brand;
     private String model;
     private String type;
-
-
-    @JsonIgnore
-    private List<TravelOrderDTO> travelOrders;
-
-    @JsonIgnore
-    private List<TripTicketDTO> tripTicketDTOS;
+    private String plateNo;
 
 }

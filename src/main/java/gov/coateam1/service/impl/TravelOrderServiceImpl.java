@@ -3,6 +3,7 @@ package gov.coateam1.service.impl;
 
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.TravelOrder;
+import gov.coateam1.payload.TravelOrderDTO;
 import gov.coateam1.repository.TravelOrderRepository;
 import gov.coateam1.service.TravelOrderService;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 
     @Override
-    public List<TravelOrder> findAll() {
+    public List<TravelOrderDTO> findAll() {
         return travelOrderRepository.findAll();
     }
 
     @Override
-    public TravelOrder findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn) {
+    public TravelOrderDTO findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn) {
         return travelOrderRepository.findByDateDepartureAndDateReturn(dateDeparture,dateReturn)
                 .orElseThrow(() -> {
                         String message = (dateDeparture.isEqual(dateReturn)) ? String.format("No Travel Order found with this following date: %s",dateTimeFormatter.format(dateDeparture))
@@ -38,47 +39,47 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     }
 
     @Override
-    public TravelOrder findById(Long id) {
+    public TravelOrderDTO findById(Long id) {
         return travelOrderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TravelOrder","id",id));
     }
 
     @Override
-    public TravelOrder add(TravelOrder travelOrder) {
+    public TravelOrderDTO add(TravelOrderDTO travelOrderDTO) {
         return travelOrderRepository.save(travelOrder);
     }
 
     @Override
-    public TravelOrder update(TravelOrder travelOrder) {
+    public TravelOrderDTO update(TravelOrderDTO travelOrderDTO ) {
         return travelOrderRepository.save(travelOrder);
     }
 
     @Override
-    public List<TravelOrder> findTravelOrderAndReportTosById(Long id) {
+    public List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id) {
         return travelOrderRepository.findTravelOrderAndReportTosById(id);
     }
 
     @Override
-    public List<TravelOrder> findTravelOrderAndPlacesById(Long id) {
+    public List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id) {
         return travelOrderRepository.findTravelOrderAndPlacesById(id);
     }
 
     @Override
-    public List<TravelOrder> findByBuildingName(String buildingName) {
+    public List<TravelOrderDTO> findByBuildingName(String buildingName) {
         return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName);
     }
 
     @Override
-    public List<TravelOrder> findByBarangay(String barangay) {
+    public List<TravelOrderDTO> findByBarangay(String barangay) {
         return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay);
     }
 
     @Override
-    public List<TravelOrder> findByMunicipality(String municipality) {
+    public List<TravelOrderDTO> findByMunicipality(String municipality) {
         return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality);
     }
 
     @Override
-    public List<TravelOrder> findByProvince(String province) {
+    public List<TravelOrderDTO> findByProvince(String province) {
         return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province);
     }
 

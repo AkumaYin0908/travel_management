@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +15,10 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "travel_order")
-public class TravelOrder {
+public class TravelOrder{
 
 
     @Id
@@ -36,7 +38,6 @@ public class TravelOrder {
     private LocalDate dateDeparture;
 
     @Column(name="date_return")
-
     private LocalDate dateReturn;
 
 
@@ -64,6 +65,8 @@ public class TravelOrder {
     private List<Place> places;
 
 
+    @Column(name = "last_travel")
+    private LocalDate lastTravel;
 
     public void addPlace(Place place){
         if(places == null){

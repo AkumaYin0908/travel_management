@@ -1,31 +1,32 @@
 package gov.coateam1.service.place;
 
 import gov.coateam1.model.place.Place;
+import gov.coateam1.payload.PlaceDTO;
 
 import java.util.List;
 
 public interface PlaceService {
 
-    Place findById(Long id);
+    PlaceDTO findById(Long id);
 
-    Place findByBarangayName(String barangayName);
+    PlaceDTO findByBarangayName(String barangayName);
 
-    Place findByMunicipalityName(String municipalityName);
+    PlaceDTO findByMunicipalityName(String municipalityName);
 
-    Place findByProvinceName(String provinceName);
+    PlaceDTO findByProvinceName(String provinceName);
 
-    Place findByBuildingName(String buildingName);
+    PlaceDTO findByBuildingName(String buildingName);
 
-    Place findByDefaultPlace(String defaultPlace);
+    PlaceDTO findByDefaultPlace(String defaultPlace);
 
-    Place findByCompletePlaceDetails(String buildingName, String barangay,
+    PlaceDTO findByCompletePlaceDetails(String buildingName, String barangay,
                                                                   String municipality, String province);
 
-    List<Place> findAll();
+    List<PlaceDTO> findAll();
 
-    Place add(Place place);
+    PlaceDTO add(PlaceDTO placeDTO);
 
-    Place update(Place place);
+    PlaceDTO update(PlaceDTO placeDTO, Long id);
 
     void delete(Long id);
 

@@ -4,7 +4,7 @@ import gov.coateam1.payload.EmployeeDTO;
 
 import java.util.List;
 
-public interface PassengerService {
+public interface EmployeeService {
 
     EmployeeDTO findByName(String name);
 

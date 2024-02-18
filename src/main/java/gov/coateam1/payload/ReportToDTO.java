@@ -14,15 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ReportToDTO {
 
-
     private Long id;
     private String name;
 
-    @JsonIgnore
-    private List<TravelOrderDTO> travelOrders;
 
-    public ReportToDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }
