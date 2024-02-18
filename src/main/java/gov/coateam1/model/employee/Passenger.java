@@ -25,8 +25,8 @@ public class Passenger extends Employee {
     @JoinTable(name="travel_passengers",
             joinColumns = @JoinColumn(name="employee_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
-    @JsonIgnore
-    private List<TripTicket> tripTickets=new ArrayList<>();
+
+    private List<TripTicket> tripTickets;
 
 
     public Passenger(Long id, String name, Position position) {

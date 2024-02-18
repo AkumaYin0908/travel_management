@@ -38,8 +38,8 @@ public abstract class Employee {
 
 
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonIgnore
-    private List<TravelOrder> travelOrders=new ArrayList<>();
+
+    private List<TravelOrder> travelOrders;
 
     public Employee(Long id, String name, Position position) {
         this.id = id;

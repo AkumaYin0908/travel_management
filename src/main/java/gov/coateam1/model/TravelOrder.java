@@ -29,15 +29,14 @@ public class TravelOrder {
     private Employee employee;
 
     @Column(name="date_issued")
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateIssued;
 
     @Column(name="date_departure")
-    @JsonFormat(pattern = "MM/dd/yyyy")
+
     private LocalDate dateDeparture;
 
     @Column(name="date_return")
-    @JsonFormat(pattern = "MM/dd/yyyy")
+
     private LocalDate dateReturn;
 
 
@@ -55,38 +54,15 @@ public class TravelOrder {
     @JoinTable(name="reportto_travelorder",
     joinColumns = @JoinColumn(name="travelorder_id"),
     inverseJoinColumns = @JoinColumn(name="reportto_id"))
-    private List<ReportTo> reportTos = new ArrayList<>();
+    private List<ReportTo> reportTos;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="travelorder_id"),
             inverseJoinColumns = @JoinColumn(name="place_id"))
-    private List<Place> places = new ArrayList<>();
+    private List<Place> places;
 
-
-
-
-    public TravelOrder(Long id, Employee employee, LocalDate dateIssued, LocalDate dateDeparture,
-                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle) {
-        this.id = id;
-        this.employee = employee;
-        this.dateIssued = dateIssued;
-        this.dateDeparture = dateDeparture;
-        this.dateReturn = dateReturn;
-        this.purpose = purpose;
-        this.vehicle = vehicle;
-    }
-
-    public TravelOrder(Employee employee, LocalDate dateIssued, LocalDate dateDeparture,
-                       LocalDate dateReturn, Purpose purpose, Vehicle vehicle) {
-        this.employee = employee;
-        this.dateIssued = dateIssued;
-        this.dateDeparture = dateDeparture;
-        this.dateReturn = dateReturn;
-        this.purpose = purpose;
-        this.vehicle = vehicle;
-    }
 
 
     public void addPlace(Place place){

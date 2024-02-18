@@ -1,5 +1,6 @@
 package gov.coateam1.payload;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.TravelOrder;
 import gov.coateam1.model.TripTicket;
@@ -10,24 +11,24 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDTO{
+public class PurposeDTO {
 
     private Long id;
-    private String name;
-    private String position;
+    private String purpose;
 
     @JsonIgnore
     private List<TravelOrderDTO> travelOrders;
+
     @JsonIgnore
     private List<TripTicketDTO> tripTickets;
 
-    public EmployeeDTO(Long id, String name, String position) {
+    public PurposeDTO(Long id, String purpose) {
         this.id = id;
-        this.name = name;
-        this.position = position;
+        this.purpose = purpose;
     }
+
+
 }

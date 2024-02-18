@@ -46,36 +46,14 @@ public class Place {
     @JoinTable(name="place_tripticket",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
-    private List<TripTicket> tripTickets = new ArrayList<>();
+    private List<TripTicket> tripTickets;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
-    private List<TravelOrder> travelOrders = new ArrayList<>();
+    private List<TravelOrder> travelOrders;
 
-    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province) {
-        this.id = id;
-        this.buildingName = buildingName;
-        this.barangay = barangay;
-        this.municipality = municipality;
-        this.province = province;
-    }
 
-    public Place(String buildingName, Barangay barangay, Municipality municipality, Province province) {
-        this.buildingName = buildingName;
-        this.barangay = barangay;
-        this.municipality = municipality;
-        this.province = province;
-    }
-
-    public Place(Long id, String defaultPlace) {
-        this.id = id;
-        this.defaultPlace = defaultPlace;
-    }
-
-    public Place(String defaultPlace) {
-        this.defaultPlace = defaultPlace;
-    }
 }

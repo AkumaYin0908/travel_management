@@ -49,14 +49,14 @@ public class TripTicket {
     @JoinTable(name="place_tripticket",
     joinColumns = @JoinColumn(name="tripticket_id"),
     inverseJoinColumns = @JoinColumn(name="place_id"))
-    private List<Place> places = new ArrayList<>();
+    private List<Place> places;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="travel_passengers",
             joinColumns = @JoinColumn(name="tripticket_id"),
             inverseJoinColumns = @JoinColumn(name="employee_id"))
-    private List<Employee> passengers = new ArrayList<>();
+    private List<Employee> passengers;
 
 
     @Column(name="time_office_departure")

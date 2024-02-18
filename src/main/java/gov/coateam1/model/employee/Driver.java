@@ -21,8 +21,8 @@ public class Driver  extends Employee{
 
 
     @OneToMany(mappedBy = "driver",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JsonIgnore
-    private List<TripTicket> tripTickets=new ArrayList<>();
+
+    private List<TripTicket> tripTickets;
 
     public Driver(Long id, String name, Position position) {
         super(id, name, position);

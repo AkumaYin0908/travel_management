@@ -29,7 +29,7 @@ public class ReportTo {
     @JoinTable(name="reportto_travelorder",
             joinColumns = @JoinColumn(name="reportto_id"),
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
-    private List<TravelOrder> travelOrders = new ArrayList<>();
+    private List<TravelOrder> travelOrders;
 
 
 

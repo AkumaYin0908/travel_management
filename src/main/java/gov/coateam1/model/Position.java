@@ -26,7 +26,7 @@ public class Position {
 
     @JsonIgnore
     @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<Employee> employees = new ArrayList<>();
+    private List<Employee> employees;
 
     public Position(Long id, String name) {
         this.id = id;

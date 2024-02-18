@@ -29,10 +29,10 @@ public class Purpose {
     private String purpose;
 
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TravelOrder> travelOrders = new ArrayList<>();
+    private List<TravelOrder> travelOrders;
 
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<TripTicket> tripTickets = new ArrayList<>();
+    private List<TripTicket> tripTickets;
 
 
     public Purpose(Long id, String purpose) {
