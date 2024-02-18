@@ -1,10 +1,6 @@
 package gov.coateam1.controller;
 
-import gov.coateam1.dto.EmployeeDTO;
-import gov.coateam1.model.Position;
-import gov.coateam1.model.employee.Driver;
-import gov.coateam1.model.employee.Passenger;
-import gov.coateam1.service.PositionService;
+import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.service.employee.PassengerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

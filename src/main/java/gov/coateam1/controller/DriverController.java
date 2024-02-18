@@ -1,8 +1,7 @@
 package gov.coateam1.controller;
 
 
-import gov.coateam1.dto.EmployeeDTO;
-import gov.coateam1.model.employee.Driver;
+import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.service.employee.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

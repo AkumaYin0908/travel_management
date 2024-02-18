@@ -1,6 +1,6 @@
 package gov.coateam1.controller;
 
-import gov.coateam1.dto.SignatoryDTO;
+import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.service.ApproverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

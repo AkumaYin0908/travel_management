@@ -1,4 +1,4 @@
-package gov.coateam1.dto;
+package gov.coateam1.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

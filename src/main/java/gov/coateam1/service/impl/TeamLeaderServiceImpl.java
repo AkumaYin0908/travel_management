@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl;
 
-import gov.coateam1.dto.SignatoryDTO;
+import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.SignatoryMapper;
 import gov.coateam1.model.signatory.TeamLeader;

@@ -1,6 +1,6 @@
 package gov.coateam1.mapper;
 
-import gov.coateam1.dto.EmployeeDTO;
+import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.service.PositionService;

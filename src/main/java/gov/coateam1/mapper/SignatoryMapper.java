@@ -1,6 +1,6 @@
 package gov.coateam1.mapper;
 
-import gov.coateam1.dto.SignatoryDTO;
+import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.model.signatory.SignatoryModel;
 import org.springframework.stereotype.Component;
 

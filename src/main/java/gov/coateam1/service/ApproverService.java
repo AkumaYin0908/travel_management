@@ -1,7 +1,7 @@
 package gov.coateam1.service;
 
 
-import gov.coateam1.dto.SignatoryDTO;
+import gov.coateam1.payload.SignatoryDTO;
 
 import java.util.List;
 

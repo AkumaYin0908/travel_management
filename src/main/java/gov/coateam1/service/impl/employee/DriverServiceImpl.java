@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl.employee;
 
-import gov.coateam1.dto.EmployeeDTO;
+import gov.coateam1.payload.EmployeeDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Driver;
