@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl;
 
-import gov.coateam1.exception.NoBeginningFuelBalanceSavedException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.FuelBalance;
 import gov.coateam1.repository.FuelBalanceRepository;
 import gov.coateam1.service.FuelBalanceService;
@@ -34,7 +34,7 @@ public class FuelBalanceServiceImpl implements FuelBalanceService {
     @Override
     public FuelBalance findFuelBalance() {
         return fuelBalanceRepository.findFuelBalance().orElseThrow(()->
-                new NoBeginningFuelBalanceSavedException("I assume that this is your first time using this app. Set beginning fuel balance at the settings first!"));
+                new ResourceNotFoundException("I assume that this is your first time using this app. Set beginning fuel balance at the settings first!"));
 
     }
 }

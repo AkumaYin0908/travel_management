@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl;
 
-import gov.coateam1.exception.NoStartDistanceSavedException;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.Distance;
 import gov.coateam1.repository.DistanceRepository;
 import gov.coateam1.service.DistanceService;
@@ -33,6 +33,6 @@ public class DistanceServiceImpl implements DistanceService {
     @Override
     public Distance findDistance() {
         return distanceRepository.findDistance().orElseThrow(()->
-                new NoStartDistanceSavedException("I assume that this is your first time using this app. Set start distance at the settings first!"));
+                new ResourceNotFoundException("I assume that this is your first time using this app. Set start distance at the settings first!"));
     }
 }
