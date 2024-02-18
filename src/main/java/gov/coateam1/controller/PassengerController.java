@@ -26,22 +26,15 @@ public class PassengerController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> savePassenger(@RequestBody EmployeeDTO employeeDTO){
-        try{
+    public ResponseEntity<EmployeeDTO> savePassenger(@RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(passengerService.add(employeeDTO),HttpStatus.CREATED);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id){
-       try{
+    public ResponseEntity<EmployeeDTO> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
+
            return new ResponseEntity<>(passengerService.update(employeeDTO,id), HttpStatus.OK);
-       }catch (Exception ex){
-           return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-       }
+
     }
 
     @DeleteMapping("/delete/{id}")
@@ -51,11 +44,7 @@ public class PassengerController {
     }
 
     @GetMapping("/find/{name}")
-    public ResponseEntity<?> getPassengerByName(@PathVariable("name")String name){
-        try{
+    public ResponseEntity<EmployeeDTO> getPassengerByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(passengerService.findByName(name),HttpStatus.FOUND);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
-        }
     }
 }

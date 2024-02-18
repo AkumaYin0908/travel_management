@@ -44,11 +44,7 @@ public class ApproverController {
     }
 
     @GetMapping("/find/{name}")
-    public ResponseEntity<?> findApproverByName(@PathVariable("name")String name){
-        try{
+    public ResponseEntity<SignatoryDTO> findApproverByName(@PathVariable("name")String name){
             return new ResponseEntity<>(approverService.findByName(name),HttpStatus.FOUND);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex,HttpStatus.NOT_FOUND);
-        }
     }
 }

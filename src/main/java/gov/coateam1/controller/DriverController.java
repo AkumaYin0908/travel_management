@@ -24,22 +24,13 @@ public class DriverController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveDriver(@RequestBody EmployeeDTO employeeDTO){
-        try{
+    public ResponseEntity<EmployeeDTO> saveDriver(@RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(driverService.add(employeeDTO),HttpStatus.CREATED);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id){
-        try{
+    public ResponseEntity<EmployeeDTO> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
             return new ResponseEntity<>(driverService.update(employeeDTO,id),HttpStatus.CREATED);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @DeleteMapping("/delete/{id}")
@@ -49,12 +40,8 @@ public class DriverController {
     }
 
     @GetMapping("/find/{name}")
-    public ResponseEntity<?> getDriverByName(@PathVariable("name")String name){
-        try{
+    public ResponseEntity<EmployeeDTO> getDriverByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(driverService.findByName(name),HttpStatus.FOUND);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
-        }
     }
 
 

@@ -47,12 +47,8 @@ public class TeamLeaderController {
     }
 
     @GetMapping("find/{name}")
-    public ResponseEntity<?> findTeamLeaderByName(@PathVariable("name")String name){
-        try{
+    public ResponseEntity<SignatoryDTO> findTeamLeaderByName(@PathVariable("name")String name){
             return new ResponseEntity<>(teamLeaderService.findByName(name),HttpStatus.FOUND);
-        }catch (Exception ex){
-            return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
-        }
     }
 
 

@@ -15,13 +15,13 @@ public class DistanceController {
 
     private final DistanceService distanceService;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Distance> getDistance(){
         return new ResponseEntity<>(distanceService.findDistance(), HttpStatus.FOUND);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Distance> addDistance(Distance distance){
+    public ResponseEntity<Distance> addDistance(@RequestBody Distance distance){
         return new ResponseEntity<>(distanceService.add(distance),HttpStatus.CREATED);
     }
 
