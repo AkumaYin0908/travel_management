@@ -47,12 +47,36 @@ public class TravelOrderMapper {
               travelOrderDTO.getDateReturn(),purpose,vehicle, reportTos,places,travelOrderDTO.getLastTravel());
    }
 
-//   public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
-//
-//      String employeeName = travelOrder.getEmployee().getName();
-//
-//      return new TravelOrderDTO(travelOrder.getId(),travelOrder)
-//   }
+   public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
+
+      String employeeName = travelOrder.getEmployee().getName();
+      String purpose = travelOrder.getPurpose().getPurpose();
+      String plateNo = travelOrder.getVehicle().getPlateNo();
+      List<PlaceDTO> placeDTOs = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).toList();
+
+      return new TravelOrderDTO(travelOrder.getId(),employeeName,travelOrder.getDateIssued(),travelOrder.getDateDeparture(),
+              travelOrder.getDateReturn(),purpose,plateNo,travelOrder.getLastTravel(),travelOrder.getReportTos(),placeDTOs);
+   }
+
+   public void mapToModel(TravelOrderDTO travelOrderDTO, TravelOrder travelOrder) throws Exception {
+      EmployeeDTO employeeDTO = employeeService.findByName(travelOrderDTO.getEmployeeName());
+      Employee employee = employeeMapper.maptoModel(employeeDTO);
+      Purpose purpose = purposeService.findByPurpose(travelOrderDTO.getPurpose());
+      List<Place> places  = travelOrderDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
+      List<ReportTo> reportTos = travelOrderDTO.getReportTos();
+      Vehicle vehicle = vehicleMapper.mapToModel(vehicleService.findByPlateNo(travelOrderDTO.getPlateNo()));
+
+      travelOrder.setEmployee(employee);
+      travelOrder.setDateIssued(travelOrderDTO.getDateIssued());
+      travelOrder.setDateDeparture(travelOrderDTO.getDateDeparture());
+      travelOrder.setDateReturn(travelOrderDTO.getDateReturn());
+      travelOrder.setPurpose(purpose);
+      travelOrder.setVehicle(vehicle);
+      travelOrder.setReportTos(reportTos);
+      travelOrder.setPlaces(places);
+      travelOrder.setLastTravel(travelOrderDTO.getLastTravel());
+
+   }
 
 
 }
