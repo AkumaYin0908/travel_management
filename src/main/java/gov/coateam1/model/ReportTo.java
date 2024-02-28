@@ -36,4 +36,9 @@ public class ReportTo {
     public ReportTo(String name) {
         this.name = name;
     }
+
+    public ReportTo(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

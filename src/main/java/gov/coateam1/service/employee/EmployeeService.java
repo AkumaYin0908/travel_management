@@ -1,6 +1,6 @@
 package gov.coateam1.service.employee;
 
-import gov.coateam1.payload.EmployeeDTO;
+import gov.coateam1.payload.employee.EmployeeDTO;
 
 import java.util.List;
 

@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
 @AllArgsConstructor
-@NoArgsConstructor
-public class ReportToDTO {
+public class ReportToDTO extends BasicDTO {
 
-    private Long id;
-    private String name;
-
-
+    public ReportToDTO(Long id, String name) {
+        super(id, name);
+    }
 }

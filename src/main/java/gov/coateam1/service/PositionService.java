@@ -1,18 +1,23 @@
 package gov.coateam1.service;
 
-import gov.coateam1.model.Position;
+
+
+
+
+
+import gov.coateam1.payload.PositionDTO;
 
 import java.util.List;
 
 public interface PositionService {
 
-    Position findByName(String name);
+    PositionDTO findByName(String name);
 
-    List<Position> findAll();
+    List<PositionDTO> findAll();
 
-    Position  add(Position position);
+    PositionDTO  add(PositionDTO positionDTO);
 
-    Position update(Position position);
+    PositionDTO update(PositionDTO positionDTO, Long id);
 
     void delete(Long id);
 

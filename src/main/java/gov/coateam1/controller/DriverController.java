@@ -2,9 +2,9 @@ package gov.coateam1.controller;
 
 
 import gov.coateam1.payload.APIResponse;
-import gov.coateam1.payload.EmployeeDTO;
+import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.service.employee.EmployeeService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+
 @RequestMapping("/drivers")
 public class DriverController {
 
+
     private final EmployeeService employeeService;
+
+    public DriverController(@Qualifier("driverServiceImpl")EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<EmployeeDTO>> getAllDrivers(){
@@ -43,6 +48,8 @@ public class DriverController {
     public ResponseEntity<EmployeeDTO> getDriverByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(employeeService.findByName(name),HttpStatus.FOUND);
     }
+
+
 
 
 

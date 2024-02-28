@@ -1,8 +1,9 @@
 package gov.coateam1.payload;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.ReportTo;
+import gov.coateam1.payload.employee.EmployeeDTO;
+import gov.coateam1.payload.place.PlaceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,10 @@ import java.util.List;
 public class TravelOrderDTO {
 
     private Long id;
-    private String employeeName;
 
-    @JsonFormat(pattern = "MMMM/dd/yyyy")
+    private EmployeeDTO employeeDTO;
+
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateIssued;
     @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateDeparture;
@@ -27,17 +29,16 @@ public class TravelOrderDTO {
     @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dateReturn;
 
-    private String purpose;
+    private PurposeDTO purposeDTO;
 
-    private String plateNo;
+    private VehicleDTO vehicleDTO;
+
+    private List<ReportToDTO> reportTos;
+
+    private List<PlaceDTO> placeDTOs;
 
     @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate lastTravel;
-
-    private List<ReportTo> reportTos;
-
-
-    private List<PlaceDTO> placeDTOs;
 
 
 
@@ -50,12 +51,12 @@ public class TravelOrderDTO {
         placeDTOs.add(placeDTO);
     }
 
-    public void addReportTos(ReportTo reportTo){
+    public void addReportTos(ReportToDTO reportToDTO){
         if(reportTos == null){
             reportTos = new ArrayList<>();
         }
 
-        reportTos.add(reportTo);
+        reportTos.add(reportToDTO);
     }
 
 

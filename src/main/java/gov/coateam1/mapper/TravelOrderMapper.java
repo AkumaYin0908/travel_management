@@ -8,8 +8,11 @@ import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.place.Place;
-import gov.coateam1.payload.EmployeeDTO;
-import gov.coateam1.payload.PlaceDTO;
+import gov.coateam1.payload.PurposeDTO;
+import gov.coateam1.payload.ReportToDTO;
+import gov.coateam1.payload.VehicleDTO;
+import gov.coateam1.payload.employee.EmployeeDTO;
+import gov.coateam1.payload.place.PlaceDTO;
 import gov.coateam1.payload.TravelOrderDTO;
 import gov.coateam1.service.PurposeService;
 import gov.coateam1.service.VehicleService;
@@ -23,23 +26,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TravelOrderMapper {
 
-   private final EmployeeService employeeService;
-   private final VehicleService vehicleService;
-   private final PurposeService purposeService;
-   private EmployeeMapper<? extends Employee> employeeMapper;
-   private PlaceMapper placeMapper;
-   private VehicleMapper vehicleMapper;
+   private final PlaceMapper placeMapper;
+   private final VehicleMapper vehicleMapper;
+   private final EmployeeMapper employeeMapper;
+   private final ReportToMapper reportToMapper;
+   private final PurposeMapper purposeMapper;
 
 
    public TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) throws Exception {
-      EmployeeDTO employeeDTO = employeeService.findByName(travelOrderDTO.getEmployeeName());
-      Employee employee = employeeMapper.maptoModel(employeeDTO);
-      Purpose purpose = purposeService.findByPurpose(travelOrderDTO.getPurpose());
+      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployeeDTO(), Driver.class);
+      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurposeDTO());
       List<Place> places  = travelOrderDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
-      List<ReportTo> reportTos = travelOrderDTO.getReportTos();
-      Vehicle vehicle = vehicleMapper.mapToModel(vehicleService.findByPlateNo(travelOrderDTO.getPlateNo()));
-
-
+      List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
+      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicleDTO());
 
 
       return new TravelOrder(travelOrderDTO.getId(),employee,
@@ -48,23 +47,26 @@ public class TravelOrderMapper {
    }
 
    public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
+      EmployeeDTO employeeDTO=employeeMapper.mapToDTO(travelOrder.getEmployee());
+      PurposeDTO purposeDTO = purposeMapper.mapToDTO(travelOrder.getPurpose());
+      List<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).toList();
+      List<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).toList();
+      VehicleDTO vehicleDTO =vehicleMapper.mapToDTO(travelOrder.getVehicle());
 
-      String employeeName = travelOrder.getEmployee().getName();
-      String purpose = travelOrder.getPurpose().getPurpose();
-      String plateNo = travelOrder.getVehicle().getPlateNo();
-      List<PlaceDTO> placeDTOs = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).toList();
+      return new TravelOrderDTO(travelOrder.getId(),employeeDTO,travelOrder.getDateIssued(),
+              travelOrder.getDateDeparture(),travelOrder.getDateReturn(),purposeDTO,vehicleDTO,reportToDTOS,placeDTOS,travelOrder.getLastTravel());
 
-      return new TravelOrderDTO(travelOrder.getId(),employeeName,travelOrder.getDateIssued(),travelOrder.getDateDeparture(),
-              travelOrder.getDateReturn(),purpose,plateNo,travelOrder.getLastTravel(),travelOrder.getReportTos(),placeDTOs);
+
+
    }
 
    public void mapToModel(TravelOrderDTO travelOrderDTO, TravelOrder travelOrder) throws Exception {
-      EmployeeDTO employeeDTO = employeeService.findByName(travelOrderDTO.getEmployeeName());
-      Employee employee = employeeMapper.maptoModel(employeeDTO);
-      Purpose purpose = purposeService.findByPurpose(travelOrderDTO.getPurpose());
+
+      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployeeDTO(),Driver.class);
+      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurposeDTO());
       List<Place> places  = travelOrderDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
-      List<ReportTo> reportTos = travelOrderDTO.getReportTos();
-      Vehicle vehicle = vehicleMapper.mapToModel(vehicleService.findByPlateNo(travelOrderDTO.getPlateNo()));
+      List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
+      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicleDTO());
 
       travelOrder.setEmployee(employee);
       travelOrder.setDateIssued(travelOrderDTO.getDateIssued());

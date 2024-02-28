@@ -17,14 +17,13 @@ import java.util.List;
 public class Position {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
 
     @Column(name="name")
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Employee> employees;
 
@@ -35,5 +34,13 @@ public class Position {
 
     public Position(String name) {
         this.name = name;
+    }
+
+    public void add(Employee employee){
+        if(employees == null){
+            employees=new ArrayList<>();
+        }
+
+        employees.add(employee);
     }
 }

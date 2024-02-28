@@ -50,7 +50,7 @@ public class TeamLeaderServiceImpl implements TeamLeaderService {
     @Override
     public SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception {
         Optional<TeamLeader> teamLeaderOptional = teamLeaderRepository.findByActiveStatus(true);
-        TeamLeader teamLeader = signatoryMapper.mapToModel(signatoryDTO,TeamLeader.class);
+        TeamLeader teamLeader = signatoryMapper.mapToModel(signatoryDTO, TeamLeader.class);
         teamLeader.setActive(teamLeaderOptional.isEmpty());
         TeamLeader dbTeamLeader = teamLeaderRepository.save(teamLeader);
         signatoryDTO.setId(dbTeamLeader.getId());

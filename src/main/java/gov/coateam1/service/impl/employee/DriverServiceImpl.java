@@ -1,10 +1,14 @@
 package gov.coateam1.service.impl.employee;
 
-import gov.coateam1.payload.EmployeeDTO;
+import gov.coateam1.mapper.PositionMapper;
+import gov.coateam1.model.Position;
+import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Driver;
+import gov.coateam1.payload.PositionDTO;
 import gov.coateam1.repository.employee.DriverRepository;
+import gov.coateam1.service.PositionService;
 import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +22,9 @@ import java.util.List;
 public class DriverServiceImpl implements EmployeeService {
 
     private final DriverRepository driverRepository;
-    private final EmployeeMapper<Driver> employeeMapper;
+    private final EmployeeMapper employeeMapper;
+    private final PositionService positionService;
+    private final PositionMapper positionMapper;
 
     @Override
     public EmployeeDTO findByName(String name) {
@@ -29,7 +35,11 @@ public class DriverServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception {
-        Driver driver = employeeMapper.maptoModel(employeeDTO);
+        PositionDTO positionDTO=positionService.findByName(employeeDTO.getPosition());
+        Position position = positionMapper.mapToModel(positionDTO);
+        Driver driver = employeeMapper.maptoModel(employeeDTO,Driver.class);
+        driver.setPosition(position);
+
         Driver dbDriver = driverRepository.save(driver);
         employeeDTO.setId(dbDriver.getId());
         return employeeDTO;

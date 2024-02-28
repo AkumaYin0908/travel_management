@@ -1,26 +1,17 @@
 package gov.coateam1.payload;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import gov.coateam1.model.employee.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
 @NoArgsConstructor
-@AllArgsConstructor
-public class PositionDTO {
+public class PositionDTO extends BasicDTO{
 
-    private int id;
-    private String name;
-
-    @JsonIgnore
-    private List<EmployeeDTO> employees;
-
-    public PositionDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public PositionDTO(Long id, String name) {
+        super(id, name);
     }
 }

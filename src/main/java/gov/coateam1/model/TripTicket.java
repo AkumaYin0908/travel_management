@@ -60,19 +60,15 @@ public class TripTicket {
 
 
     @Column(name="time_office_departure")
-    @JsonFormat(pattern = "h:mm a")
     private LocalTime timeOfficeDeparture;
 
     @Column(name="time_place_arrival")
-    @JsonFormat(pattern = "h:mm a")
     private LocalTime timePlaceArrival;
 
     @Column(name="time_place_departure")
-    @JsonFormat(pattern = "h:mm a")
     private LocalTime timePlaceDeparture;
 
     @Column(name="time_office_arrival")
-    @JsonFormat(pattern = "h:mm a")
     private LocalTime timeOfficeArrival;
 
     @Column(name="fuel_balance")

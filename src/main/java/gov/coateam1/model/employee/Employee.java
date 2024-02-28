@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.Position;
 import gov.coateam1.model.TravelOrder;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ public abstract class Employee {
 
 
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-
     private List<TravelOrder> travelOrders;
 
     public Employee(Long id, String name, Position position) {
@@ -51,4 +48,7 @@ public abstract class Employee {
         this.name = name;
         this.position = position;
     }
+
+
+
 }

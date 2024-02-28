@@ -22,7 +22,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private final TravelOrderRepository travelOrderRepository;
     private final TravelOrderMapper travelOrderMapper;
 
-    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 
     @Override
     public List<TravelOrderDTO> findAll() {
@@ -51,6 +51,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     @Override
     public TravelOrderDTO add(TravelOrderDTO travelOrderDTO) throws Exception {
+
         TravelOrder travelOrder = travelOrderMapper.mapToModel(travelOrderDTO);
         TravelOrder dbTravelOrder = travelOrderRepository.save(travelOrder);
         travelOrderDTO.setId(dbTravelOrder.getId());

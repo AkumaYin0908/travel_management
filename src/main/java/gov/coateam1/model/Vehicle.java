@@ -20,7 +20,7 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="plate_no")
+    @Column(name="id")
     private Long id;
 
     @Column(name="brand")

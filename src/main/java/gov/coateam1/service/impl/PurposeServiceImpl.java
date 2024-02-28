@@ -1,5 +1,7 @@
 package gov.coateam1.service.impl;
 
+import gov.coateam1.exception.ResourceNotFoundException;
+import gov.coateam1.mapper.PurposeMapper;
 import gov.coateam1.model.Purpose;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.repository.PurposeRepository;
@@ -15,36 +17,39 @@ import java.util.List;
 public class PurposeServiceImpl implements PurposeService {
 
     private final PurposeRepository purposeRepository;
+    private final PurposeMapper purposeMapper;
 
-//    private Purpose mapToModel(PurposeDTO purposeDTO){
-//        return new Purpose(purposeDTO.getId(),purposeDTO.getPurpose());
-//    }
-//
-//    private PurposeDTO mapToDTO(Purpose purpose){
-//        return new PurposeDTO(purpose.getId(),purpose.getPurpose());
-//    }
+
 
     @Override
-    public Purpose findByPurpose(String purposeDescription) {
-        return purposeRepository.findByPurpose(purposeDescription).orElse(new Purpose(purposeDescription));
+    public PurposeDTO findByPurpose(String purposeDescription) {
+        Purpose purpose = purposeRepository.findByPurpose(purposeDescription).orElse(new Purpose(purposeDescription));
+
+        return purposeMapper.mapToDTO(purpose);
 
     }
 
     @Override
-    public List<Purpose> findAll() {
-        return purposeRepository.findAll();
+    public List<PurposeDTO> findAll() {
+        return purposeRepository.findAll().stream().map(purposeMapper::mapToDTO).toList();
     }
 
     @Override
-    public Purpose save(Purpose purpose) {
-
-       return  purposeRepository.save(purpose);
+    public PurposeDTO add(PurposeDTO purposeDTO) {
+        Purpose purpose = purposeMapper.mapToModel(purposeDTO);
+        Purpose dbPurpose = purposeRepository.save(purpose);
+        purposeDTO.setId(dbPurpose.getId());
+        return purposeDTO;
 
     }
 
     @Override
-    public Purpose update(Purpose purpose) {
-        return purposeRepository.save(purpose);
+    public PurposeDTO update(PurposeDTO purposeDTO, Long id) {
+        Purpose purpose=purposeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Purpose","id",id));
+        purposeMapper.mapToModel(purposeDTO,purpose);
+        purposeRepository.save(purpose);
+        purposeDTO.setId(id);
+        return  purposeDTO;
     }
 
     @Override

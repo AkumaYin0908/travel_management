@@ -3,7 +3,7 @@ package gov.coateam1.service.impl.place;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.PlaceMapper;
 import gov.coateam1.model.place.Place;
-import gov.coateam1.payload.PlaceDTO;
+import gov.coateam1.payload.place.PlaceDTO;
 import gov.coateam1.repository.place.PlaceRepository;
 import gov.coateam1.service.place.PlaceService;
 import jakarta.transaction.Transactional;

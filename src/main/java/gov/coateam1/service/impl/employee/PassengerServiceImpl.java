@@ -1,6 +1,6 @@
 package gov.coateam1.service.impl.employee;
 
-import gov.coateam1.payload.EmployeeDTO;
+import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.EmployeeMapper;
 import gov.coateam1.model.employee.Passenger;
@@ -17,7 +17,7 @@ import java.util.List;
 public class PassengerServiceImpl implements EmployeeService {
 
     private final PassengerRepository passengerRepository;
-    private  final EmployeeMapper<Passenger> employeeMapper;
+    private  final EmployeeMapper employeeMapper;
     @Override
     public EmployeeDTO findByName(String name) {
         Passenger passenger = passengerRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("Passenger","name",name));
@@ -28,7 +28,7 @@ public class PassengerServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception {
 
-        Passenger passenger = employeeMapper.maptoModel(employeeDTO);
+        Passenger passenger = employeeMapper.maptoModel(employeeDTO, Passenger.class);
         Passenger dbPassenger = passengerRepository.save(passenger);
         employeeDTO.setId(dbPassenger.getId());
 

@@ -1,7 +1,6 @@
 package gov.coateam1.service.place;
 
-import gov.coateam1.model.place.Place;
-import gov.coateam1.payload.PlaceDTO;
+import gov.coateam1.payload.place.PlaceDTO;
 
 import java.util.List;
 

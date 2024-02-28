@@ -38,7 +38,7 @@ public class ApproverServiceImpl implements ApproverService {
     public SignatoryDTO add(SignatoryDTO signatoryDTO) throws Exception {
 
         Optional<Approver> approverOptional = approverRepository.findByActiveStatus(true);
-        Approver approver = signatoryMapper.mapToModel(signatoryDTO,Approver.class);
+        Approver approver = signatoryMapper.mapToModel(signatoryDTO, Approver.class);
         approver.setActive(approverOptional.isEmpty());
         Approver dbApprover = approverRepository.save(approver);
         signatoryDTO.setId(dbApprover.getId());
