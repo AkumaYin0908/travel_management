@@ -33,12 +33,4 @@ public class EmployeeMapper {
     public <T extends Employee> void maptoModel(EmployeeDTO employeeDTO, T employee) throws Exception{
         employee.setName(employeeDTO.getName());
     }
-
-
-
-
-
-
-
-
 }
