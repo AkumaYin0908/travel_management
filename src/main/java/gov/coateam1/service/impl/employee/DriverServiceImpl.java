@@ -12,6 +12,7 @@ import gov.coateam1.service.PositionService;
 import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,13 +36,14 @@ public class DriverServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception {
-        PositionDTO positionDTO=positionService.findByName(employeeDTO.getPosition());
+
+        PositionDTO positionDTO =  positionService.add(positionService.findByName(employeeDTO.getPosition().getName()));//if, position exist in db, merge, otherwise, persist
         Position position = positionMapper.mapToModel(positionDTO);
         Driver driver = employeeMapper.maptoModel(employeeDTO,Driver.class);
         driver.setPosition(position);
-
         Driver dbDriver = driverRepository.save(driver);
         employeeDTO.setId(dbDriver.getId());
+        employeeDTO.setPosition(positionDTO);
         return employeeDTO;
     }
 
