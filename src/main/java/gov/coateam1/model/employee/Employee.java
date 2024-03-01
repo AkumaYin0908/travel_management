@@ -30,7 +30,7 @@ public abstract class Employee {
     @Column(name="name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name="position")
     private Position position;
 
