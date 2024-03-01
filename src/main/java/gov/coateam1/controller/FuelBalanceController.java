@@ -21,12 +21,12 @@ public class FuelBalanceController {
         return new ResponseEntity<>(fuelBalanceService.findFuelBalance(), HttpStatus.FOUND);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<FuelBalance> addFuelBalance(@RequestBody FuelBalance fuelBalance){
         return new ResponseEntity<>(fuelBalanceService.add(fuelBalance),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<FuelBalance> updateFuelBalance(@RequestParam("fuelBalance")BigDecimal fuelBalance){
         return new ResponseEntity<>(fuelBalanceService.update(fuelBalance), HttpStatus.OK);
     }

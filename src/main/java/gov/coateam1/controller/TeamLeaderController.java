@@ -23,31 +23,31 @@ public class TeamLeaderController {
         return new ResponseEntity<>(teamLeaderService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<SignatoryDTO> saveTeamLeader(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
         return new ResponseEntity<>(teamLeaderService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SignatoryDTO> updateTeamLeader(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
         return new ResponseEntity<>(teamLeaderService.update(signatoryDTO,id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse> deleteTeamLeader(@PathVariable("id")Long id){
         teamLeaderService.delete(id);
         return new ResponseEntity<>(new APIResponse("Team Leader has been successfully deleted!",
                 true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @PutMapping("update/status/{id}")
+    @PutMapping("/status/{id}")
     public ResponseEntity<SignatoryDTO> updateTeamLeaderStatus(@PathVariable Long id, @RequestParam(value = "active") boolean active){
 
         return new ResponseEntity<>(teamLeaderService.updateByActiveStatus(active,id),HttpStatus.OK);
     }
 
-    @GetMapping("find/{name}")
+    @GetMapping("{name}")
     public ResponseEntity<SignatoryDTO> findTeamLeaderByName(@PathVariable("name")String name){
             return new ResponseEntity<>(teamLeaderService.findByName(name),HttpStatus.FOUND);
     }

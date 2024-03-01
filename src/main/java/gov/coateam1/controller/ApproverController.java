@@ -21,31 +21,31 @@ public class ApproverController {
         return new ResponseEntity<>(approverService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<SignatoryDTO> saveApprover(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
         return new ResponseEntity<>(approverService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SignatoryDTO> updateApprover(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
         return new ResponseEntity<>(approverService.update(signatoryDTO,id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse> deleteApprover(@PathVariable("id")Long id){
         approverService.delete(id);
         return new ResponseEntity<>(new APIResponse("Approver has been successfully deleted!",
                 true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @PutMapping("/update/status/{id}")
+    @PutMapping("/status/{id}")
     public ResponseEntity<SignatoryDTO> updateApproverStatus(@PathVariable("id") Long id, @RequestParam("active") boolean active){
 
         return new ResponseEntity<>( approverService.updateByActiveStatus(active,id),HttpStatus.OK);
     }
 
-    @GetMapping("/find/{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<SignatoryDTO> findApproverByName(@PathVariable("name")String name){
             return new ResponseEntity<>(approverService.findByName(name),HttpStatus.FOUND);
     }

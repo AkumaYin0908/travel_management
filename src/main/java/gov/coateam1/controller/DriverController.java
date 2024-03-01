@@ -28,23 +28,23 @@ public class DriverController {
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<EmployeeDTO> saveDriver(@RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
             return new ResponseEntity<>(employeeService.update(employeeDTO,id),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse> deleteDriver(@PathVariable("id")Long id){
         employeeService.delete(id);
         return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @GetMapping("/find/{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<EmployeeDTO> getDriverByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(employeeService.findByName(name),HttpStatus.FOUND);
     }

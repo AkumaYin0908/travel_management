@@ -26,25 +26,25 @@ public class PassengerController {
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<EmployeeDTO> savePassenger(@RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
 
            return new ResponseEntity<>(employeeService.update(employeeDTO,id), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<APIResponse> deletePassenger(@PathVariable("id")Long id){
         employeeService.delete(id);
         return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @GetMapping("/find/{name}")
+    @GetMapping("/{name}")
     public ResponseEntity<EmployeeDTO> getPassengerByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(employeeService.findByName(name),HttpStatus.FOUND);
     }

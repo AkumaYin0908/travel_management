@@ -20,12 +20,12 @@ public class DistanceController {
         return new ResponseEntity<>(distanceService.findDistance(), HttpStatus.FOUND);
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Distance> addDistance(@RequestBody Distance distance){
         return new ResponseEntity<>(distanceService.add(distance),HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Distance> updateDistance(@RequestParam("startDistance")Long startDistance){
         return new ResponseEntity<>(distanceService.update(startDistance),HttpStatus.OK);
     }
