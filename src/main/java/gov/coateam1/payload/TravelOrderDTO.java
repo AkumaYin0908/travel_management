@@ -21,13 +21,12 @@ public class TravelOrderDTO {
 
     private EmployeeDTO employeeDTO;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate dateIssued;
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate dateDeparture;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate dateReturn;
+    private String dateIssued;
+
+    private String dateDeparture;
+
+    private String dateReturn;
 
     private PurposeDTO purposeDTO;
 
@@ -37,8 +36,8 @@ public class TravelOrderDTO {
 
     private List<PlaceDTO> placeDTOs;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate lastTravel;
+
+    private String lastTravel;
 
 
 

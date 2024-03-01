@@ -23,27 +23,21 @@ public class TripTicketDTO {
 
     private EmployeeDTO employeeDTO;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate dateDeparture;
+    private String dateDeparture;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
-    private LocalDate dateReturn;
+    private String dateReturn;
 
     private List<PlaceDTO> placeDTOs;
 
     private List<EmployeeDTO> passengers;
 
-    @JsonFormat(pattern = "h:mm a")
-    private LocalTime timeOfficeDeparture;
+    private String timeOfficeDeparture;
 
-    @JsonFormat(pattern = "h:mm a")
-    private LocalTime timePlaceArrival;
+    private String timePlaceArrival;
 
-    @JsonFormat(pattern = "h:mm a")
-    private LocalTime timePlaceDeparture;
+    private String timePlaceDeparture;
 
-    @JsonFormat(pattern = "h:mm a")
-    private LocalTime timeOfficeArrival;
+    private String timeOfficeArrival;
 
     private BigDecimal fuelBalance;
 
