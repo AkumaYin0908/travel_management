@@ -19,7 +19,7 @@ public class EmployeeMapper {
 
     public EmployeeDTO mapToDTO(Employee employee){
         PositionDTO positionDTO = positionMapper.mapToDTO(employee.getPosition());
-        return new EmployeeDTO(employee.getId(), employee.getName(),employee.getPosition().getName());
+        return new EmployeeDTO(employee.getId(), employee.getName(),positionDTO);
     }
 
     public  <T extends Employee> T maptoModel(EmployeeDTO employeeDTO,Class<T> clazz) throws Exception{

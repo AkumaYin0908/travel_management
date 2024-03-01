@@ -20,6 +20,8 @@ import gov.coateam1.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Component
@@ -32,7 +34,7 @@ public class TravelOrderMapper {
    private final ReportToMapper reportToMapper;
    private final PurposeMapper purposeMapper;
 
-
+   private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
    public TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) throws Exception {
       Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployeeDTO(), Driver.class);
       Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurposeDTO());
@@ -42,8 +44,8 @@ public class TravelOrderMapper {
 
 
       return new TravelOrder(travelOrderDTO.getId(),employee,
-              travelOrderDTO.getDateIssued(),travelOrderDTO.getDateDeparture(),
-              travelOrderDTO.getDateReturn(),purpose,vehicle, reportTos,places,travelOrderDTO.getLastTravel());
+              LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter),LocalDate.parse(travelOrderDTO.getDateDeparture(),dateTimeFormatter),
+              LocalDate.parse(travelOrderDTO.getDateReturn(),dateTimeFormatter),purpose,vehicle, reportTos,places,LocalDate.parse(travelOrderDTO.getLastTravel(),dateTimeFormatter));
    }
 
    public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
@@ -53,8 +55,8 @@ public class TravelOrderMapper {
       List<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).toList();
       VehicleDTO vehicleDTO =vehicleMapper.mapToDTO(travelOrder.getVehicle());
 
-      return new TravelOrderDTO(travelOrder.getId(),employeeDTO,travelOrder.getDateIssued(),
-              travelOrder.getDateDeparture(),travelOrder.getDateReturn(),purposeDTO,vehicleDTO,reportToDTOS,placeDTOS,travelOrder.getLastTravel());
+      return new TravelOrderDTO(travelOrder.getId(),employeeDTO,dateTimeFormatter.format(travelOrder.getDateIssued()),
+              dateTimeFormatter.format(travelOrder.getDateDeparture()),dateTimeFormatter.format(travelOrder.getDateReturn()),purposeDTO,vehicleDTO,reportToDTOS,placeDTOS,dateTimeFormatter.format(travelOrder.getLastTravel()));
 
 
 
@@ -69,14 +71,14 @@ public class TravelOrderMapper {
       Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicleDTO());
 
       travelOrder.setEmployee(employee);
-      travelOrder.setDateIssued(travelOrderDTO.getDateIssued());
-      travelOrder.setDateDeparture(travelOrderDTO.getDateDeparture());
-      travelOrder.setDateReturn(travelOrderDTO.getDateReturn());
+      travelOrder.setDateIssued(LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter));
+      travelOrder.setDateDeparture(LocalDate.parse(travelOrderDTO.getDateDeparture(),dateTimeFormatter));
+      travelOrder.setDateReturn(LocalDate.parse(travelOrderDTO.getDateReturn(),dateTimeFormatter));
       travelOrder.setPurpose(purpose);
       travelOrder.setVehicle(vehicle);
       travelOrder.setReportTos(reportTos);
       travelOrder.setPlaces(places);
-      travelOrder.setLastTravel(travelOrderDTO.getLastTravel());
+      travelOrder.setLastTravel(LocalDate.parse(travelOrderDTO.getLastTravel(),dateTimeFormatter));
 
    }
 
