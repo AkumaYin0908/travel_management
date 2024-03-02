@@ -19,16 +19,6 @@ public class PurposeDTO {
     private Long id;
     private String purpose;
 
-    @JsonIgnore
-    private List<TravelOrderDTO> travelOrders;
-
-    @JsonIgnore
-    private List<TripTicketDTO> tripTickets;
-
-    public PurposeDTO(Long id, String purpose) {
-        this.id = id;
-        this.purpose = purpose;
-    }
 
     public PurposeDTO(String purpose) {
         this.purpose = purpose;

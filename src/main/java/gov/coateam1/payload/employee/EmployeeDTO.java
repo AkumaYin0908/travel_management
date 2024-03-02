@@ -23,15 +23,4 @@ public class EmployeeDTO{
     private String name;
     private PositionDTO position;
 
-    @JsonIgnore
-    private List<TravelOrderDTO> travelOrders;
-    @JsonIgnore
-    private List<TripTicketDTO> tripTickets;
-
-
-    public EmployeeDTO(Long id, String name, PositionDTO position) {
-        this.id = id;
-        this.name = name;
-        this.position = position;
-    }
 }
