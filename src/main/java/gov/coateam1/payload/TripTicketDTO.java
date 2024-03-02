@@ -21,13 +21,13 @@ public class TripTicketDTO {
 
     private Long id;
 
-    private EmployeeDTO employeeDTO;
+    private EmployeeDTO employee;
 
     private String dateDeparture;
 
     private String dateReturn;
 
-    private List<PlaceDTO> placeDTOs;
+    private List<PlaceDTO> places;
 
     private List<EmployeeDTO> passengers;
 
@@ -61,9 +61,9 @@ public class TripTicketDTO {
 
     private String remarks;
 
-    private PurposeDTO purposeDTO;
+    private PurposeDTO purposes;
 
-    private VehicleDTO vehicleDTO;
+    private VehicleDTO vehicle;
 
 
 
