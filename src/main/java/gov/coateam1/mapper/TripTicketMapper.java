@@ -27,8 +27,8 @@ public class TripTicketMapper {
 
 
     public TripTicket mapToModel(TripTicketDTO tripTicketDTO) throws Exception {
-        Driver driver = employeeMapper.maptoModel(tripTicketDTO.getEmployeeDTO(), Driver.class);
-        List<Place> places = tripTicketDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
+        Driver driver = employeeMapper.maptoModel(tripTicketDTO.getEmployee(), Driver.class);
+        List<Place> places = tripTicketDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
         List<Passenger> passengers = tripTicketDTO.getPassengers().stream().map(throwingFunction(emp->employeeMapper.maptoModel(emp,Passenger.class))).toList();
 
 

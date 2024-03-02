@@ -36,11 +36,11 @@ public class TravelOrderMapper {
 
    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
    public TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) throws Exception {
-      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployeeDTO(), Driver.class);
-      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurposeDTO());
-      List<Place> places  = travelOrderDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
+      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployee(), Driver.class);
+      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
+      List<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
       List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
-      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicleDTO());
+      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
 
 
       return new TravelOrder(travelOrderDTO.getId(),employee,
@@ -64,11 +64,11 @@ public class TravelOrderMapper {
 
    public void mapToModel(TravelOrderDTO travelOrderDTO, TravelOrder travelOrder) throws Exception {
 
-      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployeeDTO(),Driver.class);
-      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurposeDTO());
-      List<Place> places  = travelOrderDTO.getPlaceDTOs().stream().map(placeMapper::mapToModel).toList();
+      Employee employee = employeeMapper.maptoModel(travelOrderDTO.getEmployee(),Driver.class);
+      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
+      List<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
       List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
-      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicleDTO());
+      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
 
       travelOrder.setEmployee(employee);
       travelOrder.setDateIssued(LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter));
