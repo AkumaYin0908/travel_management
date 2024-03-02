@@ -8,6 +8,7 @@ import gov.coateam1.repository.place.PlaceRepository;
 import gov.coateam1.service.place.PlaceService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,44 +19,44 @@ import java.util.List;
 public class PlaceServiceImpl implements PlaceService {
 
     private final PlaceRepository placeRepository;
-    private final PlaceMapper placeMapper;
+    private final ModelMapper modelMapper;
     @Override
     public PlaceDTO findById(Long id) {
 
         Place place = placeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Place","id",id));
 
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO findByBarangayName(String barangayName) {
         Place place = placeRepository.findByBarangayName(barangayName).orElseThrow(()->new ResourceNotFoundException("Place","barangay",barangayName));
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO findByMunicipalityName(String municipalityName) {
         Place place =  placeRepository.findByMunicipalityName(municipalityName).orElseThrow(()->new ResourceNotFoundException("Place","municipality",municipalityName));
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO findByProvinceName(String provinceName) {
 
         Place place = placeRepository.findByProvinceName(provinceName).orElseThrow(()->new ResourceNotFoundException("Place","province",provinceName));
-        return  placeMapper.mapToDTO(place);
+        return  modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO findByBuildingName(String buildingName) {
         Place place = placeRepository.findByBuildingName(buildingName).orElseThrow(()->new ResourceNotFoundException("Place","buildingName",buildingName));
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public PlaceDTO findByDefaultPlace(String defaultPlace) {
         Place place =  placeRepository.findByDefaultPlace(defaultPlace).orElse(new Place(defaultPlace));
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
@@ -67,19 +68,19 @@ public class PlaceServiceImpl implements PlaceService {
                         "municipality : %s,%n" +
                         "province : %s%n",buildingName,barangay,municipality,province)));
 
-        return placeMapper.mapToDTO(place);
+        return modelMapper.map(place, PlaceDTO.class);
     }
 
     @Override
     public List<PlaceDTO> findAll() {
         return placeRepository.findAll().stream()
-                .map(placeMapper::mapToDTO).toList();
+                .map(p->modelMapper.map(p,PlaceDTO.class)).toList();
     }
 
     @Override
     @Transactional
     public PlaceDTO add(PlaceDTO placeDTO) {
-        Place place  = placeMapper.mapToModel(placeDTO);
+        Place place  = modelMapper.map(placeDTO, Place.class);
         Place dbPlace = placeRepository.save(place);
         placeDTO.setId(dbPlace.getId());
         return placeDTO;
@@ -89,7 +90,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Transactional
     public PlaceDTO update(PlaceDTO placeDTO, Long id) {
         Place place = placeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Place","id",id));
-        placeMapper.mapToModel(placeDTO,place);
+        modelMapper.map(placeDTO, Place.class);
         placeRepository.save(place);
         placeDTO.setId(id);
 
