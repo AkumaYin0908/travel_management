@@ -29,13 +29,13 @@ public class DriverController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> saveDriver(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+    public ResponseEntity<EmployeeDTO> saveDriver(@RequestBody EmployeeDTO employeeDTO)  {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
-            return new ResponseEntity<>(employeeService.update(employeeDTO,id),HttpStatus.CREATED);
+            return new ResponseEntity<>(employeeService.update(employeeDTO,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
