@@ -46,7 +46,8 @@ public class BarangayServiceImpl implements BarangayService {
         Barangay barangay=barangayRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Barangay","id",id));
         barangay.setName(barangayDTO.getName());
         barangayRepository.save(barangay);
-        return modelMapper.map(barangay,BarangayDTO.class);
+        barangayDTO.setId(id);
+        return barangayDTO;
     }
 
     @Override

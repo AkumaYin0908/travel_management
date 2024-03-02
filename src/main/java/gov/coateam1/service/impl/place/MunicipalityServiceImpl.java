@@ -45,7 +45,8 @@ public class MunicipalityServiceImpl implements MunicipalityService {
         Municipality municipality = municipalityRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Municipality","id",id));
         municipality.setName(municipalityDTO.getName());
         municipalityRepository.save(municipality);
-        return modelMapper.map(municipality, MunicipalityDTO.class);
+        municipalityDTO.setId(id);
+        return municipalityDTO;
     }
 
     @Override

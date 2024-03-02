@@ -45,7 +45,8 @@ public class ProvinceServiceImpl implements ProvinceService {
         Province province = provinceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Province","id",id));
         province.setName(provinceDTO.getName());
         provinceRepository.save(province);
-        return modelMapper.map(province,ProvinceDTO.class) ;
+        provinceDTO.setId(id);
+        return provinceDTO;
     }
 
     @Override
