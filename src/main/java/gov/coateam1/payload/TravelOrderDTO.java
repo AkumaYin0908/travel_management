@@ -19,7 +19,7 @@ public class TravelOrderDTO {
 
     private Long id;
 
-    private EmployeeDTO employeeDTO;
+    private EmployeeDTO employee;
 
 
     private String dateIssued;
@@ -28,13 +28,13 @@ public class TravelOrderDTO {
 
     private String dateReturn;
 
-    private PurposeDTO purposeDTO;
+    private PurposeDTO purposes;
 
-    private VehicleDTO vehicleDTO;
+    private VehicleDTO vehicle;
 
     private List<ReportToDTO> reportTos;
 
-    private List<PlaceDTO> placeDTOs;
+    private List<PlaceDTO> places;
 
 
     private String lastTravel;
@@ -43,11 +43,11 @@ public class TravelOrderDTO {
 
 
     public void addPlaceDTO(PlaceDTO placeDTO){
-        if(placeDTOs == null){
-            placeDTOs=new ArrayList<>();
+        if(places == null){
+            places=new ArrayList<>();
         }
 
-        placeDTOs.add(placeDTO);
+        places.add(placeDTO);
     }
 
     public void addReportTos(ReportToDTO reportToDTO){
