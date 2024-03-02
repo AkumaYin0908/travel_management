@@ -1,11 +1,15 @@
 package gov.coateam1.service.impl.place;
 
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.place.Province;
+import gov.coateam1.payload.place.ProvinceDTO;
 import gov.coateam1.repository.place.ProvinceRepository;
 import gov.coateam1.service.place.ProvinceService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.List;
 
@@ -14,26 +18,34 @@ import java.util.List;
 public class ProvinceServiceImpl implements ProvinceService {
 
     private final ProvinceRepository provinceRepository;
+    private final ModelMapper modelMapper;
     @Override
-    public Province findByName(String name) {
-        return provinceRepository.findByname(name).orElse(new Province(name));
+    public ProvinceDTO findByName(String name) {
+        return modelMapper.map(provinceRepository.findByname(name).orElse(new Province(name)),ProvinceDTO.class);
     }
 
     @Override
-    public List<Province> getAll() {
-        return provinceRepository.findAll();
-    }
+    public List<ProvinceDTO> getAll() {
 
-    @Override
-    @Transactional
-    public Province add(Province province) {
-        return provinceRepository.save(province);
+        return provinceRepository.findAll().stream().map(p->modelMapper.map(p,ProvinceDTO.class)).toList();
     }
 
     @Override
     @Transactional
-    public Province update(Province province) {
-        return provinceRepository.save(province);
+    public ProvinceDTO add(ProvinceDTO provinceDTO) {
+        Province province = modelMapper.map(provinceDTO,Province.class);
+        Province dbProvince = provinceRepository.save(province);
+        provinceDTO.setId(dbProvince.getId());
+        return provinceDTO;
+    }
+
+    @Override
+    @Transactional
+    public ProvinceDTO update(ProvinceDTO provinceDTO, Long id) {
+        Province province = provinceRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Province","id",id));
+        province.setName(provinceDTO.getName());
+        provinceRepository.save(province);
+        return modelMapper.map(province,ProvinceDTO.class) ;
     }
 
     @Override

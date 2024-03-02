@@ -1,18 +1,19 @@
 package gov.coateam1.service.place;
 
 import gov.coateam1.model.place.Barangay;
+import gov.coateam1.payload.place.BarangayDTO;
 
 import java.util.List;
 
 public interface BarangayService {
 
-    Barangay findByName(String name);
+    BarangayDTO findByName(String name);
 
-    List<Barangay> findAll();
+    List< BarangayDTO> findAll();
 
-    Barangay add(Barangay barangay);
+    BarangayDTO add(BarangayDTO barangayDTO);
 
-    Barangay update(Barangay barangay);
+    BarangayDTO update (BarangayDTO barangayDTO, Long id);
 
     void delete(Long id);
 }

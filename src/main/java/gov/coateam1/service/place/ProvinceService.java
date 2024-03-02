@@ -1,18 +1,19 @@
 package gov.coateam1.service.place;
 
 import gov.coateam1.model.place.Province;
+import gov.coateam1.payload.place.ProvinceDTO;
 
 import java.util.List;
 
 public interface ProvinceService {
 
-    Province findByName(String name);
+    ProvinceDTO findByName(String name);
 
-    List<Province> getAll();
+    List<ProvinceDTO> getAll();
 
-    Province add(Province province);
+    ProvinceDTO add(ProvinceDTO provinceDTO);
 
-    Province update(Province province);
+    ProvinceDTO update(ProvinceDTO provinceDTO, Long id);
 
     void delete(Long id);
 

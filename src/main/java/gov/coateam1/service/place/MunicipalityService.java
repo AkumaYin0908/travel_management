@@ -2,18 +2,19 @@ package gov.coateam1.service.place;
 
 
 import gov.coateam1.model.place.Municipality;
+import gov.coateam1.payload.place.MunicipalityDTO;
 
 import java.util.List;
 
 public interface MunicipalityService {
 
-    Municipality findByName(String name);
+    MunicipalityDTO findByName(String name);
 
-    List<Municipality> findAll();
+    List<MunicipalityDTO> findAll();
 
-    Municipality add(Municipality municipality);
+    MunicipalityDTO add(MunicipalityDTO municipalityDTO);
 
-    Municipality update(Municipality municipality);
+    MunicipalityDTO  update(MunicipalityDTO municipalityDTO,Long id);
 
     void delete(Long id);
 }
