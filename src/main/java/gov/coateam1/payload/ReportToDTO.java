@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@AllArgsConstructor
+
+@NoArgsConstructor
 public class ReportToDTO extends BasicDTO {
 
     public ReportToDTO(Long id, String name) {
