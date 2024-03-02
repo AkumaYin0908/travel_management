@@ -61,7 +61,7 @@ public class TripTicketDTO {
 
     private String remarks;
 
-    private PurposeDTO purposes;
+    private PurposeDTO purpose;
 
     private VehicleDTO vehicle;
 

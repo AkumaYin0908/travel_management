@@ -28,7 +28,7 @@ public class TravelOrderDTO {
 
     private String dateReturn;
 
-    private PurposeDTO purposes;
+    private PurposeDTO purpose;
 
     private VehicleDTO vehicle;
 
