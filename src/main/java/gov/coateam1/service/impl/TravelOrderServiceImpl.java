@@ -104,7 +104,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     @Override
     public TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id) {
         TravelOrder travelOrder = travelOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TravelOrder", "id", id));
-        travelOrder.setEmployee(modelMapper.map(travelOrderDTO.getEmployeeDTO(), Driver.class));
+        travelOrder.setEmployee(modelMapper.map(travelOrderDTO.getEmployee(), Driver.class));
         travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
         travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
         travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
