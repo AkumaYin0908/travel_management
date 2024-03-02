@@ -8,11 +8,11 @@ public interface EmployeeService {
 
     EmployeeDTO findByName(String name);
 
-    EmployeeDTO add(EmployeeDTO employeeDTO) throws Exception;
+    EmployeeDTO add(EmployeeDTO employeeDTO);
 
     List<EmployeeDTO> findAll();
 
-    EmployeeDTO update(EmployeeDTO employeeDTO, Long id) throws Exception;
+    EmployeeDTO update(EmployeeDTO employeeDTO, Long id);
 
     void delete(Long id);
 
