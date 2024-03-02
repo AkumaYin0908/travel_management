@@ -9,6 +9,7 @@ import gov.coateam1.repository.PositionRepository;
 import gov.coateam1.service.PositionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,35 +20,35 @@ import java.util.List;
 public class PositionServiceImpl implements PositionService {
 
     private final PositionRepository positionRepository;
-    private final PositionMapper positionMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
     public PositionDTO findByName(String name) {
         Position position =  positionRepository.findByName(name).orElse(new Position(name));
-        return positionMapper.mapToDTO(position);
+        return modelMapper.map(position,PositionDTO.class);
     }
 
     @Override
     public List<PositionDTO> findAll() {
 
-        return positionRepository.findAll().stream().map(positionMapper::mapToDTO).toList();
+        return positionRepository.findAll().stream().map(p->modelMapper.map(p,PositionDTO.class)).toList();
     }
 
     @Override
     @Transactional
     public PositionDTO add(PositionDTO positionDTO) {
-        Position position =   positionMapper.mapToModel(positionDTO);
+        Position position =   modelMapper.map(positionDTO,Position.class);
         Position dbPosition = positionRepository.save(position);
         positionDTO.setId(dbPosition.getId());
-        return positionMapper.mapToDTO(dbPosition);
+        return modelMapper.map(dbPosition,PositionDTO.class);
     }
 
     @Override
     @Transactional
     public PositionDTO update(PositionDTO positionDTO, Long id) {
         Position position = positionRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Position","id",id));
-        positionMapper.mapToModel(positionDTO,position);
+        position.setName(positionDTO.getName());
         positionRepository.save(position);
         positionDTO.setId(id);
         return positionDTO;
