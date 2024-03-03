@@ -10,6 +10,7 @@ import gov.coateam1.service.PositionService;
 import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DriverServiceImpl implements EmployeeService {
 
     private final DriverRepository driverRepository;
@@ -29,7 +31,9 @@ public class DriverServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO findByName(String name) {
+        log.info("DriverServiceImpl : findByName execution started");
         Driver driver = driverRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Driver", "name", name));
+        log.debug("DriverService:findByName received response from the database {}",driver);
         return modelMapper.map(driver, EmployeeDTO.class);
     }
 
