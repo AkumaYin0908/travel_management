@@ -32,8 +32,8 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     private final TravelOrderRepository travelOrderRepository;
     private final ModelMapper modelMapper;
-    private final static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-    private final static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+
 
     private TravelOrderDTO convertToDTO(TravelOrder travelOrder) {
 
