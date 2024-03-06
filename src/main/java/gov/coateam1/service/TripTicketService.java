@@ -1,6 +1,7 @@
 package gov.coateam1.service;
 
 import gov.coateam1.model.TripTicket;
+import gov.coateam1.payload.TripTicketDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,32 +9,32 @@ import java.util.List;
 public interface TripTicketService {
 
 
-    List<TripTicket> findAll();
+    List<TripTicketDTO> findAll();
 
-    List<TripTicket> findByMonthAndYear(Integer month, Integer year);
+    List<TripTicketDTO> findByMonthAndYear(Integer month, Integer year);
 
-    TripTicket findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
+    TripTicketDTO findByDateDepartureAndDateReturn(String dateDeparture, String dateReturn);
 
-    TripTicket findById(Long id);
+    TripTicketDTO findById(Long id);
 
 
-    List<TripTicket> findTripTicketAndPlacesById(Long id);
+    List<TripTicketDTO> findTripTicketAndPlacesById(Long id);
 
-    List<TripTicket> findByPlace(Long id);
+    List<TripTicketDTO> findByPlace(Long id);
 
-    List<TripTicket> findByBuildingName(String buildingName);
+    List<TripTicketDTO> findByBuildingName(String buildingName);
 
-    List<TripTicket> findByDefaultPlace(String defaultPlace);
+    List<TripTicketDTO> findByDefaultPlace(String defaultPlace);
 
-    List<TripTicket> findByBarangay(String barangay);
+    List<TripTicketDTO> findByBarangay(String barangay);
 
-    List<TripTicket> findByMunicipality(String municipality);
+    List<TripTicketDTO> findByMunicipality(String municipality);
 
-    List<TripTicket> findByProvince(String province);
+    List<TripTicketDTO> findByProvince(String province);
 
-    TripTicket add(TripTicket tripTicket);
+    TripTicketDTO add(TripTicketDTO tripTicketDTO);
 
-    TripTicket update(TripTicket tripTicket);
+    TripTicketDTO update(TripTicketDTO tripTicketDTO, Long id);
 
     void delete(Long id);
 }
