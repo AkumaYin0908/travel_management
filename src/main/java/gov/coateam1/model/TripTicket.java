@@ -3,6 +3,7 @@ package gov.coateam1.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
+import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -56,7 +57,7 @@ public class TripTicket {
     @JoinTable(name="travel_passengers",
             joinColumns = @JoinColumn(name="tripticket_id"),
             inverseJoinColumns = @JoinColumn(name="employee_id"))
-    private List<Employee> passengers;
+    private List<Passenger> passengers;
 
 
     @Column(name="time_office_departure")
