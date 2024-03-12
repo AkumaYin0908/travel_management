@@ -5,7 +5,8 @@ import gov.coateam1.payload.PositionDTO;
 import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.model.employee.Passenger;
-import gov.coateam1.repository.employee.PassengerRepository;
+import gov.coateam1.repository.PositionRepository;
+import gov.coateam1.repository.employee.EmployeeRepository;
 import gov.coateam1.service.PositionService;
 import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
@@ -17,36 +18,47 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PassengerServiceImpl implements EmployeeService {
-
-    private final PassengerRepository passengerRepository;
+    private final EmployeeRepository<Passenger> employeeRepository;
     private final ModelMapper modelMapper;
-    private final PositionService positionService;
+    private final PositionRepository positionRepository;
 
 
     @Override
+    public EmployeeDTO findById(Long id) {
+        Passenger passenger = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Passenger","id",id));
+        return modelMapper.map(passenger,EmployeeDTO.class);
+    }
+
+    @Override
     public EmployeeDTO findByName(String name) {
-        Passenger passenger = passengerRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Passenger", "name", name));
+        Passenger passenger = employeeRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Passenger", "name", name));
         return modelMapper.map(passenger, EmployeeDTO.class);
     }
 
     @Override
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) {
-        PositionDTO positionDTO = positionService.add(positionService.findByName(employeeDTO.getPosition().getName()));//if, position exist in db, merge, otherwise, persist
-        Position position = modelMapper.map(employeeDTO.getPosition(), Position.class);
-        Passenger passenger = modelMapper.map(employeeDTO, Passenger.class);
-        passenger.setPosition(position);
-        Passenger dbPassenger = passengerRepository.save(passenger);
+        Passenger passenger = new Passenger();
+
+        passenger.setName(employeeDTO.getName());
+        Position position = modelMapper.map(employeeDTO.getPosition(),Position.class);
+
+        if(position.getId() == 0){
+            passenger.setPosition(positionRepository.save(position));
+        }else{
+            passenger.setPosition(position);
+        }
+        Passenger dbPassenger = employeeRepository.save(passenger);
         employeeDTO.setId(dbPassenger.getId());
-        employeeDTO.setPosition(positionDTO);
         return employeeDTO;
     }
 
     @Override
     public List<EmployeeDTO> findAll() {
 
-        return passengerRepository.findAll().stream().map(emp -> modelMapper.map(emp, EmployeeDTO.class)).toList();
+        return employeeRepository.findAll().stream().map(emp -> modelMapper.map(emp, EmployeeDTO.class)).toList();
 
     }
 
@@ -54,10 +66,10 @@ public class PassengerServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeDTO update(EmployeeDTO employeeDTO, Long id) {
 
-        Passenger passenger = passengerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Passenger", "id", id));
+        Passenger passenger = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Passenger", "id", id));
         passenger.setName(employeeDTO.getName());
         passenger.setPosition(modelMapper.map(employeeDTO.getPosition(), Position.class));
-        passengerRepository.save(passenger);
+        employeeRepository.save(passenger);
         employeeDTO.setId(id);
         return employeeDTO;
 
@@ -66,7 +78,7 @@ public class PassengerServiceImpl implements EmployeeService {
 
     @Override
     public void delete(Long id) {
-        passengerRepository.deleteById(id);
+        employeeRepository.deleteById(id);
     }
 
 }
