@@ -21,6 +21,10 @@ public class EmployeeDTO{
 
     private Long id;
     private String name;
+
+    @JsonIgnore
+    private String employeeType;
+
     private PositionDTO position;
 
 }
