@@ -6,14 +6,14 @@ import gov.coateam1.payload.ReportToDTO;
 import org.springframework.stereotype.Component;
 
 @Component
-
 public class ReportToMapper {
 
     public ReportToDTO mapToDTO(ReportTo reportTo){
+
         return new ReportToDTO(reportTo.getId(),reportTo.getName());
     }
 
-    public ReportTo mapToModel(BasicDTO basicDTO){
-        return new ReportTo(basicDTO.getId(),basicDTO.getName());
+    public ReportTo mapToModel(ReportToDTO reportToDTO){
+        return new ReportTo(reportToDTO.getId(),reportToDTO.getName());
     }
 }

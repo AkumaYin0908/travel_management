@@ -13,13 +13,11 @@ import org.springframework.stereotype.Component;
 public class EmployeeMapper {
 
 
-
-
     private final PositionMapper positionMapper;
 
     public EmployeeDTO mapToDTO(Employee employee){
         PositionDTO positionDTO = positionMapper.mapToDTO(employee.getPosition());
-        return new EmployeeDTO(employee.getId(), employee.getName(),positionDTO);
+        return new EmployeeDTO(employee.getId(), employee.getName(),employee.getEmployeeType(),positionDTO);
     }
 
     public  <T extends Employee> T maptoModel(EmployeeDTO employeeDTO,Class<T> clazz) throws Exception{

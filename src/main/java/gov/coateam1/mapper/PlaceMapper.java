@@ -17,27 +17,28 @@ import org.springframework.stereotype.Component;
 public class PlaceMapper {
 
     public BarangayDTO toBarangayDTO(Barangay barangay){
-       return new BarangayDTO(barangay.getId(),barangay.getName());
+       return barangay == null ? null : new BarangayDTO(barangay.getId(),barangay.getName());
     }
 
-    public Barangay toBarangay(BasicDTO basicDTO){
-        return new Barangay(basicDTO.getId(),basicDTO.getName());
+    public Barangay toBarangay(BarangayDTO barangayDTO){
+
+        return barangayDTO==null ? null : new Barangay(barangayDTO.getId(),barangayDTO.getName());
     }
 
     public MunicipalityDTO toMunicipalityDTO(Municipality municipality){
         return new MunicipalityDTO(municipality.getId(),municipality.getName());
     }
 
-    public Municipality toMunicipality(BasicDTO basicDTO){
-        return new Municipality(basicDTO.getId(),basicDTO.getName());
+    public Municipality toMunicipality(MunicipalityDTO municipalityDTO){
+        return new Municipality(municipalityDTO.getId(),municipalityDTO.getName());
     }
 
     public ProvinceDTO toProvinceDTO(Province province){
         return new ProvinceDTO(province.getId(),province.getName());
     }
 
-    public Province toProvince(BasicDTO basicDTO){
-        return new Province(basicDTO.getId(),basicDTO.getName());
+    public Province toProvince(ProvinceDTO provinceDTO){
+        return new Province(provinceDTO.getId(),provinceDTO.getName());
     }
 
 
