@@ -4,8 +4,7 @@ package gov.coateam1.model.place;
 import gov.coateam1.model.TravelOrder;
 import gov.coateam1.model.TripTicket;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +25,15 @@ public class Place {
     @Column(name="building_name")
     private String buildingName;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name="barangay")
     private Barangay barangay;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name="municipality")
     private Municipality municipality;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name="province")
     private Province province;
 
@@ -46,13 +45,20 @@ public class Place {
     @JoinTable(name="place_tripticket",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
+    @Getter(AccessLevel.NONE)
     private List<TripTicket> tripTickets;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="travelorder_id"))
+//    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+//    @JoinTable(name="place_travelorder",
+//            joinColumns ={
+//            @JoinColumn(name="place_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {
+//            @JoinColumn(name="travelorder_id",referencedColumnName = "id")})
+    @Getter(AccessLevel.NONE)
     private List<TravelOrder> travelOrders;
 
     public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, String defaultPlace) {
@@ -66,5 +72,13 @@ public class Place {
 
     public Place(String defaultPlace) {
         this.defaultPlace  = defaultPlace;
+    }
+
+    public List<TripTicket> getTripTickets() {
+        return tripTickets == null ? new ArrayList<>() : tripTickets;
+    }
+
+    public List<TravelOrder> getTravelOrders() {
+        return travelOrders == null ? new ArrayList<>() : travelOrders;
     }
 }
