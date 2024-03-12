@@ -6,10 +6,10 @@ spring:
     username: coa_team1
     password: coa_team1
 
-#    jpa:
-#      hibernate:
-#        ddl-auto: create
   jpa:
+    hibernate:
+      ddl-auto: create
+
     show-sql: TRUE
 
 
