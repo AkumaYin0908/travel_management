@@ -9,9 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface PassengerRepository extends JpaRepository<Passenger,Long> {
 
-    @Query("from Passenger where name= :name")
-    Optional<Passenger> findByName(@Param("name")String name);
+public interface PassengerRepository {
+
+
 }

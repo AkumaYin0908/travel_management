@@ -8,12 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface DriverRepository extends JpaRepository<Driver,Long> {
 
-
-    @Query("from Driver where name= :name")
-    Optional<Driver> findByName(@Param("name")String name);
-
+public interface DriverRepository{
 
 }
