@@ -21,4 +21,8 @@ public class  TravelManagementApplication {
 		return new ModelMapper();
 	}
 
+
+	//Swagger
+	//http://localhost:8010/coa/swagger-ui/index.html#/
+
 }
