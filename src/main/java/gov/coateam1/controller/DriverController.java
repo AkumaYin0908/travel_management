@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping("/drivers")
+@RequestMapping("/employees")
 public class DriverController {
 
 
@@ -23,28 +23,28 @@ public class DriverController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/drivers/all")
     public ResponseEntity<List<EmployeeDTO>> getAllDrivers(){
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/drivers")
     public ResponseEntity<EmployeeDTO> saveDriver(@RequestBody EmployeeDTO employeeDTO)  {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/drivers/{id}")
     public ResponseEntity<EmployeeDTO> updateDriver(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
             return new ResponseEntity<>(employeeService.update(employeeDTO,id),HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/drivers/{id}")
     public ResponseEntity<APIResponse> deleteDriver(@PathVariable("id")Long id){
         employeeService.delete(id);
         return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/drivers/{name}")
     public ResponseEntity<EmployeeDTO> getDriverByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(employeeService.findByName(name),HttpStatus.FOUND);
     }

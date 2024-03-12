@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 
-@RequestMapping("/passengers")
+@RequestMapping("/employees")
 public class PassengerController {
 
     private final EmployeeService employeeService;
@@ -21,30 +21,30 @@ public class PassengerController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/passengers/all")
     public ResponseEntity<List<EmployeeDTO>> getAllPassengers(){
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/passengers")
     public ResponseEntity<EmployeeDTO> savePassenger(@RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/passengers/{id}")
     public ResponseEntity<EmployeeDTO> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
 
            return new ResponseEntity<>(employeeService.update(employeeDTO,id), HttpStatus.OK);
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/passengers/{id}")
     public ResponseEntity<APIResponse> deletePassenger(@PathVariable("id")Long id){
         employeeService.delete(id);
         return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/passengers/{name}")
     public ResponseEntity<EmployeeDTO> getPassengerByName(@PathVariable("name")String name){
             return  new ResponseEntity<>(employeeService.findByName(name),HttpStatus.FOUND);
     }
