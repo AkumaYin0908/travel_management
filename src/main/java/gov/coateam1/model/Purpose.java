@@ -43,4 +43,12 @@ public class Purpose {
     public Purpose(String purpose) {
         this.purpose = purpose;
     }
+
+    public void addTravelOrder(TravelOrder travelOrder){
+        if(travelOrders == null){
+            travelOrders = new ArrayList<>();
+        }
+
+        travelOrders.add(travelOrder);
+    }
 }
