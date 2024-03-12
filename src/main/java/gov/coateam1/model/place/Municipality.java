@@ -5,9 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="municipality")
 public class Municipality {
@@ -21,7 +22,16 @@ public class Municipality {
     @Column(name="name")
     private String name;
 
+
+    @OneToMany(mappedBy = "municipality",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    private List<Place> places;
+
     public Municipality(String name) {
+        this.name = name;
+    }
+
+    public Municipality(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 }
