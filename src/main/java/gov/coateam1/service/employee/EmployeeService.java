@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface EmployeeService {
 
+    EmployeeDTO findById(Long id);
     EmployeeDTO findByName(String name);
 
     EmployeeDTO add(EmployeeDTO employeeDTO);
