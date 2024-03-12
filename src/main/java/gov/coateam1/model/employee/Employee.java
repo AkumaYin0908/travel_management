@@ -30,9 +30,14 @@ public abstract class Employee {
     @Column(name="name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name="position")
     private Position position;
+
+
+    @Setter(AccessLevel.NONE)
+    @Column(name = "EMPLOYEE_TYPE",insertable=false, updatable=false)
+    private String employeeType;
 
 
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
@@ -47,6 +52,15 @@ public abstract class Employee {
     public Employee(String name, Position position) {
         this.name = name;
         this.position = position;
+    }
+
+
+    public void addTravelOrder(TravelOrder travelOrder){
+        if(travelOrders == null){
+            travelOrders = new ArrayList<>();
+        }
+
+        travelOrders.add(travelOrder);
     }
 
 
