@@ -6,6 +6,7 @@ import gov.coateam1.payload.ReportToDTO;
 import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.repository.ReportToRepository;
 import gov.coateam1.service.ReportToService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ReportToServiceImpl implements ReportToService {
     }
 
     @Override
+    @Transactional
     public ReportToDTO add(ReportToDTO reportToDTO) {
         ReportTo reportTo = modelMapper.map(reportToDTO,ReportTo.class);
         ReportTo dbReportTo = reportToRepository.save(reportTo);
@@ -37,6 +39,7 @@ public class ReportToServiceImpl implements ReportToService {
     }
 
     @Override
+    @Transactional
     public ReportToDTO update(ReportToDTO reportToDTO, Long id) {
        ReportTo reportTo = reportToRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("ReportTo","id",id));
        reportTo.setName(reportTo.getName());

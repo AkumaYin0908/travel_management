@@ -7,6 +7,7 @@ import gov.coateam1.model.TravelOrder;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.repository.PurposeRepository;
 import gov.coateam1.service.PurposeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
+    @Transactional
     public PurposeDTO add(PurposeDTO purposeDTO) {
         Purpose purpose = modelMapper.map(purposeDTO,Purpose.class);
         Purpose dbPurpose = purposeRepository.save(purpose);
@@ -46,6 +48,7 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
+    @Transactional
     public PurposeDTO update(PurposeDTO purposeDTO, Long id) {
         Purpose purpose=purposeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Purpose","id",id));
         purpose.setPurpose(purposeDTO.getPurpose());

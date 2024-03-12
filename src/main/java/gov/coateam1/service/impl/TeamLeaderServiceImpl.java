@@ -50,6 +50,7 @@ public class TeamLeaderServiceImpl implements TeamLeaderService {
     }
 
     @Override
+    @Transactional
     public SignatoryDTO add(SignatoryDTO signatoryDTO){
         Optional<TeamLeader> teamLeaderOptional = teamLeaderRepository.findByActiveStatus(true);
         TeamLeader teamLeader = modelMapper.map(signatoryDTO,TeamLeader.class);
