@@ -9,67 +9,105 @@ import gov.coateam1.model.TravelOrder;
 import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
+import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.Place;
 import gov.coateam1.payload.PurposeDTO;
+import gov.coateam1.payload.ReportToDTO;
 import gov.coateam1.payload.TravelOrderDTO;
-import gov.coateam1.payload.employee.EmployeeDTO;
+import gov.coateam1.payload.VehicleDTO;
+import gov.coateam1.payload.place.PlaceDTO;
+import gov.coateam1.repository.PurposeRepository;
+import gov.coateam1.repository.ReportToRepository;
 import gov.coateam1.repository.TravelOrderRepository;
+import gov.coateam1.repository.VehicleRepository;
+import gov.coateam1.repository.employee.EmployeeRepository;
+import gov.coateam1.repository.place.PlaceRepository;
+import gov.coateam1.service.PurposeService;
+import gov.coateam1.service.ReportToService;
 import gov.coateam1.service.TravelOrderService;
+import gov.coateam1.service.VehicleService;
+import gov.coateam1.service.place.PlaceService;
 import gov.coateam1.util.DateTimeConverter;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
+
 public class TravelOrderServiceImpl implements TravelOrderService {
 
     private final TravelOrderRepository travelOrderRepository;
+    private final EmployeeRepository employeeRepository;
+    private final TravelOrderMapper travelOrderMapper;
     private final ModelMapper modelMapper;
+    private final VehicleRepository vehicleRepository;
+    private final PurposeRepository purposeRepository;
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    private final PlaceRepository placeRepository;
+    private final ReportToRepository reportToRepository;
 
 
-    private TravelOrderDTO convertToDTO(TravelOrder travelOrder) {
+//    private TravelOrderDTO convertToDTO(TravelOrder travelOrder) {
+//
+//        Converter<LocalDate, String> toString =
+//                ctx -> ctx.getSource() == null ? null : dateFormatter.format(ctx.getSource());
+//
+//        Converter<? extends  Employee,EmployeeDTO>converter = ctx ->ctx.getSource() ==
+//                null ? null : modelMapper.map(ctx.getSource(),EmployeeDTO.class);
+//
+//
+//
+//
+//        modelMapper.addConverter(converter);
+//        modelMapper.typeMap(TravelOrder.class, TravelOrderDTO.class)
+//                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateIssued, TravelOrderDTO::setDateIssued))
+//                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateDeparture, TravelOrderDTO::setDateDeparture))
+//                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateReturn, TravelOrderDTO::setDateReturn))
+//                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getLastTravel, TravelOrderDTO::setLastTravel));
+//
+//        return modelMapper.map(travelOrder, TravelOrderDTO.class);
+//
+//    }
+//
+//    private TravelOrder convertToModel(TravelOrderDTO travelOrderDTO) {
+//
+//        Converter<EmployeeDTO,? extends Employee>converter = ctx ->ctx.getSource() ==
+//                null ? null : modelMapper.map(ctx.getSource(),Employee.class);
+//
+//        Converter<String, LocalDate> toLocalDate =
+//                ctx -> ctx.getSource() == null ? null : LocalDate.parse(ctx.getSource(), dateFormatter);
+//
+//        modelMapper.addConverter(converter);
+//        modelMapper.typeMap(TravelOrderDTO.class, TravelOrder.class)
+//                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateIssued, TravelOrder::setDateIssued))
+//                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateDeparture, TravelOrder::setDateDeparture))
+//                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateReturn, TravelOrder::setDateReturn))
+//                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getLastTravel, TravelOrder::setLastTravel));
+//
+//
+//        return modelMapper.map(travelOrderDTO, TravelOrder.class);
+//
+//    }
 
-        Converter<LocalDate, String> toString =
-                ctx -> ctx.getSource() == null ? null : dateFormatter.format(ctx.getSource());
-
-        modelMapper.typeMap(TravelOrder.class, TravelOrderDTO.class)
-                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateIssued, TravelOrderDTO::setDateIssued))
-                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateDeparture, TravelOrderDTO::setDateDeparture))
-                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getDateReturn, TravelOrderDTO::setDateReturn))
-                .addMappings(mapping -> mapping.using(toString).map(TravelOrder::getLastTravel, TravelOrderDTO::setLastTravel));
-
-        return modelMapper.map(travelOrder, TravelOrderDTO.class);
-
-    }
-
-    private TravelOrder convertToModel(TravelOrderDTO travelOrderDTO) {
-        Converter<String, LocalDate> toLocalDate =
-                ctx -> ctx.getSource() == null ? null : LocalDate.parse(ctx.getSource(), dateFormatter);
-
-        modelMapper.typeMap(TravelOrderDTO.class, TravelOrder.class)
-                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateIssued, TravelOrder::setDateIssued))
-                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateDeparture, TravelOrder::setDateDeparture))
-                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getDateReturn, TravelOrder::setDateReturn))
-                .addMappings(mapping -> mapping.using(toLocalDate).map(TravelOrderDTO::getLastTravel, TravelOrder::setLastTravel));
 
 
-        return modelMapper.map(travelOrderDTO, TravelOrder.class);
 
-    }
-
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
 
     @Override
     public List<TravelOrderDTO> findAll() {
-        return travelOrderRepository.findAll().stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findAll().stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
@@ -83,35 +121,132 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                 });
 
 
-        return modelMapper.map(travelOrder, TravelOrderDTO.class);
+        return travelOrderMapper.mapToDTO(travelOrder);
     }
 
     @Override
     public TravelOrderDTO findById(Long id) {
         TravelOrder travelOrder = travelOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TravelOrder", "id", id));
-        return this.convertToDTO(travelOrder);
+        return travelOrderMapper.mapToDTO(travelOrder);
     }
 
     @Override
-    public TravelOrderDTO add(TravelOrderDTO travelOrderDTO) {
+    @Transactional
+    public TravelOrderDTO add(Long employeeId, TravelOrderDTO travelOrderDTO) throws Exception {
+        Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
+        Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
-        TravelOrder travelOrder = this.convertToModel(travelOrderDTO);
+        TravelOrder travelOrder = new TravelOrder();
+
+        Driver driver = null;
+        Passenger passenger =  null;
+        if(optionalEmployee.isPresent()){
+            if(optionalEmployee.get().getEmployeeType().equals("DRIVER")){
+              driver = (Driver) optionalEmployee.get();
+            }else{
+                passenger = (Passenger) optionalEmployee.get();
+            }
+        }
+
+
+        travelOrder.setEmployee(driver == null ? passenger:driver);
+
+        travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
+        travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
+        travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
+
+
+        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
+        if(purpose.getId() == 0){
+            travelOrder.setPurpose(purposeRepository.save(purpose));
+        }else{
+            travelOrder.setPurpose(purpose);
+        }
+
+        Vehicle vehicle = modelMapper.map(travelOrderDTO.getVehicle(),Vehicle.class);
+        if(vehicle.getId() == 0){
+            travelOrder.setVehicle(vehicleRepository.save(vehicle));
+        }else{
+            travelOrder.setVehicle(vehicle);
+        }
+
+
+        for(PlaceDTO placeDTO : travelOrderDTO.getPlaces()){
+            Place place = modelMapper.map(placeDTO, Place.class);
+            if(place.getId() == 0){
+                travelOrder.addPlace(placeRepository.save(place));
+            }else{
+                travelOrder.addPlace(place);
+            }
+        }
+
+        for(ReportToDTO reportToDTO :travelOrderDTO.getReportTos()){
+            ReportTo reportTo = modelMapper.map(reportToDTO,ReportTo.class);
+            if(reportTo.getId() == 0){
+                travelOrder.addReportTos(reportToRepository.save(reportTo));
+            }else{
+                travelOrder.addReportTos(reportTo);
+            }
+        }
+
+        travelOrder.setLastTravel(DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
+
         TravelOrder dbTravelOrder = travelOrderRepository.save(travelOrder);
         travelOrderDTO.setId(dbTravelOrder.getId());
         return travelOrderDTO;
     }
 
     @Override
-    public TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id) {
+    @Transactional
+    public TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id, Long employeeId) throws Exception {
         TravelOrder travelOrder = travelOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TravelOrder", "id", id));
-        travelOrder.setEmployee(modelMapper.map(travelOrderDTO.getEmployee(), Driver.class));
+
+        Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
+        Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
+
+        Driver driver = null;
+        Passenger passenger =  null;
+        if(optionalEmployee.isPresent()){
+            if(optionalEmployee.get().getEmployeeType().equals("DRIVER")){
+                driver = (Driver) optionalEmployee.get();
+            }else{
+                passenger = (Passenger) optionalEmployee.get();
+            }
+        }
+
+        travelOrder.setEmployee(driver ==null? passenger:driver);
+
         travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
         travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
         travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
         travelOrder.setLastTravel(DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
-        travelOrder.setVehicle(modelMapper.map(travelOrder.getVehicle(), Vehicle.class));
-        travelOrder.setPurpose(modelMapper.map(travelOrder.getPurpose(), Purpose.class));
-        travelOrder.setReportTos(travelOrder.getReportTos().stream().map(r -> modelMapper.map(r, ReportTo.class)).toList());
+
+        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
+        if(purpose.getId() == 0){
+            travelOrder.setPurpose(purposeRepository.save(purpose));
+        }else{
+            travelOrder.setPurpose(purpose);
+        }
+
+
+        for(PlaceDTO placeDTO : travelOrderDTO.getPlaces()){
+            Place place = modelMapper.map(placeDTO, Place.class);
+            if(place.getId() == 0){
+                travelOrder.addPlace(placeRepository.save(place));
+            }else{
+                travelOrder.addPlace(place);
+            }
+        }
+
+        for(ReportToDTO reportToDTO :travelOrderDTO.getReportTos()){
+            ReportTo reportTo = modelMapper.map(reportToDTO,ReportTo.class);
+            if(reportTo.getId() == 0){
+                travelOrder.addReportTos(reportToRepository.save(reportTo));
+            }else{
+                travelOrder.addReportTos(reportTo);
+            }
+        }
+
         travelOrderRepository.save(travelOrder);
         travelOrderDTO.setId(id);
         return travelOrderDTO;
@@ -120,32 +255,32 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     @Override
     public List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id) {
-        return travelOrderRepository.findTravelOrderAndReportTosById(id).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndReportTosById(id).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
     public List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id) {
-        return travelOrderRepository.findTravelOrderAndPlacesById(id).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndPlacesById(id).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
     public List<TravelOrderDTO> findByBuildingName(String buildingName) {
-        return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
     public List<TravelOrderDTO> findByBarangay(String barangay) {
-        return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
     public List<TravelOrderDTO> findByMunicipality(String municipality) {
-        return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
     public List<TravelOrderDTO> findByProvince(String province) {
-        return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province).stream().map(this::convertToDTO).toList();
+        return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province).stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
     @Override
@@ -155,6 +290,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     @Override
     public void delete(Long id) {
+
         travelOrderRepository.deleteById(id);
     }
 }
