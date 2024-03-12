@@ -13,14 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class TravelOrderDTO {
 
     private Long id;
 
     private EmployeeDTO employee;
-
 
     private String dateIssued;
 
@@ -41,23 +39,15 @@ public class TravelOrderDTO {
 
 
 
-
-    public void addPlaceDTO(PlaceDTO placeDTO){
-        if(places == null){
-            places=new ArrayList<>();
-        }
-
-        places.add(placeDTO);
+    public TravelOrderDTO(Long id, String dateIssued, String dateDeparture, String dateReturn, PurposeDTO purpose, VehicleDTO vehicle, List<ReportToDTO> reportTos, List<PlaceDTO> places, String lastTravel) {
+        this.id = id;
+        this.dateIssued = dateIssued;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.purpose = purpose;
+        this.vehicle = vehicle;
+        this.reportTos = reportTos;
+        this.places = places;
+        this.lastTravel = lastTravel;
     }
-
-    public void addReportTos(ReportToDTO reportToDTO){
-        if(reportTos == null){
-            reportTos = new ArrayList<>();
-        }
-
-        reportTos.add(reportToDTO);
-    }
-
-
-
 }
