@@ -1,6 +1,7 @@
 package gov.coateam1.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
@@ -15,7 +16,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "travel_order")
 public class TravelOrder{
@@ -26,7 +26,8 @@ public class TravelOrder{
     @Column(name="id")
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+ //   @ManyToOne
     @JoinColumn(name="employee")
     private Employee employee;
 
@@ -41,32 +42,48 @@ public class TravelOrder{
     private LocalDate dateReturn;
 
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+ //   @ManyToOne
     @JoinColumn(name="purpose")
     private Purpose purpose;
 
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+ //   @ManyToOne
     @JoinColumn(name="vehicle")
     private Vehicle vehicle;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-    cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+
+ //==   @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name="reportto_travelorder",
     joinColumns = @JoinColumn(name="travelorder_id"),
     inverseJoinColumns = @JoinColumn(name="reportto_id"))
     private List<ReportTo> reportTos;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+  //  @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="travelorder_id"),
             inverseJoinColumns = @JoinColumn(name="place_id"))
+  //  @ManyToMany(mappedBy = "travelOrders",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
 
     @Column(name = "last_travel")
     private LocalDate lastTravel;
+
+    public TravelOrder(Long id, LocalDate dateIssued, LocalDate dateDeparture, LocalDate dateReturn, Purpose purpose, Vehicle vehicle, List<ReportTo> reportTos, List<Place> places, LocalDate lastTravel) {
+        this.id = id;
+        this.dateIssued = dateIssued;
+        this.dateDeparture = dateDeparture;
+        this.dateReturn = dateReturn;
+        this.purpose = purpose;
+        this.vehicle = vehicle;
+        this.reportTos = reportTos;
+        this.places = places;
+        this.lastTravel = lastTravel;
+    }
 
     public void addPlace(Place place){
         if(places == null){
@@ -74,8 +91,8 @@ public class TravelOrder{
         }
 
         places.add(place);
+        place.getTravelOrders().add(this);
     }
-
 
     public void addReportTos(ReportTo reportTo){
         if(reportTos == null){
