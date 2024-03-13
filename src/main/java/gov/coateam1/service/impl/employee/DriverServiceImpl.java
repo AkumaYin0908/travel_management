@@ -25,7 +25,7 @@ import java.util.List;
 public class DriverServiceImpl implements EmployeeService {
 
     private final EmployeeRepository<Driver> employeeRepository;
-    private PositionRepository positionRepository;
+    private final PositionRepository positionRepository;
     private final ModelMapper modelMapper;
 
 
@@ -49,22 +49,19 @@ public class DriverServiceImpl implements EmployeeService {
         Driver driver = new Driver();
         driver.setName(employeeDTO.getName());
 
-        Position position = modelMapper.map(employeeDTO.getPosition(),Position.class);
-
-        if(position.getId() == null){
-            driver.setPosition(positionRepository.save(position));
-        }else{
-            driver.setPosition(position);
-        }
-
+        Position position = positionRepository.findByName(employeeDTO.getPosition().getName())
+                .orElse(new Position(employeeDTO.getPosition().getName()));
+        position.addEmployee(driver);
+        Position dbPosition = positionRepository.save(position);
+        driver.setPosition(dbPosition);
         Driver dbDriver = employeeRepository.save(driver);
         employeeDTO.setId(dbDriver.getId());
+        employeeDTO.getPosition().setId(dbDriver.getPosition().getId());
         return employeeDTO;
     }
 
     @Override
     public List<EmployeeDTO> findAll() {
-
         return employeeRepository.findAll().stream().map(emp->modelMapper.map(emp,EmployeeDTO.class)).toList();
     }
 
