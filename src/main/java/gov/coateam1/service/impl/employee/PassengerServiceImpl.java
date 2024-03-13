@@ -41,17 +41,17 @@ public class PassengerServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeDTO add(EmployeeDTO employeeDTO) {
         Passenger passenger = new Passenger();
-
         passenger.setName(employeeDTO.getName());
-        Position position = modelMapper.map(employeeDTO.getPosition(),Position.class);
 
-        if(position.getId() == 0){
-            passenger.setPosition(positionRepository.save(position));
-        }else{
-            passenger.setPosition(position);
-        }
+
+        Position position = positionRepository.findByName(employeeDTO.getPosition().getName())
+                .orElse(new Position(employeeDTO.getPosition().getName()));
+        position.addEmployee(passenger);
+
+        Position dbPosition = positionRepository.save(position);
         Passenger dbPassenger = employeeRepository.save(passenger);
         employeeDTO.setId(dbPassenger.getId());
+        employeeDTO.getPosition().setId(dbPassenger.getPosition().getId());
         return employeeDTO;
     }
 
