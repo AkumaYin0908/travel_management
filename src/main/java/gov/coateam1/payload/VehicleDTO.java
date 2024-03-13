@@ -20,4 +20,10 @@ public class VehicleDTO {
     private String type;
     private String plateNo;
 
+
+    @Override
+    public String toString() {
+        return String.format("%s %s/%s/%s",
+                brand,model,type,plateNo);
+    }
 }
