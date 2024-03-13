@@ -52,4 +52,21 @@ public class Vehicle {
         this.type = type;
         this.plateNo = plateNo;
     }
+
+
+    public void addTravelOrder(TravelOrder travelOrder){
+        if(travelOrders == null){
+            travelOrders = new ArrayList<>();
+        }
+
+        travelOrders.add(travelOrder);
+        travelOrder.setVehicle(this);
+    }
+
+    public void removeTravelOrder(TravelOrder travelOrder){
+        travelOrders.remove(travelOrder);
+        travelOrder.setVehicle(null);
+    }
+
+
 }
