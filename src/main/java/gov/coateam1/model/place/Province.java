@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,5 +34,18 @@ public class Province {
     public Province(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void addPlace(Place place){
+        if(places==null){
+            places = new ArrayList<>();
+        }
+        places.add(place);
+        place.setProvince(this);
+    }
+
+    public void removePlace(Place place){
+        places.remove(place);
+        place.setProvince(null);
     }
 }

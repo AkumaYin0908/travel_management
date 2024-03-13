@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -33,5 +34,19 @@ public class Municipality {
     public Municipality(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+
+    public void addPlace(Place place){
+        if(places==null){
+            places = new ArrayList<>();
+        }
+        places.add(place);
+        place.setMunicipality(this);
+    }
+
+    public void removePlace(Place place){
+        places.remove(place);
+        place.setMunicipality(null);
     }
 }
