@@ -52,8 +52,7 @@ public class DriverServiceImpl implements EmployeeService {
         Position position = positionRepository.findByName(employeeDTO.getPosition().getName())
                 .orElse(new Position(employeeDTO.getPosition().getName()));
         position.addEmployee(driver);
-        Position dbPosition = positionRepository.save(position);
-        driver.setPosition(dbPosition);
+        positionRepository.save(position);
         Driver dbDriver = employeeRepository.save(driver);
         employeeDTO.setId(dbDriver.getId());
         employeeDTO.getPosition().setId(dbDriver.getPosition().getId());

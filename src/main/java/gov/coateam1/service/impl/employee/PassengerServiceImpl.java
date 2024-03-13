@@ -48,7 +48,7 @@ public class PassengerServiceImpl implements EmployeeService {
                 .orElse(new Position(employeeDTO.getPosition().getName()));
         position.addEmployee(passenger);
 
-        Position dbPosition = positionRepository.save(position);
+        positionRepository.save(position);
         Passenger dbPassenger = employeeRepository.save(passenger);
         employeeDTO.setId(dbPassenger.getId());
         employeeDTO.getPosition().setId(dbPassenger.getPosition().getId());
