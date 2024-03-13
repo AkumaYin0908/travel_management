@@ -10,7 +10,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 
 
 @Data
@@ -30,7 +30,7 @@ public abstract class Employee {
     @Column(name="name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="position")
     private Position position;
 
@@ -63,6 +63,16 @@ public abstract class Employee {
         travelOrders.add(travelOrder);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(position, employee.position) && Objects.equals(employeeType, employee.employeeType) && Objects.equals(travelOrders, employee.travelOrders);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, position, employeeType, travelOrders);
+    }
 }

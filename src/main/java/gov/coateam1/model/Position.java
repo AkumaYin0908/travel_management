@@ -24,7 +24,7 @@ public class Position {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},orphanRemoval = true)
     private List<Employee> employees;
 
     public Position(Long id, String name) {
@@ -36,11 +36,17 @@ public class Position {
         this.name = name;
     }
 
-    public void add(Employee employee){
+    public void addEmployee(Employee employee){
         if(employees == null){
             employees=new ArrayList<>();
         }
 
         employees.add(employee);
+        employee.setPosition(this);
+    }
+
+    public void removeEmployee(Employee employee){
+        employees.remove(employee);
+        employee.setPosition(null);
     }
 }
