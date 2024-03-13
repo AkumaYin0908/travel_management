@@ -10,7 +10,10 @@ import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
+import gov.coateam1.model.place.Barangay;
+import gov.coateam1.model.place.Municipality;
 import gov.coateam1.model.place.Place;
+import gov.coateam1.model.place.Province;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.payload.ReportToDTO;
 import gov.coateam1.payload.TravelOrderDTO;
@@ -21,7 +24,10 @@ import gov.coateam1.repository.ReportToRepository;
 import gov.coateam1.repository.TravelOrderRepository;
 import gov.coateam1.repository.VehicleRepository;
 import gov.coateam1.repository.employee.EmployeeRepository;
+import gov.coateam1.repository.place.BarangayRepository;
+import gov.coateam1.repository.place.MunicipalityRepository;
 import gov.coateam1.repository.place.PlaceRepository;
+import gov.coateam1.repository.place.ProvinceRepository;
 import gov.coateam1.service.PurposeService;
 import gov.coateam1.service.ReportToService;
 import gov.coateam1.service.TravelOrderService;
@@ -57,6 +63,9 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
     private final PlaceRepository placeRepository;
     private final ReportToRepository reportToRepository;
+    private final BarangayRepository barangayRepository;
+    private final MunicipalityRepository municipalityRepository;
+    private final ProvinceRepository provinceRepository;
 
 
 //    private TravelOrderDTO convertToDTO(TravelOrder travelOrder) {
@@ -102,9 +111,6 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 //    }
 
 
-
-
-
     @Override
     public List<TravelOrderDTO> findAll() {
         return travelOrderRepository.findAll().stream().map(travelOrderMapper::mapToDTO).toList();
@@ -139,53 +145,47 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         TravelOrder travelOrder = new TravelOrder();
 
         Driver driver = null;
-        Passenger passenger =  null;
-        if(optionalEmployee.isPresent()){
-            if(optionalEmployee.get().getEmployeeType().equals("DRIVER")){
-              driver = (Driver) optionalEmployee.get();
-            }else{
+        Passenger passenger = null;
+        if (optionalEmployee.isPresent()) {
+            if (optionalEmployee.get().getEmployeeType().equals("DRIVER")) {
+                driver = (Driver) optionalEmployee.get();
+            } else {
                 passenger = (Passenger) optionalEmployee.get();
             }
         }
 
 
-        travelOrder.setEmployee(driver == null ? passenger:driver);
+        travelOrder.setEmployee(driver == null ? passenger : driver);
+
+        Purpose purpose = purposeRepository.findByPurpose(travelOrderDTO.getPurpose().getPurpose()).orElse(new Purpose(travelOrderDTO.getPurpose().getPurpose()));
+        purpose.addTravelOrder(travelOrder);
+
 
         travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
         travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
         travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
 
+        Vehicle vehicle = vehicleRepository.findById(travelOrderDTO.getVehicle().getId()).orElseThrow(()->new ResourceNotFoundException("Vehicle","id",travelOrderDTO.getVehicle().getId()));
+        vehicle.addTravelOrder(travelOrder);
 
-        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
-        if(purpose.getId() == 0){
-            travelOrder.setPurpose(purposeRepository.save(purpose));
-        }else{
-            travelOrder.setPurpose(purpose);
+
+
+        for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
+            Place place = new Place();
+            place.setBuildingName(placeDTO.getBuildingName());
+            place.setDefaultPlace(placeDTO.getDefaultPlace());
+            Barangay barangay = barangayRepository.getReferenceById(placeDTO.getBarangay().getId());
+            Municipality municipality = municipalityRepository.getReferenceById(placeDTO.getMunicipality().getId());
+            Province province = provinceRepository.getReferenceById(placeDTO.getMunicipality().getId());
+            barangay.addPlace(place);
         }
 
-        Vehicle vehicle = modelMapper.map(travelOrderDTO.getVehicle(),Vehicle.class);
-        if(vehicle.getId() == 0){
-            travelOrder.setVehicle(vehicleRepository.save(vehicle));
-        }else{
-            travelOrder.setVehicle(vehicle);
-        }
-
-
-        for(PlaceDTO placeDTO : travelOrderDTO.getPlaces()){
-            Place place = modelMapper.map(placeDTO, Place.class);
-            if(place.getId() == 0){
-                travelOrder.addPlace(placeRepository.save(place));
-            }else{
-                travelOrder.addPlace(place);
-            }
-        }
-
-        for(ReportToDTO reportToDTO :travelOrderDTO.getReportTos()){
-            ReportTo reportTo = modelMapper.map(reportToDTO,ReportTo.class);
-            if(reportTo.getId() == 0){
-                travelOrder.addReportTos(reportToRepository.save(reportTo));
-            }else{
-                travelOrder.addReportTos(reportTo);
+        for (ReportToDTO reportToDTO : travelOrderDTO.getReportTos()) {
+            ReportTo reportTo = modelMapper.map(reportToDTO, ReportTo.class);
+            if (reportTo.getId() == 0) {
+                travelOrder.addReportTo(reportToRepository.save(reportTo));
+            } else {
+                travelOrder.addReportTo(reportTo);
             }
         }
 
@@ -205,45 +205,45 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
         Driver driver = null;
-        Passenger passenger =  null;
-        if(optionalEmployee.isPresent()){
-            if(optionalEmployee.get().getEmployeeType().equals("DRIVER")){
+        Passenger passenger = null;
+        if (optionalEmployee.isPresent()) {
+            if (optionalEmployee.get().getEmployeeType().equals("DRIVER")) {
                 driver = (Driver) optionalEmployee.get();
-            }else{
+            } else {
                 passenger = (Passenger) optionalEmployee.get();
             }
         }
 
-        travelOrder.setEmployee(driver ==null? passenger:driver);
+        travelOrder.setEmployee(driver == null ? passenger : driver);
 
         travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
         travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
         travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
         travelOrder.setLastTravel(DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
 
-        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
-        if(purpose.getId() == 0){
+        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(), Purpose.class);
+        if (purpose.getId() == 0) {
             travelOrder.setPurpose(purposeRepository.save(purpose));
-        }else{
+        } else {
             travelOrder.setPurpose(purpose);
         }
 
 
-        for(PlaceDTO placeDTO : travelOrderDTO.getPlaces()){
+        for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
             Place place = modelMapper.map(placeDTO, Place.class);
-            if(place.getId() == 0){
+            if (place.getId() == 0) {
                 travelOrder.addPlace(placeRepository.save(place));
-            }else{
+            } else {
                 travelOrder.addPlace(place);
             }
         }
 
-        for(ReportToDTO reportToDTO :travelOrderDTO.getReportTos()){
-            ReportTo reportTo = modelMapper.map(reportToDTO,ReportTo.class);
-            if(reportTo.getId() == 0){
-                travelOrder.addReportTos(reportToRepository.save(reportTo));
-            }else{
-                travelOrder.addReportTos(reportTo);
+        for (ReportToDTO reportToDTO : travelOrderDTO.getReportTos()) {
+            ReportTo reportTo = modelMapper.map(reportToDTO, ReportTo.class);
+            if (reportTo.getId() == 0) {
+                travelOrder.addReportTo(reportToRepository.save(reportTo));
+            } else {
+                travelOrder.addReportTo(reportTo);
             }
         }
 
