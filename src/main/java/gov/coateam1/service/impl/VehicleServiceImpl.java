@@ -21,10 +21,6 @@ public class VehicleServiceImpl implements VehicleService {
     private final ModelMapper modelMapper;
 
 
-
-
-
-
     @Override
     public List<VehicleDTO> findAll() {
         return vehicleRepository.findAll().stream().map(v->modelMapper.map(v, VehicleDTO.class)).toList();
@@ -60,9 +56,9 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleDTO add(VehicleDTO vehicleDTO) {
         Vehicle vehicle = modelMapper.map(vehicleDTO, Vehicle.class);
         Vehicle dbVehicle = vehicleRepository.save(vehicle);
-        vehicleDTO.setId(dbVehicle.getId());
 
-        return  vehicleDTO;
+
+        return  modelMapper.map(dbVehicle,VehicleDTO.class);
     }
 
     @Override
@@ -74,8 +70,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setType(vehicleDTO.getType());
         vehicle.setModel(vehicleDTO.getModel());
         vehicle.setPlateNo(vehicleDTO.getPlateNo());
-        vehicleRepository.save(vehicle);
-        return vehicleDTO;
+        Vehicle dbVehicle =vehicleRepository.save(vehicle);
+        return modelMapper.map(dbVehicle,VehicleDTO.class);
     }
 
     @Override
