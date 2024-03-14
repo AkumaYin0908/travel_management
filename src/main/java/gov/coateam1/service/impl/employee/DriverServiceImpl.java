@@ -48,15 +48,13 @@ public class DriverServiceImpl implements EmployeeService {
     public EmployeeDTO add(EmployeeDTO employeeDTO)  {
         Driver driver = new Driver();
         driver.setName(employeeDTO.getName());
-
-        Position position = positionRepository.findByName(employeeDTO.getPosition().getName())
+        Position position = positionRepository.findById(employeeDTO.getPosition().getId())
                 .orElse(new Position(employeeDTO.getPosition().getName()));
         position.addEmployee(driver);
         positionRepository.save(position);
         Driver dbDriver = employeeRepository.save(driver);
-        employeeDTO.setId(dbDriver.getId());
-        employeeDTO.getPosition().setId(dbDriver.getPosition().getId());
-        return employeeDTO;
+
+        return modelMapper.map(dbDriver,EmployeeDTO.class);
     }
 
     @Override
@@ -71,9 +69,8 @@ public class DriverServiceImpl implements EmployeeService {
         Driver driver = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Driver", "id", id));
         driver.setName(employeeDTO.getName());
         driver.setPosition(modelMapper.map(employeeDTO.getPosition(),Position.class));
-        employeeRepository.save(driver);
-        employeeDTO.setId(id);
-        return employeeDTO;
+        Driver dbDriver = employeeRepository.save(driver);
+        return modelMapper.map(dbDriver,EmployeeDTO.class);
     }
 
     @Override

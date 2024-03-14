@@ -50,9 +50,8 @@ public class PassengerServiceImpl implements EmployeeService {
 
         positionRepository.save(position);
         Passenger dbPassenger = employeeRepository.save(passenger);
-        employeeDTO.setId(dbPassenger.getId());
-        employeeDTO.getPosition().setId(dbPassenger.getPosition().getId());
-        return employeeDTO;
+
+        return modelMapper.map(dbPassenger,EmployeeDTO.class);
     }
 
     @Override
@@ -69,9 +68,8 @@ public class PassengerServiceImpl implements EmployeeService {
         Passenger passenger = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Passenger", "id", id));
         passenger.setName(employeeDTO.getName());
         passenger.setPosition(modelMapper.map(employeeDTO.getPosition(), Position.class));
-        employeeRepository.save(passenger);
-        employeeDTO.setId(id);
-        return employeeDTO;
+        Passenger dbPassenger = employeeRepository.save(passenger);
+       return modelMapper.map(dbPassenger,EmployeeDTO.class);
 
 
     }
