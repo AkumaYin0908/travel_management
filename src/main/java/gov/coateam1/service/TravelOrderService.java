@@ -18,20 +18,20 @@ public interface TravelOrderService {
 
     TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id, Long employeeId) throws Exception;
 
-    List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id);
-
-    List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id);
-
-    List<TravelOrderDTO> findByBuildingName(String buildingName);
-
-    List<TravelOrderDTO> findByBarangay(String barangay);
-
-    List<TravelOrderDTO> findByMunicipality(String municipality);
-
-    List<TravelOrderDTO> findByProvince(String province);
-
-
-    LocalDate findByNameOrderByDateReturnDESC(String name,LocalDate dateReturn);
+//    List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id);
+//
+//    List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id);
+//
+//    List<TravelOrderDTO> findByBuildingName(String buildingName);
+//
+//    List<TravelOrderDTO> findByBarangay(String barangay);
+//
+//    List<TravelOrderDTO> findByMunicipality(String municipality);
+//
+//    List<TravelOrderDTO> findByProvince(String province);
+//
+//
+//    LocalDate findByNameOrderByDateReturnDESC(String name,LocalDate dateReturn);
 
     void delete(Long id);
 
