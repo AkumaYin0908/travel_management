@@ -149,13 +149,16 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         if (optionalEmployee.isPresent()) {
             if (optionalEmployee.get().getEmployeeType().equals("DRIVER")) {
                 driver = (Driver) optionalEmployee.get();
+                driver.addTravelOrder(travelOrder);
             } else {
                 passenger = (Passenger) optionalEmployee.get();
+                passenger.addTravelOrder(travelOrder);
             }
         }
 
 
         travelOrder.setEmployee(driver == null ? passenger : driver);
+
 
         Purpose purpose = purposeRepository.findByPurpose(travelOrderDTO.getPurpose().getPurpose()).orElse(new Purpose(travelOrderDTO.getPurpose().getPurpose()));
         purpose.addTravelOrder(travelOrder);
@@ -171,29 +174,41 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
 
         for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
-            Place place = new Place();
+            Place place = placeRepository.findById(placeDTO.getId()).orElse(new Place());
+
             place.setBuildingName(placeDTO.getBuildingName());
             place.setDefaultPlace(placeDTO.getDefaultPlace());
-            Barangay barangay = barangayRepository.getReferenceById(placeDTO.getBarangay().getId());
+            if(placeDTO.getBarangay() == null){
+                place.setBarangay(null);
+            }else{
+                Barangay barangay = barangayRepository.getReferenceById(placeDTO.getBarangay().getId());
+                barangay.addPlace(place);
+                place.setBarangay(barangay);
+            }
+
             Municipality municipality = municipalityRepository.getReferenceById(placeDTO.getMunicipality().getId());
+            municipality.addPlace(place);
             Province province = provinceRepository.getReferenceById(placeDTO.getMunicipality().getId());
-            barangay.addPlace(place);
+            province.addPlace(place);
+
+
+            place.setMunicipality(municipality);
+            place.setProvince(province);
+            place.addTravelOrder(travelOrder);
+            travelOrder.addPlace(place);
         }
 
         for (ReportToDTO reportToDTO : travelOrderDTO.getReportTos()) {
-            ReportTo reportTo = modelMapper.map(reportToDTO, ReportTo.class);
-            if (reportTo.getId() == 0) {
-                travelOrder.addReportTo(reportToRepository.save(reportTo));
-            } else {
-                travelOrder.addReportTo(reportTo);
-            }
+            ReportTo reportTo = reportToRepository.findById(reportToDTO.getId()).orElse(new ReportTo(reportToDTO.getName()));
+            reportTo.addTravelOrder(travelOrder);
+            travelOrder.addReportTo(reportTo);
         }
 
         travelOrder.setLastTravel(DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
 
         TravelOrder dbTravelOrder = travelOrderRepository.save(travelOrder);
-        travelOrderDTO.setId(dbTravelOrder.getId());
-        return travelOrderDTO;
+
+        return travelOrderMapper.mapToDTO(dbTravelOrder);
     }
 
     @Override
@@ -253,44 +268,43 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     }
 
-    @Override
-    public List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id) {
-        return travelOrderRepository.findTravelOrderAndReportTosById(id).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id) {
-        return travelOrderRepository.findTravelOrderAndPlacesById(id).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public List<TravelOrderDTO> findByBuildingName(String buildingName) {
-        return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public List<TravelOrderDTO> findByBarangay(String barangay) {
-        return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public List<TravelOrderDTO> findByMunicipality(String municipality) {
-        return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public List<TravelOrderDTO> findByProvince(String province) {
-        return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province).stream().map(travelOrderMapper::mapToDTO).toList();
-    }
-
-    @Override
-    public LocalDate findByNameOrderByDateReturnDESC(String name, LocalDate dateReturn) {
-        return travelOrderRepository.findByNameOrderByDateReturnDESC(name).orElse(dateReturn);
-    }
+//    @Override
+//    public List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id) {
+//        return travelOrderRepository.findTravelOrderAndReportTosById(id).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TravelOrderDTO> findTravelOrderAndPlacesById(Long id) {
+//        return travelOrderRepository.findTravelOrderAndPlacesById(id).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TravelOrderDTO> findByBuildingName(String buildingName) {
+//        return travelOrderRepository.findTravelOrderAndPlacesByBuildingName(buildingName).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TravelOrderDTO> findByBarangay(String barangay) {
+//        return travelOrderRepository.findTravelOrderAndPlacesByBarangayName(barangay).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TravelOrderDTO> findByMunicipality(String municipality) {
+//        return travelOrderRepository.findTravelOrderAndPlacesByMunicipalityName(municipality).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TravelOrderDTO> findByProvince(String province) {
+//        return travelOrderRepository.findTravelOrderAndPlacesByProvinceName(province).stream().map(travelOrderMapper::mapToDTO).toList();
+//    }
+//
+//    @Override
+//    public LocalDate findByNameOrderByDateReturnDESC(String name, LocalDate dateReturn) {
+//        return travelOrderRepository.findByNameOrderByDateReturnDESC(name).orElse(dateReturn);
+//    }
 
     @Override
     public void delete(Long id) {
-
         travelOrderRepository.deleteById(id);
     }
 }
