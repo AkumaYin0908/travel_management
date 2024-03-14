@@ -32,7 +32,6 @@ public class ReportTo {
     private List<TravelOrder> travelOrders;
 
 
-
     public ReportTo(String name) {
         this.name = name;
     }
@@ -40,5 +39,17 @@ public class ReportTo {
     public ReportTo(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public void addTravelOrder(TravelOrder travelOrder){
+        if(travelOrders == null){
+            travelOrders = new ArrayList<>();
+        }
+
+        travelOrders.add(travelOrder);
+    }
+
+    public  void removeTravelOrder(TravelOrder travelOrder){
+        travelOrders.remove(travelOrder);
     }
 }

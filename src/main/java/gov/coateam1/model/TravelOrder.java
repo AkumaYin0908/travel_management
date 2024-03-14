@@ -84,7 +84,6 @@ public class TravelOrder {
         if (places == null) {
             places = new ArrayList<>();
         }
-
         places.add(place);
     }
 
@@ -98,6 +97,7 @@ public class TravelOrder {
         }
         reportTos.add(reportTo);
     }
+
 
     public void removeReportTo(ReportTo reportTo){
         reportTos.remove(reportTo);

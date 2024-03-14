@@ -45,7 +45,6 @@ public class Place {
     @JoinTable(name="place_tripticket",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
-    @Getter(AccessLevel.NONE)
     private List<TripTicket> tripTickets;
 
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
@@ -58,7 +57,6 @@ public class Place {
 //            @JoinColumn(name="place_id", referencedColumnName = "id")},
 //            inverseJoinColumns = {
 //            @JoinColumn(name="travelorder_id",referencedColumnName = "id")})
-    @Getter(AccessLevel.NONE)
     private List<TravelOrder> travelOrders;
 
     public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, String defaultPlace) {
@@ -74,11 +72,27 @@ public class Place {
         this.defaultPlace  = defaultPlace;
     }
 
-    public List<TripTicket> getTripTickets() {
-        return tripTickets == null ? new ArrayList<>() : tripTickets;
+    public void addTravelOrder(TravelOrder travelOrder){
+        if(travelOrders == null){
+            travelOrders = new ArrayList<>();
+        }
+        travelOrders.add(travelOrder);
     }
 
-    public List<TravelOrder> getTravelOrders() {
-        return travelOrders == null ? new ArrayList<>() : travelOrders;
+    public void addTripTicket(TripTicket tripTicket){
+        if(tripTickets == null){
+            tripTickets = new ArrayList<>();
+        }
+        tripTickets.add(tripTicket);
     }
+
+    public void removeTravelOrder(TravelOrder travelOrder){
+        travelOrders.remove(travelOrder);
+    }
+
+    public void removeTripTicket(TripTicket tripTicket){
+        tripTickets.remove(tripTicket);
+    }
+
+
 }
