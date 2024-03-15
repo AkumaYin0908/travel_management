@@ -16,26 +16,21 @@ import java.util.List;
 public class Barangay {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="brgy_code")
+    private String brgyCode;
 
 
-    @Column(name="name")
-    private String name;
+    @Column(name="brgy_name")
+    private String brgyName;
+
 
     @OneToMany(mappedBy = "barangay",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
 
-
-    public Barangay(String name) {
-        this.name = name;
-    }
-
-    public Barangay(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public Barangay(String brgyCode, String brgyName) {
+        this.brgyCode = brgyCode;
+        this.brgyName = brgyName;
     }
 
     public void addPlace(Place place){

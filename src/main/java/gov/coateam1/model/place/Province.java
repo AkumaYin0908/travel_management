@@ -16,24 +16,23 @@ import java.util.List;
 public class Province {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="province_code")
+    private String provinceCode;
 
 
     @Column(name="name")
-    private String name;
+    private String provinceName;
 
     @OneToMany(mappedBy = "province",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
-    public Province(String name) {
-        this.name = name;
+    public Province(String provinceName) {
+        this.provinceName = provinceName;
     }
 
-    public Province(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public Province(String provinceCode, String provinceName) {
+        this.provinceCode = provinceCode;
+        this.provinceName = provinceName;
     }
 
     public void addPlace(Place place){

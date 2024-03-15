@@ -15,27 +15,21 @@ import java.util.List;
 public class Municipality {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name="municipality_code")
+    private String municipalityCode;
 
 
-    @Column(name="name")
-    private String name;
+    @Column(name="municipality_name")
+    private String municipalityName;
 
 
     @OneToMany(mappedBy = "municipality",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
-    public Municipality(String name) {
-        this.name = name;
+    public Municipality(String municipalityCode, String municipalityName) {
+        this.municipalityCode = municipalityCode;
+        this.municipalityName = municipalityName;
     }
-
-    public Municipality(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
 
     public void addPlace(Place place){
         if(places==null){
