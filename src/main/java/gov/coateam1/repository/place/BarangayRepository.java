@@ -11,8 +11,7 @@ import java.util.Optional;
 @Repository
 public interface BarangayRepository extends JpaRepository<Barangay,Long> {
 
-    @Query("SELECT b FROM Barangay b WHERE b.name = :name")
-    Optional<Barangay> findByName(@Param("name")String name);
+
 
 
 }

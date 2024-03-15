@@ -12,6 +12,5 @@ import java.util.Optional;
 @Repository
 public interface ProvinceRepository extends JpaRepository<Province,Long> {
 
-    @Query("SELECT p FROM Province p WHERE p.name = :name")
-    Optional<Province> findByname(@Param("name")String name);
+
 }

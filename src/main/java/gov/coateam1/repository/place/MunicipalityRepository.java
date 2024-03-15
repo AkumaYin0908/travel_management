@@ -12,6 +12,4 @@ import java.util.Optional;
 @Repository
 public interface MunicipalityRepository extends JpaRepository<Municipality,Long> {
 
-    @Query("SELECT m FROM Municipality m WHERE m.name = :name")
-    Optional<Municipality> findByName(@Param("name")String name);
 }
