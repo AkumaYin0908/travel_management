@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
+@Data
 @NoArgsConstructor
-public class PositionDTO extends BasicDTO{
+@AllArgsConstructor
+public class PositionDTO{
 
-    public PositionDTO(Long id, String name) {
-        super(id, name);
-    }
+    private Long id;
+    private String name;
+
+
 }
