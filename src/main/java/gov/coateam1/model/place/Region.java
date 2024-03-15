@@ -24,6 +24,10 @@ public class Region {
     @OneToMany(mappedBy = "region",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
+    public Region(String regionCode, String regionName) {
+        this.regionCode = regionCode;
+        this.regionName = regionName;
+    }
 
     public void addPlace(Place place){
         if(places==null){
