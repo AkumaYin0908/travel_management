@@ -1,6 +1,8 @@
 package gov.coateam1.service.impl;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.coateam1.constants.AppConstant;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.mapper.TravelOrderMapper;
 import gov.coateam1.model.Purpose;
@@ -10,15 +12,9 @@ import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
-import gov.coateam1.model.place.Barangay;
-import gov.coateam1.model.place.Municipality;
-import gov.coateam1.model.place.Place;
-import gov.coateam1.model.place.Province;
-import gov.coateam1.payload.PurposeDTO;
-import gov.coateam1.payload.ReportToDTO;
-import gov.coateam1.payload.TravelOrderDTO;
-import gov.coateam1.payload.VehicleDTO;
-import gov.coateam1.payload.place.PlaceDTO;
+import gov.coateam1.model.place.*;
+import gov.coateam1.payload.*;
+import gov.coateam1.payload.place.*;
 import gov.coateam1.repository.PurposeRepository;
 import gov.coateam1.repository.ReportToRepository;
 import gov.coateam1.repository.TravelOrderRepository;
@@ -34,6 +30,7 @@ import gov.coateam1.service.TravelOrderService;
 import gov.coateam1.service.VehicleService;
 import gov.coateam1.service.place.PlaceService;
 import gov.coateam1.util.DateTimeConverter;
+import gov.coateam1.util.JSONDataLoader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -42,9 +39,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -66,6 +61,12 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private final BarangayRepository barangayRepository;
     private final MunicipalityRepository municipalityRepository;
     private final ProvinceRepository provinceRepository;
+
+    private final ObjectMapper objectMapper;
+
+    private final JSONDataLoader jsonDataLoader;
+
+
 
 
 //    private TravelOrderDTO convertToDTO(TravelOrder travelOrder) {
@@ -139,6 +140,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     @Override
     @Transactional
     public TravelOrderDTO add(Long employeeId, TravelOrderDTO travelOrderDTO) throws Exception {
+
         Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
         Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
@@ -173,27 +175,42 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
 
 
+
+
         for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
             Place place = placeRepository.findById(placeDTO.getId()).orElse(new Place());
 
             place.setBuildingName(placeDTO.getBuildingName());
             place.setDefaultPlace(placeDTO.getDefaultPlace());
+
+            Map<String, BarangayDTO> barangayDTOMap = jsonDataLoader.fetchAsMap(AppConstant.BARANGAY_JSON, BarangayDTO.class);
+            BarangayDTO barangayDTO = barangayDTOMap.get(placeDTO.getBarangay().getCode());
             if(placeDTO.getBarangay() == null){
                 place.setBarangay(null);
             }else{
-                Barangay barangay = barangayRepository.getReferenceById(placeDTO.getBarangay().getId());
+                Barangay barangay =new Barangay(barangayDTO.getCode(),barangayDTO.getName());
                 barangay.addPlace(place);
                 place.setBarangay(barangay);
             }
 
-            Municipality municipality = municipalityRepository.getReferenceById(placeDTO.getMunicipality().getId());
+            Map<String,MunicipalityDTO> municipalityDTOMap = jsonDataLoader.fetchAsMap(AppConstant.MUNICIPALITY_JSON,MunicipalityDTO.class);
+            MunicipalityDTO municipalityDTO = municipalityDTOMap.get(placeDTO.getMunicipality().getCode());
+            Municipality municipality = new Municipality(municipalityDTO.getCode(),municipalityDTO.getName());
             municipality.addPlace(place);
-            Province province = provinceRepository.getReferenceById(placeDTO.getMunicipality().getId());
-            province.addPlace(place);
-
-
             place.setMunicipality(municipality);
+
+            Map<String,ProvinceDTO> provinceDTOMap = jsonDataLoader.fetchAsMap(AppConstant.PROVINCE_JSON,ProvinceDTO.class);
+            ProvinceDTO provinceDTO = provinceDTOMap.get(placeDTO.getProvince().getCode());
+            Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+            province.addPlace(place);
             place.setProvince(province);
+
+            Map<String, RegionDTO> regionDTOMap = jsonDataLoader.fetchAsMap(AppConstant.REGION_JSON,RegionDTO.class);
+            RegionDTO regionDTO = regionDTOMap.get(placeDTO.getRegionDTO().getCode());
+            Region region = new Region(regionDTO.getCode(),regionDTO.getName());
+            region.addPlace(place);
+            place.setRegion(region);
+
             place.addTravelOrder(travelOrder);
             travelOrder.addPlace(place);
         }
