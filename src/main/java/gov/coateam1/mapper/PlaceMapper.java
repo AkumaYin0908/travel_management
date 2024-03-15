@@ -1,14 +1,7 @@
 package gov.coateam1.mapper;
 
-import gov.coateam1.model.place.Barangay;
-import gov.coateam1.model.place.Municipality;
-import gov.coateam1.model.place.Place;
-import gov.coateam1.model.place.Province;
-import gov.coateam1.payload.BasicDTO;
-import gov.coateam1.payload.place.BarangayDTO;
-import gov.coateam1.payload.place.MunicipalityDTO;
-import gov.coateam1.payload.place.PlaceDTO;
-import gov.coateam1.payload.place.ProvinceDTO;
+import gov.coateam1.model.place.*;
+import gov.coateam1.payload.place.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,28 +10,36 @@ import org.springframework.stereotype.Component;
 public class PlaceMapper {
 
     public BarangayDTO toBarangayDTO(Barangay barangay){
-       return barangay == null ? null : new BarangayDTO(barangay.getId(),barangay.getName());
+       return barangay == null ? null : new BarangayDTO(barangay.getBrgyCode(),barangay.getBrgyName());
     }
 
     public Barangay toBarangay(BarangayDTO barangayDTO){
 
-        return barangayDTO==null ? null : new Barangay(barangayDTO.getId(),barangayDTO.getName());
+        return barangayDTO==null ? null : new Barangay(barangayDTO.getCode(),barangayDTO.getName());
     }
 
     public MunicipalityDTO toMunicipalityDTO(Municipality municipality){
-        return new MunicipalityDTO(municipality.getId(),municipality.getName());
+        return municipality == null ? null : new MunicipalityDTO(municipality.getMunicipalityCode(),municipality.getMunicipalityName());
     }
 
     public Municipality toMunicipality(MunicipalityDTO municipalityDTO){
-        return new Municipality(municipalityDTO.getId(),municipalityDTO.getName());
+        return municipalityDTO == null ? null : new Municipality(municipalityDTO.getCode(),municipalityDTO.getName());
     }
 
     public ProvinceDTO toProvinceDTO(Province province){
-        return new ProvinceDTO(province.getId(),province.getName());
+        return province == null ? null : new ProvinceDTO(province.getProvinceCode(),province.getProvinceName());
     }
 
     public Province toProvince(ProvinceDTO provinceDTO){
-        return new Province(provinceDTO.getId(),provinceDTO.getName());
+        return provinceDTO == null ? null : new Province(provinceDTO.getCode(),provinceDTO.getName());
+    }
+
+    public RegionDTO regionDTO(Region region){
+        return region == null ? null : new RegionDTO(region.getRegionCode(),region.getRegionName());
+    }
+
+    public Region toRegion(RegionDTO regionDTO){
+        return regionDTO == null ? null : new Region(regionDTO.getCode(),regionDTO.getName());
     }
 
 
@@ -46,24 +47,40 @@ public class PlaceMapper {
 
 
     public Place mapToModel(PlaceDTO placeDTO){
+        if(!placeDTO.getDefaultPlace().isEmpty()){
+            return new Place(placeDTO.getDefaultPlace());
+        }
+
         Barangay barangay=this.toBarangay(placeDTO.getBarangay());
         Municipality municipality=this.toMunicipality(placeDTO.getMunicipality());
         Province province=this.toProvince(placeDTO.getProvince());
+        Region region = this.toRegion(placeDTO.getRegionDTO());
 
         return new Place(placeDTO.getId(), placeDTO.getBuildingName(),
-                barangay, municipality, province,placeDTO.getDefaultPlace());
+                barangay, municipality, province,region);
     }
 
     public PlaceDTO mapToDTO(Place place){
+        if(!place.getDefaultPlace().isEmpty()){
+            return new PlaceDTO(place.getDefaultPlace());
+        }
+
         BarangayDTO barangayDTO = this.toBarangayDTO(place.getBarangay());
         MunicipalityDTO municipalityDTO = this.toMunicipalityDTO(place.getMunicipality());
         ProvinceDTO provinceDTO = this.toProvinceDTO(place.getProvince());
+        RegionDTO regionDTO = this.regionDTO(place.getRegion());
 
         return new PlaceDTO(place.getId(), place.getBuildingName(),
-        barangayDTO,municipalityDTO,provinceDTO, place.getDefaultPlace());
+        barangayDTO,municipalityDTO,provinceDTO,regionDTO);
     }
 
     public void  mapToModel(PlaceDTO placeDTO, Place place){
+
+        if(!place.getDefaultPlace().isEmpty()){
+            place.setDefaultPlace(placeDTO.getDefaultPlace());
+            return;
+        }
+
         Barangay barangay=this.toBarangay(placeDTO.getBarangay());
         Municipality municipality=this.toMunicipality(placeDTO.getMunicipality());
         Province province=this.toProvince(placeDTO.getProvince());
@@ -72,7 +89,7 @@ public class PlaceMapper {
         place.setBarangay(barangay);
         place.setMunicipality(municipality);
         place.setProvince(province);
-        place.setDefaultPlace(placeDTO.getDefaultPlace());
+
     }
 
 
