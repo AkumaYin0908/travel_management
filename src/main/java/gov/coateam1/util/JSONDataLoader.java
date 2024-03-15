@@ -21,26 +21,46 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class JSONDataLoader<T extends BasicDTO> {
+public class JSONDataLoader {
 
     private final ObjectMapper objectMapper;
 
-    public Set<T> fetchAsSet(String fileName,Class<T> clazz) throws Exception {
+    public <T extends BasicDTO> Set<T> fetchAsSet(String fileName,Class<T> clazz) throws Exception {
         Set<T>  set = new HashSet<>();
         JsonNode jsonNode;
-        try(InputStream inputStream = TypeReference.class.getResourceAsStream(fileName)){
+        try(InputStream inputStream = TypeReference.class.getResourceAsStream(String.format("/%s",fileName))){
             jsonNode = objectMapper.readValue(inputStream,JsonNode.class);
         }catch (IOException ex){
             throw  new JSONDataException(fileName,clazz.getName());
         }
         Iterator<JsonNode> iterator = jsonNode.elements();
         while(iterator.hasNext()){
-           set.add(createObjectFROMJSON(jsonNode,clazz));
+           set.add(createObjectFROMJSON(iterator.next(),clazz));
         }
         return set;
     }
 
-    public List<T> fetchAsList(String fileName,Class<T> clazz) throws Exception {
+    public <T extends BasicDTO>Map fetchAsMap(String fileName, Class<T> clazz) throws Exception {
+
+        Map<String,T> map = new HashMap<>();
+        JsonNode jsonNode;
+
+        try(InputStream inputStream = TypeReference.class.getResourceAsStream(String.format("/%s",fileName))){
+            jsonNode = objectMapper.readValue(inputStream,JsonNode.class);
+        }catch (IOException ex){
+            throw  new JSONDataException(fileName,clazz.getName());
+        }
+        Iterator<JsonNode> iterator = jsonNode.elements();
+
+        while(iterator.hasNext()){
+            T object = createObjectFROMJSON(iterator.next(),clazz);
+            String code = object.getCode();
+            map.put(code,object);
+        }
+        return map;
+    }
+
+    public <T extends BasicDTO> List<T> fetchAsList(String fileName,Class<T> clazz) throws Exception {
         List<T> list=new ArrayList<>();
         JsonNode jsonNode;
         try(InputStream inputStream = TypeReference.class.getResourceAsStream(fileName)){
@@ -50,14 +70,14 @@ public class JSONDataLoader<T extends BasicDTO> {
         }
         Iterator<JsonNode> iterator = jsonNode.elements();
         while(iterator.hasNext()){
-            list.add(createObjectFROMJSON(jsonNode,clazz));
+            list.add(createObjectFROMJSON(iterator.next(),clazz));
         }
         return list;
     }
 
 
 
-    private T createObjectFROMJSON(JsonNode jsonNode,Class<T> clazz) throws Exception{
+    private <T extends BasicDTO> T createObjectFROMJSON(JsonNode jsonNode, Class<T> clazz) throws Exception{
         T type = clazz.getDeclaredConstructor().newInstance();
 
         if (type instanceof BarangayDTO){
