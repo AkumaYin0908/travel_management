@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class ReportToDTO extends BasicDTO {
+public class ReportToDTO{
 
-    public ReportToDTO(Long id, String name) {
-        super(id, name);
-    }
+    private Long id;
+    private String name;
+
 }
