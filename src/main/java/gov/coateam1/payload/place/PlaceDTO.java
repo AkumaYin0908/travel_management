@@ -16,6 +16,7 @@ public class PlaceDTO {
     private BarangayDTO barangay;
     private MunicipalityDTO municipality;
     private ProvinceDTO province;
+    private RegionDTO regionDTO;
     private String defaultPlace;
 
 }
