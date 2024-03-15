@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class PlaceDTO {
 
@@ -19,4 +18,16 @@ public class PlaceDTO {
     private RegionDTO regionDTO;
     private String defaultPlace;
 
+    public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO regionDTO) {
+        this.id = id;
+        this.buildingName = buildingName;
+        this.barangay = barangay;
+        this.municipality = municipality;
+        this.province = province;
+        this.regionDTO = regionDTO;
+    }
+
+    public PlaceDTO(String defaultPlace) {
+        this.defaultPlace = defaultPlace;
+    }
 }
