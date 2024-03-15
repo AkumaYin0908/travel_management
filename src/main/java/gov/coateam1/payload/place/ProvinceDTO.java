@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProvinceDTO extends BasicDTO{
 
-   private String psgcCode;
+   private String regionCode;
 
-   public ProvinceDTO(String code, String name, String psgcCode) {
+   public ProvinceDTO(String code, String name, String regionCode) {
       super(code, name);
-      this.psgcCode = psgcCode;
+      this.regionCode = regionCode;
    }
 
    public ProvinceDTO(String code) {

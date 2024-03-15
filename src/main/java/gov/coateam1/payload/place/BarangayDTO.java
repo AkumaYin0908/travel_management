@@ -7,20 +7,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class BarangayDTO extends BasicDTO {
 
     private String cityCode;
-    private String provinceCode;
-
 
     public BarangayDTO(String code) {
         super(code);
     }
 
-    public BarangayDTO(String code, String name, String cityCode, String provinceCode) {
+    public BarangayDTO(String code, String name, String cityCode) {
         super(code, name);
         this.cityCode = cityCode;
-        this.provinceCode = provinceCode;
     }
 }
