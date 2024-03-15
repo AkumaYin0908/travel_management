@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public abstract class BasicDTO {
 
-    private Long id;
+    private String code;
     private String name;
+
+
+    public BasicDTO(String code) {
+        this.code = code;
+    }
 }
