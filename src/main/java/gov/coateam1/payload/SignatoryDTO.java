@@ -5,17 +5,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Data
 @NoArgsConstructor
-public class SignatoryDTO extends BasicDTO{
+public class SignatoryDTO{
 
-
+    private Long id;
+    private String name;
     private String position;
     private boolean active;
 
     public SignatoryDTO(Long id, String name, String position, boolean active) {
-        super(id, name);
+        this.id = id;
+        this.name = name;
         this.position = position;
         this.active = active;
     }
