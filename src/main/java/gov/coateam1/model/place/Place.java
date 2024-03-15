@@ -25,17 +25,21 @@ public class Place {
     @Column(name="building_name")
     private String buildingName;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="barangay")
     private Barangay barangay;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="municipality")
     private Municipality municipality;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="province")
     private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="region")
+    private Region region;
 
     @Column(name="default_place")
     private String defaultPlace;
