@@ -20,11 +20,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-
     public ResponseEntity<APIResponse> exceptionHandler(Exception ex){
         String message = ex.getMessage();
         APIResponse apiResponse = new APIResponse(message,false,HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         return new ResponseEntity<>(apiResponse,HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(JSONDataException.class)
+    public ResponseEntity<APIResponse> exceptionHandler(JSONDataException ex){
+        String message = ex.getMessage();
+
+        APIResponse apiResponse = new APIResponse(message,false,HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        return  new ResponseEntity<>(apiResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
 }
