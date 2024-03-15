@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface ProvinceRepository extends JpaRepository<Province,Long> {
+public interface ProvinceRepository extends JpaRepository<Province,String> {
 
 
 }

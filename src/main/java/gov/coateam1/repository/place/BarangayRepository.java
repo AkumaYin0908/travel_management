@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BarangayRepository extends JpaRepository<Barangay,Long> {
+public interface BarangayRepository extends JpaRepository<Barangay,String> {
 
 
 
