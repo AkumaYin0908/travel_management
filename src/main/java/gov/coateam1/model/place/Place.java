@@ -63,13 +63,13 @@ public class Place {
 //            @JoinColumn(name="travelorder_id",referencedColumnName = "id")})
     private List<TravelOrder> travelOrders;
 
-    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, String defaultPlace) {
+    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, Region region) {
         this.id = id;
         this.buildingName = buildingName;
         this.barangay = barangay;
         this.municipality = municipality;
         this.province = province;
-        this.defaultPlace = defaultPlace;
+        this.region = region;
     }
 
     public Place(String defaultPlace) {
