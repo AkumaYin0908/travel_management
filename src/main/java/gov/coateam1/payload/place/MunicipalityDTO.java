@@ -15,6 +15,10 @@ public class MunicipalityDTO extends BasicDTO {
         super(code);
     }
 
+    public MunicipalityDTO(String code, String name) {
+        super(code, name);
+    }
+
     public MunicipalityDTO(String code, String name, String provinceCode) {
         super(code, name);
         this.provinceCode = provinceCode;

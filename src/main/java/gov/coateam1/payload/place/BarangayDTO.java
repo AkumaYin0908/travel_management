@@ -15,6 +15,10 @@ public class BarangayDTO extends BasicDTO {
         super(code);
     }
 
+    public BarangayDTO(String code, String name) {
+        super(code, name);
+    }
+
     public BarangayDTO(String code, String name, String cityCode) {
         super(code, name);
         this.cityCode = cityCode;
