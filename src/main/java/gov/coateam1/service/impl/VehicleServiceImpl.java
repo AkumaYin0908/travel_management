@@ -1,7 +1,6 @@
 package gov.coateam1.service.impl;
 
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.mapper.VehicleMapper;
 import gov.coateam1.model.Vehicle;
 import gov.coateam1.payload.VehicleDTO;
 import gov.coateam1.repository.VehicleRepository;

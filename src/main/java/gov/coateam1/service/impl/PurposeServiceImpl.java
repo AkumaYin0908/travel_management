@@ -1,9 +1,7 @@
 package gov.coateam1.service.impl;
 
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.mapper.PurposeMapper;
 import gov.coateam1.model.Purpose;
-import gov.coateam1.model.TravelOrder;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.repository.PurposeRepository;
 import gov.coateam1.service.PurposeService;

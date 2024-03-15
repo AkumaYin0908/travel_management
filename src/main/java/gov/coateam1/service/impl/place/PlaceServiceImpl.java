@@ -1,7 +1,6 @@
 package gov.coateam1.service.impl.place;
 
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.mapper.PlaceMapper;
 import gov.coateam1.model.place.Place;
 import gov.coateam1.payload.place.PlaceDTO;
 import gov.coateam1.repository.place.PlaceRepository;

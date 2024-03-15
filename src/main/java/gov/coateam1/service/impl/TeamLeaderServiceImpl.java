@@ -2,7 +2,6 @@ package gov.coateam1.service.impl;
 
 import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.mapper.SignatoryMapper;
 import gov.coateam1.model.signatory.TeamLeader;
 import gov.coateam1.repository.TeamLeaderRepository;
 import gov.coateam1.service.TeamLeaderService;
@@ -11,7 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.List;
 import java.util.Optional;
