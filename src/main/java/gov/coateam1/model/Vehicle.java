@@ -37,11 +37,11 @@ public class Vehicle {
 
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<TravelOrder> travelOrders;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vehicle",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<TripTicket> tripTickets;
 
     public Vehicle(Long id, String brand, String model, String type, String plateNo) {

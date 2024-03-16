@@ -25,11 +25,11 @@ public class Purpose {
     private String purpose;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<TravelOrder> travelOrders;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<TripTicket> tripTickets;
 
 

@@ -41,7 +41,7 @@ public abstract class Employee {
     private String employeeType;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<TravelOrder> travelOrders;
 
     public Employee(Long id, String name, Position position) {

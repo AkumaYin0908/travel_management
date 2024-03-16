@@ -22,7 +22,7 @@ public class Municipality {
     private String municipalityName;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "municipality",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "municipality",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<Place> places;
 
     public Municipality(String municipalityCode, String municipalityName) {

@@ -22,7 +22,7 @@ public class Region {
     private String regionName;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "region",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "region",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<Place> places;
 
     public Region(String regionCode, String regionName) {

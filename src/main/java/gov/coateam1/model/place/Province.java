@@ -23,7 +23,7 @@ public class Province {
     private String provinceName;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "province",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToMany(mappedBy = "province",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<Place> places;
 
     public Province(String provinceName) {
