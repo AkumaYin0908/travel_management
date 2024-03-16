@@ -19,8 +19,10 @@ import gov.coateam1.service.VehicleService;
 import gov.coateam1.service.employee.EmployeeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,6 +36,7 @@ public class TravelOrderMapper {
    private final VehicleMapper vehicleMapper;
    private final ReportToMapper reportToMapper;
    private final PurposeMapper purposeMapper;
+   private final ModelMapper modelMapper;
 
    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
    public  TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) {
@@ -54,8 +57,18 @@ public class TravelOrderMapper {
       List<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).toList();
       VehicleDTO vehicleDTO =vehicleMapper.mapToDTO(travelOrder.getVehicle());
 
-      return new TravelOrderDTO(travelOrder.getId(),dateTimeFormatter.format(travelOrder.getDateIssued()),
-              dateTimeFormatter.format(travelOrder.getDateDeparture()),dateTimeFormatter.format(travelOrder.getDateReturn()),purposeDTO,vehicleDTO,reportToDTOS,placeDTOS,dateTimeFormatter.format(travelOrder.getLastTravel()));
+      EmployeeDTO employeeDTO = modelMapper.map(travelOrder.getEmployee(), EmployeeDTO.class);
+
+      return new TravelOrderDTO(travelOrder.getId(),
+              employeeDTO,
+              dateTimeFormatter.format(travelOrder.getDateIssued()),
+              dateTimeFormatter.format(travelOrder.getDateDeparture()),
+              dateTimeFormatter.format(travelOrder.getDateReturn()),
+              purposeDTO,
+              vehicleDTO,
+              reportToDTOS,
+              placeDTOS,
+              dateTimeFormatter.format(travelOrder.getLastTravel()));
 
 
 
