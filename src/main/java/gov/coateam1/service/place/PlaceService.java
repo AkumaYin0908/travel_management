@@ -8,18 +8,18 @@ public interface PlaceService {
 
     PlaceDTO findById(Long id);
 
-    PlaceDTO findByBarangayName(String barangayName);
+//    PlaceDTO findByBarangayName(String barangayName);
 
-    PlaceDTO findByMunicipalityName(String municipalityName);
-
-    PlaceDTO findByProvinceName(String provinceName);
-
-    PlaceDTO findByBuildingName(String buildingName);
+//    PlaceDTO findByMunicipalityName(String municipalityName);
+//
+//    PlaceDTO findByProvinceName(String provinceName);
+//
+//    PlaceDTO findByBuildingName(String buildingName);
 
     PlaceDTO findByDefaultPlace(String defaultPlace);
 
-    PlaceDTO findByCompletePlaceDetails(String buildingName, String barangay,
-                                                                  String municipality, String province);
+//    PlaceDTO findByCompletePlaceDetails(String buildingName, String barangay,
+//                                                                  String municipality, String province);
 
     List<PlaceDTO> findAll();
 

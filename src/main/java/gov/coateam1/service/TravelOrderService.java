@@ -10,7 +10,8 @@ public interface TravelOrderService {
 
 
     List<TravelOrderDTO> findAll();
-    TravelOrderDTO findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
+
+  //  TravelOrderDTO findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn);
 
     TravelOrderDTO findById(Long id);
 

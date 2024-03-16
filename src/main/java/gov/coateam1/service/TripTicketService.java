@@ -26,11 +26,11 @@ public interface TripTicketService {
 
     List<TripTicketDTO> findByDefaultPlace(String defaultPlace);
 
-    List<TripTicketDTO> findByBarangay(String barangay);
-
-    List<TripTicketDTO> findByMunicipality(String municipality);
-
-    List<TripTicketDTO> findByProvince(String province);
+//    List<TripTicketDTO> findByBarangay(String barangay);
+//
+//    List<TripTicketDTO> findByMunicipality(String municipality);
+//
+//    List<TripTicketDTO> findByProvince(String province);
 
     TripTicketDTO add(TripTicketDTO tripTicketDTO);
 
