@@ -40,7 +40,7 @@ public class JSONDataLoader {
         return set;
     }
 
-    public <T extends BasicDTO>Map fetchAsMap(String fileName, Class<T> clazz) throws Exception {
+    public <T extends BasicDTO>Map<String,T> fetchAsMap(String fileName, Class<T> clazz) throws Exception {
 
         Map<String,T> map = new HashMap<>();
         JsonNode jsonNode;
