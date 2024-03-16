@@ -47,23 +47,23 @@ public class Place {
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinTable(name="place_tripticket",
             joinColumns = @JoinColumn(name="place_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
     private List<TripTicket> tripTickets;
 
-    @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinTable(name="place_travelorder",
-            joinColumns = @JoinColumn(name="place_id"),
-            inverseJoinColumns = @JoinColumn(name="travelorder_id"))
+
+//    @ToString.Exclude
 //    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
 //    @JoinTable(name="place_travelorder",
 //            joinColumns ={
 //            @JoinColumn(name="place_id", referencedColumnName = "id")},
 //            inverseJoinColumns = {
 //            @JoinColumn(name="travelorder_id",referencedColumnName = "id")})
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "places")
     private List<TravelOrder> travelOrders;
 
     public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, Region region) {
@@ -79,23 +79,25 @@ public class Place {
         this.defaultPlace  = defaultPlace;
     }
 
-    public void addTravelOrder(TravelOrder travelOrder){
-        if(travelOrders == null){
-            travelOrders = new ArrayList<>();
-        }
-        travelOrders.add(travelOrder);
-    }
+//    public void addTravelOrder(TravelOrder travelOrder){
+//        if(travelOrders == null){
+//            travelOrders = new ArrayList<>();
+//        }
+//        travelOrders.add(travelOrder);
+//        travelOrder.addPlace(this);
+//    }
 
     public void addTripTicket(TripTicket tripTicket){
         if(tripTickets == null){
             tripTickets = new ArrayList<>();
         }
         tripTickets.add(tripTicket);
+
     }
 
-    public void removeTravelOrder(TravelOrder travelOrder){
-        travelOrders.remove(travelOrder);
-    }
+//    public void removeTravelOrder(TravelOrder travelOrder){
+//        travelOrders.remove(travelOrder);
+//    }
 
     public void removeTripTicket(TripTicket tripTicket){
         tripTickets.remove(tripTicket);

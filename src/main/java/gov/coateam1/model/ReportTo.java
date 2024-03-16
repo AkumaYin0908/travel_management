@@ -24,11 +24,7 @@ public class ReportTo {
 
 
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinTable(name="reportto_travelorder",
-            joinColumns = @JoinColumn(name="reportto_id"),
-            inverseJoinColumns = @JoinColumn(name="travelorder_id"))
+    @ManyToMany(mappedBy = "reportTos")
     private List<TravelOrder> travelOrders;
 
 
@@ -41,15 +37,15 @@ public class ReportTo {
         this.name = name;
     }
 
-    public void addTravelOrder(TravelOrder travelOrder){
-        if(travelOrders == null){
-            travelOrders = new ArrayList<>();
-        }
-
-        travelOrders.add(travelOrder);
-    }
-
-    public  void removeTravelOrder(TravelOrder travelOrder){
-        travelOrders.remove(travelOrder);
-    }
+//    public void addTravelOrder(TravelOrder travelOrder){
+//        if(travelOrders == null){
+//            travelOrders = new ArrayList<>();
+//        }
+//
+//        travelOrders.add(travelOrder);
+//    }
+//
+//    public  void removeTravelOrder(TravelOrder travelOrder){
+//        travelOrders.remove(travelOrder);
+//    }
 }
