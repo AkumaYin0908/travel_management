@@ -18,4 +18,7 @@ public interface PlaceQueryConstant {
             " inner join region as r on place.region = r.region_code" +
             " where building_name = ?1";
 
+
+    String FINDBY_CODES = "select * from place where ( barangay_code is null or barangay_code =?1) and municipality_code =?2 and province_code = ?3 and region_code = ?4";
+
 }
