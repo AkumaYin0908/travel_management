@@ -26,10 +26,8 @@ import gov.coateam1.util.DateTimeConverter;
 import gov.coateam1.util.JSONDataLoader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -112,66 +110,67 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         Vehicle vehicle = vehicleRepository.findById(travelOrderDTO.getVehicle().getId()).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "id", travelOrderDTO.getVehicle().getId()));
         vehicle.addTravelOrder(travelOrder);
 
-
         for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
             Place place = null;
-            if (placeDTO.getDefaultPlace() == null || placeDTO.getDefaultPlace().isEmpty()) {
 
-                place = placeRepository.findPlaceByCodes(
+            if (placeDTO.getDefaultPlace() == null) {
+                Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
                         placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
                         placeDTO.getMunicipality().getCode(),
                         placeDTO.getProvince().getCode(),
-                        placeDTO.getRegionDTO().getCode()).orElse(new Place());
+                        placeDTO.getRegionDTO().getCode()
+                );
+                if(optionalPlace.isPresent()){
+                    System.out.println(optionalPlace.get());
+                    travelOrder.addPlace(optionalPlace.get());
+                }else{
+                    place = new Place();
+                    place.setBuildingName(placeDTO.getBuildingName());
 
-                place.setBuildingName(placeDTO.getBuildingName());
+                    Map<String, BarangayDTO> barangayDTOMap = jsonDataLoader.fetchAsMap(AppConstant.BARANGAY_JSON, BarangayDTO.class);
 
-                Map<String, BarangayDTO> barangayDTOMap = jsonDataLoader.fetchAsMap(AppConstant.BARANGAY_JSON, BarangayDTO.class);
+                    if (placeDTO.getBarangay() == null) {
+                        place.setBarangay(null);
+                    } else {
+                        BarangayDTO barangayDTO = barangayDTOMap.get(placeDTO.getBarangay().getCode());
+                        Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
+                        barangay.addPlace(place);
+                        place.setBarangay(barangay);
+                        barangayRepository.save(barangay);
 
-                if (placeDTO.getBarangay() == null) {
-                    place.setBarangay(null);
-                } else {
-                    BarangayDTO barangayDTO = barangayDTOMap.get(placeDTO.getBarangay().getCode());
-                    Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
-                    barangay.addPlace(place);
-                    place.setBarangay(barangay);
-                    barangayRepository.save(barangay);
+                    }
 
+                    Map<String, MunicipalityDTO> municipalityDTOMap = jsonDataLoader.fetchAsMap(AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+                    MunicipalityDTO municipalityDTO = municipalityDTOMap.get(placeDTO.getMunicipality().getCode());
+                    Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
+                    municipality.addPlace(place);
+                    municipalityRepository.save(municipality);
+
+
+                    Map<String, ProvinceDTO> provinceDTOMap = jsonDataLoader.fetchAsMap(AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+                    ProvinceDTO provinceDTO = provinceDTOMap.get(placeDTO.getProvince().getCode());
+                    Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+                    province.addPlace(place);
+                    provinceRepository.save(province);
+
+
+                    Map<String, RegionDTO> regionDTOMap = jsonDataLoader.fetchAsMap(AppConstant.REGION_JSON, RegionDTO.class);
+                    RegionDTO regionDTO = regionDTOMap.get(placeDTO.getRegionDTO().getCode());
+                    Region region = new Region(regionDTO.getCode(), regionDTO.getName());
+                    region.addPlace(place);
+                    regionRepository.save(region);
+                    travelOrder.addPlace(place);
                 }
 
-                Map<String, MunicipalityDTO> municipalityDTOMap = jsonDataLoader.fetchAsMap(AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
-                MunicipalityDTO municipalityDTO = municipalityDTOMap.get(placeDTO.getMunicipality().getCode());
-                Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
-                municipality.addPlace(place);
-                municipalityRepository.save(municipality);
-
-
-                Map<String, ProvinceDTO> provinceDTOMap = jsonDataLoader.fetchAsMap(AppConstant.PROVINCE_JSON, ProvinceDTO.class);
-                ProvinceDTO provinceDTO = provinceDTOMap.get(placeDTO.getProvince().getCode());
-                Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
-                province.addPlace(place);
-                provinceRepository.save(province);
-
-
-                Map<String, RegionDTO> regionDTOMap = jsonDataLoader.fetchAsMap(AppConstant.REGION_JSON, RegionDTO.class);
-                RegionDTO regionDTO = regionDTOMap.get(placeDTO.getRegionDTO().getCode());
-                Region region = new Region(regionDTO.getCode(), regionDTO.getName());
-                region.addPlace(place);
-                regionRepository.save(region);
-
-
-                place.addTravelOrder(travelOrder);
-                travelOrder.addPlace(place);
-                placeRepository.save(place);
             } else {
                 place = placeRepository.findByDefaultPlace(placeDTO.getDefaultPlace()).orElse(new Place(placeDTO.getDefaultPlace()));
-                place.addTravelOrder(travelOrder);
-                placeRepository.save(place);
+                travelOrder.addPlace(place);
             }
 
         }
-        System.out.println(travelOrder);
         for (ReportToDTO reportToDTO : travelOrderDTO.getReportTos()) {
             ReportTo reportTo = reportToRepository.findById(reportToDTO.getId()).orElse(new ReportTo(reportToDTO.getName()));
+            reportToRepository.save(reportTo);
             travelOrder.addReportTo(reportTo);
         }
 
@@ -193,65 +192,85 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         Passenger passenger = null;
         if (employee.getEmployeeType().equals("DRIVER")) {
             driver = (Driver) employee;
-            driver.addTravelOrder(travelOrder);
         } else {
             passenger = (Passenger) employee;
-            passenger.addTravelOrder(travelOrder);
-
         }
+
+        travelOrder.setEmployee(driver == null ? passenger : driver);
+
+
+        Purpose purpose = purposeRepository.findByPurpose(travelOrderDTO.getPurpose().getPurpose()).orElse(new Purpose(travelOrderDTO.getPurpose().getPurpose()));
+        purpose.addTravelOrder(travelOrder);
+        purposeRepository.save(purpose);
 
         travelOrder.setDateIssued(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()));
         travelOrder.setDateDeparture(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()));
         travelOrder.setDateReturn(DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()));
-        travelOrder.setLastTravel(DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
+
+        Vehicle vehicle = vehicleRepository.findById(travelOrderDTO.getVehicle().getId()).orElseThrow(() -> new ResourceNotFoundException("Vehicle", "id", travelOrderDTO.getVehicle().getId()));
+        vehicle.addTravelOrder(travelOrder);
 
         for (PlaceDTO placeDTO : travelOrderDTO.getPlaces()) {
-            Place place = placeRepository.findById(placeDTO.getId()).orElse(new Place());
-            if (placeDTO.getDefaultPlace() != null) {
-                place.setDefaultPlace(placeDTO.getDefaultPlace());
-                travelOrder.addPlace(place);
-                place.addTravelOrder(travelOrder);
-            } else {
-                place.setBuildingName(placeDTO.getBuildingName());
+            Place place = null;
+
+            if (placeDTO.getDefaultPlace() == null) {
+                Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
+                        placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
+                        placeDTO.getMunicipality().getCode(),
+                        placeDTO.getProvince().getCode(),
+                        placeDTO.getRegionDTO().getCode()
+                );
+                if(optionalPlace.isPresent()){
+                    System.out.println(optionalPlace.get());
+                    travelOrder.addPlace(optionalPlace.get());
+                }else{
+                    place = new Place();
+                    place.setBuildingName(placeDTO.getBuildingName());
+
+                    Map<String, BarangayDTO> barangayDTOMap = jsonDataLoader.fetchAsMap(AppConstant.BARANGAY_JSON, BarangayDTO.class);
+
+                    if (placeDTO.getBarangay() == null) {
+                        place.setBarangay(null);
+                    } else {
+                        BarangayDTO barangayDTO = barangayDTOMap.get(placeDTO.getBarangay().getCode());
+                        Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
+                        barangay.addPlace(place);
+                        place.setBarangay(barangay);
+                        barangayRepository.save(barangay);
+
+                    }
+
+                    Map<String, MunicipalityDTO> municipalityDTOMap = jsonDataLoader.fetchAsMap(AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+                    MunicipalityDTO municipalityDTO = municipalityDTOMap.get(placeDTO.getMunicipality().getCode());
+                    Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
+                    municipality.addPlace(place);
+                    municipalityRepository.save(municipality);
 
 
-                Map<String, BarangayDTO> barangayDTOMap = jsonDataLoader.fetchAsMap(AppConstant.BARANGAY_JSON, BarangayDTO.class);
-                BarangayDTO barangayDTO = barangayDTOMap.get(placeDTO.getBarangay().getCode());
-                if (placeDTO.getBarangay() == null) {
-                    place.setBarangay(null);
-                } else {
-                    Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
-                    barangay.addPlace(place);
-                    place.setBarangay(barangay);
+                    Map<String, ProvinceDTO> provinceDTOMap = jsonDataLoader.fetchAsMap(AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+                    ProvinceDTO provinceDTO = provinceDTOMap.get(placeDTO.getProvince().getCode());
+                    Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+                    province.addPlace(place);
+                    provinceRepository.save(province);
+
+
+                    Map<String, RegionDTO> regionDTOMap = jsonDataLoader.fetchAsMap(AppConstant.REGION_JSON, RegionDTO.class);
+                    RegionDTO regionDTO = regionDTOMap.get(placeDTO.getRegionDTO().getCode());
+                    Region region = new Region(regionDTO.getCode(), regionDTO.getName());
+                    region.addPlace(place);
+                    regionRepository.save(region);
+                    travelOrder.addPlace(place);
                 }
 
-                Map<String, MunicipalityDTO> municipalityDTOMap = jsonDataLoader.fetchAsMap(AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
-                MunicipalityDTO municipalityDTO = municipalityDTOMap.get(placeDTO.getMunicipality().getCode());
-                Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
-                municipality.addPlace(place);
-                place.setMunicipality(municipality);
-
-                Map<String, ProvinceDTO> provinceDTOMap = jsonDataLoader.fetchAsMap(AppConstant.PROVINCE_JSON, ProvinceDTO.class);
-                ProvinceDTO provinceDTO = provinceDTOMap.get(placeDTO.getProvince().getCode());
-                Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
-                province.addPlace(place);
-                place.setProvince(province);
-
-                Map<String, RegionDTO> regionDTOMap = jsonDataLoader.fetchAsMap(AppConstant.REGION_JSON, RegionDTO.class);
-                RegionDTO regionDTO = regionDTOMap.get(placeDTO.getRegionDTO().getCode());
-                Region region = new Region(regionDTO.getCode(), regionDTO.getName());
-                region.addPlace(place);
-                place.setRegion(region);
-
-                place.addTravelOrder(travelOrder);
+            } else {
+                place = placeRepository.findByDefaultPlace(placeDTO.getDefaultPlace()).orElse(new Place(placeDTO.getDefaultPlace()));
                 travelOrder.addPlace(place);
             }
 
         }
-
         for (ReportToDTO reportToDTO : travelOrderDTO.getReportTos()) {
             ReportTo reportTo = reportToRepository.findById(reportToDTO.getId()).orElse(new ReportTo(reportToDTO.getName()));
-            reportTo.addTravelOrder(travelOrder);
+            reportToRepository.save(reportTo);
             travelOrder.addReportTo(reportTo);
         }
 
