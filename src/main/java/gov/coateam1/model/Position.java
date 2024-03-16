@@ -4,13 +4,13 @@ package gov.coateam1.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.employee.Employee;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="position")
@@ -24,6 +24,7 @@ public class Position {
     @Column(name="name")
     private String name;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "position",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},orphanRemoval = true)
     private List<Employee> employees;
 

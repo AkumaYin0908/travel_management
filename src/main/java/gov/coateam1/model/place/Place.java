@@ -9,7 +9,8 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="place")
@@ -26,24 +27,25 @@ public class Place {
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="barangay")
+    @JoinColumn(name="barangay_code")
     private Barangay barangay;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="municipality")
+    @JoinColumn(name="municipality_code")
     private Municipality municipality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="province")
+    @JoinColumn(name="province_code")
     private Province province;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="region")
+    @JoinColumn(name="region_code")
     private Region region;
 
     @Column(name="default_place")
     private String defaultPlace;
 
+    @ToString.Exclude
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_tripticket",
@@ -51,6 +53,7 @@ public class Place {
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
     private List<TripTicket> tripTickets;
 
+    @ToString.Exclude
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(name="place_travelorder",
             joinColumns = @JoinColumn(name="place_id"),

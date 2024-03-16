@@ -2,35 +2,33 @@ package gov.coateam1.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="purpose")
-@ToString(onlyExplicitlyIncluded = true)
 public class Purpose {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    @ToString.Include
     private Long id;
 
 
     @Column(name="purpose")
-    @ToString.Include
     private String purpose;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<TravelOrder> travelOrders;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "purpose",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<TripTicket> tripTickets;
 
@@ -50,5 +48,6 @@ public class Purpose {
         }
 
         travelOrders.add(travelOrder);
+        travelOrder.setPurpose(this);
     }
 }

@@ -2,11 +2,10 @@ package gov.coateam1.payload.place;
 
 
 import gov.coateam1.model.place.Municipality;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class PlaceDTO {
 

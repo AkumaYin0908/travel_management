@@ -4,14 +4,13 @@ package gov.coateam1.model;
 import gov.coateam1.payload.TravelOrderDTO;
 import gov.coateam1.payload.TripTicketDTO;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="vehicle")

@@ -4,6 +4,8 @@ import gov.coateam1.payload.BasicDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 @NoArgsConstructor
 public class RegionDTO extends BasicDTO {
 

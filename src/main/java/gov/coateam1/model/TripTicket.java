@@ -6,10 +6,7 @@ import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="trip_ticket")

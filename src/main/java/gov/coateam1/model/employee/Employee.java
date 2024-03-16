@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="employee")
@@ -39,7 +40,7 @@ public abstract class Employee {
     @Column(name = "EMPLOYEE_TYPE",insertable=false, updatable=false)
     private String employeeType;
 
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<TravelOrder> travelOrders;
 
@@ -54,6 +55,12 @@ public abstract class Employee {
         this.position = position;
     }
 
+    public Employee(Long id, String name, Position position, List<TravelOrder> travelOrders) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+        this.travelOrders = travelOrders;
+    }
 
     public void addTravelOrder(TravelOrder travelOrder){
         if(travelOrders == null){
@@ -61,18 +68,7 @@ public abstract class Employee {
         }
 
         travelOrders.add(travelOrder);
+        travelOrder.setEmployee(this);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(position, employee.position) && Objects.equals(employeeType, employee.employeeType) && Objects.equals(travelOrders, employee.travelOrders);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, position, employeeType, travelOrders);
-    }
 }

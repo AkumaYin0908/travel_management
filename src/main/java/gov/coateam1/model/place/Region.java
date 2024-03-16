@@ -2,13 +2,13 @@ package gov.coateam1.model.place;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name="region")
@@ -21,6 +21,7 @@ public class Region {
     @Column(name="region_name")
     private String regionName;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "region",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     private List<Place> places;
 
