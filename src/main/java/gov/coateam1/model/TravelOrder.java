@@ -1,12 +1,8 @@
 package gov.coateam1.model;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.place.Place;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +47,13 @@ public class TravelOrder {
 
 
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "reportto_travelorder",
             joinColumns = @JoinColumn(name = "travelorder_id"),
             inverseJoinColumns = @JoinColumn(name = "reportto_id"))
     private List<ReportTo> reportTos;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "place_travelorder",
             joinColumns = @JoinColumn(name = "travelorder_id"),
             inverseJoinColumns = @JoinColumn(name = "place_id"))
@@ -84,10 +80,15 @@ public class TravelOrder {
             places = new ArrayList<>();
         }
         places.add(place);
+        if(place.getTravelOrders() == null){
+            place.setTravelOrders(new ArrayList<>());
+        }
+        place.getTravelOrders().add(this);
     }
 
     public void removePlace(Place place){
         places.remove(place);
+        place.getTravelOrders().remove(this);
     }
 
     public void addReportTo(ReportTo reportTo) {
@@ -95,10 +96,17 @@ public class TravelOrder {
             reportTos = new ArrayList<>();
         }
         reportTos.add(reportTo);
+
+        if(reportTo.getTravelOrders() == null){
+            reportTo.setTravelOrders(new ArrayList<>());
+        }
+        reportTo.getTravelOrders().add(this);
+
     }
 
 
     public void removeReportTo(ReportTo reportTo){
         reportTos.remove(reportTo);
+        reportTo.getTravelOrders().remove(this);
     }
 }
