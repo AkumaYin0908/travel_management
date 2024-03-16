@@ -30,20 +30,20 @@ public interface TravelOrderRepository extends JpaRepository<TravelOrder,Long> {
     @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.buildingName = :buildingName")
     List<TravelOrder> findTravelOrderAndPlacesByBuildingName(@Param("buildingName")String buildingName);
 
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.barangay.name = :barangayName")
-    List<TravelOrder> findTravelOrderAndPlacesByBarangayName(@Param("barangayName")String barangayName);
-
-
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.municipality.name = :municipalityName")
-    List<TravelOrder> findTravelOrderAndPlacesByMunicipalityName(@Param("municipalityName")String municipalityName);
-
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.province.name = :provinceName")
-    List<TravelOrder> findTravelOrderAndPlacesByProvinceName(@Param("provinceName")String provinceName);
-
-    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.dateDeparture = :dateDeparture AND travelOrder.dateReturn = :dateReturn")
-    Optional<TravelOrder> findByDateDepartureAndDateReturn(@Param("dateDeparture")LocalDate dateDeparture, @Param("dateReturn") LocalDate dateReturn);
-
-    @Query("SELECT travelOrder.dateReturn FROM TravelOrder travelOrder WHERE travelOrder.employee.name =:name ORDER BY travelOrder.dateReturn DESC")
-    Optional<LocalDate> findByNameOrderByDateReturnDESC(@Param("name") String name);
+//    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.barangay.brgyName = :barangayName")
+//    List<TravelOrder> findTravelOrderAndPlacesByBarangayName(@Param("barangayName")String barangayName);
+//
+//
+//    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.municipality.name = :municipalityName")
+//    List<TravelOrder> findTravelOrderAndPlacesByMunicipalityName(@Param("municipalityName")String municipalityName);
+//
+//    @Query("SELECT travelOrder FROM TravelOrder travelOrder JOIN FETCH travelOrder.places place WHERE place.province.name = :provinceName")
+//    List<TravelOrder> findTravelOrderAndPlacesByProvinceName(@Param("provinceName")String provinceName);
+//
+//    @Query("SELECT travelOrder FROM TravelOrder travelOrder WHERE travelOrder.dateDeparture = :dateDeparture AND travelOrder.dateReturn = :dateReturn")
+//    Optional<TravelOrder> findByDateDepartureAndDateReturn(@Param("dateDeparture")LocalDate dateDeparture, @Param("dateReturn") LocalDate dateReturn);
+//
+//    @Query("SELECT travelOrder.dateReturn FROM TravelOrder travelOrder WHERE travelOrder.employee.name =:name ORDER BY travelOrder.dateReturn DESC")
+//    Optional<LocalDate> findByNameOrderByDateReturnDESC(@Param("name") String name);
 
 }

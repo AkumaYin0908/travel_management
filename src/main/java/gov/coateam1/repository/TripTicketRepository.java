@@ -30,15 +30,15 @@ public interface TripTicketRepository extends JpaRepository<TripTicket,Long> {
     List<TripTicket> findTripTicketAndPlacesByBuildingName(@Param("buildingName")String buildingName);
 
 
-    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.barangay.name = :barangayName")
-    List<TripTicket> findTripTicketAndPlacesByBarangayName(@Param("barangayName")String barangayName);
-
-
-    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.municipality.name = :municipalityName")
-    List<TripTicket> findTripTicketAndPlacesByMunicipalityName(@Param("municipalityName")String municipalityName);
-
-    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.province.name = :provinceName")
-    List<TripTicket> findTripTicketAndPlacesByProvinceName(@Param("provinceName")String provinceName);
+//    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.barangay.name = :barangayName")
+//    List<TripTicket> findTripTicketAndPlacesByBarangayName(@Param("barangayName")String barangayName);
+//
+//
+//    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.municipality.name = :municipalityName")
+//    List<TripTicket> findTripTicketAndPlacesByMunicipalityName(@Param("municipalityName")String municipalityName);
+//
+//    @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.province.name = :provinceName")
+//    List<TripTicket> findTripTicketAndPlacesByProvinceName(@Param("provinceName")String provinceName);
 
     @Query("SELECT tripTicket FROM TripTicket tripTicket JOIN FETCH tripTicket.places place WHERE place.defaultPlace = :defaultPlace")
     List<TripTicket> findTripTicketAndPlacesByDefaultPlace(@Param("defaultPlace")String defaultPlace);

@@ -135,20 +135,20 @@ public class TripTicketServiceImpl implements TripTicketService {
         return tripTicketRepository.findTripTicketAndPlacesByDefaultPlace(defaultPlace).stream().map(this::convertToDTO).toList();
     }
 
-    @Override
-    public List<TripTicketDTO> findByBarangay(String barangay) {
-        return tripTicketRepository.findTripTicketAndPlacesByBarangayName(barangay).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public List<TripTicketDTO> findByMunicipality(String municipality) {
-        return tripTicketRepository.findTripTicketAndPlacesByMunicipalityName(municipality).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public List<TripTicketDTO> findByProvince(String province) {
-        return tripTicketRepository.findTripTicketAndPlacesByProvinceName(province).stream().map(this::convertToDTO).toList();
-    }
+//    @Override
+//    public List<TripTicketDTO> findByBarangay(String barangay) {
+//        return tripTicketRepository.findTripTicketAndPlacesByBarangayName(barangay).stream().map(this::convertToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TripTicketDTO> findByMunicipality(String municipality) {
+//        return tripTicketRepository.findTripTicketAndPlacesByMunicipalityName(municipality).stream().map(this::convertToDTO).toList();
+//    }
+//
+//    @Override
+//    public List<TripTicketDTO> findByProvince(String province) {
+//        return tripTicketRepository.findTripTicketAndPlacesByProvinceName(province).stream().map(this::convertToDTO).toList();
+//    }
 
     @Override
     @Transactional
