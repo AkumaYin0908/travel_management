@@ -47,7 +47,7 @@ public class PlaceMapper {
 
 
     public Place mapToModel(PlaceDTO placeDTO){
-        if(!placeDTO.getDefaultPlace().isEmpty()){
+        if(placeDTO.getDefaultPlace()!=null){
             return new Place(placeDTO.getDefaultPlace());
         }
 
@@ -61,7 +61,7 @@ public class PlaceMapper {
     }
 
     public PlaceDTO mapToDTO(Place place){
-        if(!place.getDefaultPlace().isEmpty()){
+        if(place.getDefaultPlace()!=null){
             return new PlaceDTO(place.getDefaultPlace());
         }
 
@@ -76,7 +76,7 @@ public class PlaceMapper {
 
     public void  mapToModel(PlaceDTO placeDTO, Place place){
 
-        if(!place.getDefaultPlace().isEmpty()){
+        if(place.getDefaultPlace()!=null){
             place.setDefaultPlace(placeDTO.getDefaultPlace());
             return;
         }
