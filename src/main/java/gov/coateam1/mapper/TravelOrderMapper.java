@@ -26,6 +26,8 @@ import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @Transactional
@@ -41,8 +43,8 @@ public class TravelOrderMapper {
    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
    public  TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) {
       Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
-      List<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
-      List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
+      Set<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
+      Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).collect(Collectors.toSet());
       Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
 
 
@@ -53,8 +55,8 @@ public class TravelOrderMapper {
 
    public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
       PurposeDTO purposeDTO = purposeMapper.mapToDTO(travelOrder.getPurpose());
-      List<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).toList();
-      List<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).toList();
+      Set<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).collect(Collectors.toSet());
+      Set<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).collect(Collectors.toSet());
       VehicleDTO vehicleDTO =vehicleMapper.mapToDTO(travelOrder.getVehicle());
 
       EmployeeDTO employeeDTO = modelMapper.map(travelOrder.getEmployee(), EmployeeDTO.class);
@@ -77,8 +79,8 @@ public class TravelOrderMapper {
    public void mapToModel(TravelOrderDTO travelOrderDTO, TravelOrder travelOrder) throws Exception {
 
       Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
-      List<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
-      List<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).toList();
+      Set<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
+      Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).collect(Collectors.toSet());
       Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
 
       travelOrder.setDateIssued(LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter));
