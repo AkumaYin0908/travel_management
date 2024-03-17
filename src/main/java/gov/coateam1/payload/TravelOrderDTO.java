@@ -9,6 +9,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,14 +30,14 @@ public class TravelOrderDTO {
 
     private VehicleDTO vehicle;
 
-    private List<ReportToDTO> reportTos;
+    private Set<ReportToDTO> reportTos;
 
-    private List<PlaceDTO> places;
+    private Set<PlaceDTO> places;
 
     private String lastTravel;
 
 
-    public TravelOrderDTO(Long id, EmployeeDTO employee, String dateIssued, String dateDeparture, String dateReturn, PurposeDTO purpose, VehicleDTO vehicle, List<ReportToDTO> reportTos, List<PlaceDTO> places, String lastTravel) {
+    public TravelOrderDTO(Long id, EmployeeDTO employee, String dateIssued, String dateDeparture, String dateReturn, PurposeDTO purpose, VehicleDTO vehicle, Set<ReportToDTO> reportTos, Set<PlaceDTO> places, String lastTravel) {
         this.id = id;
         this.employee = employee;
         this.dateIssued = dateIssued;

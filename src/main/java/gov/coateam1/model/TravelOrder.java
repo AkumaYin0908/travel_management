@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 @Getter
@@ -51,19 +52,19 @@ public class TravelOrder {
     @JoinTable(name = "reportto_travelorder",
             joinColumns = @JoinColumn(name = "travelorder_id"),
             inverseJoinColumns = @JoinColumn(name = "reportto_id"))
-    private List<ReportTo> reportTos;
+    private Set<ReportTo> reportTos;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "place_travelorder",
             joinColumns = @JoinColumn(name = "travelorder_id"),
             inverseJoinColumns = @JoinColumn(name = "place_id"))
-    private List<Place> places;
+    private Set<Place> places;
 
 
     @Column(name = "last_travel")
     private LocalDate lastTravel;
 
-    public TravelOrder(Long id, LocalDate dateIssued, LocalDate dateDeparture, LocalDate dateReturn, Purpose purpose, Vehicle vehicle, List<ReportTo> reportTos, List<Place> places, LocalDate lastTravel) {
+    public TravelOrder(Long id, LocalDate dateIssued, LocalDate dateDeparture, LocalDate dateReturn, Purpose purpose, Vehicle vehicle, Set<ReportTo> reportTos, Set<Place> places, LocalDate lastTravel) {
         this.id = id;
         this.dateIssued = dateIssued;
         this.dateDeparture = dateDeparture;
@@ -77,7 +78,7 @@ public class TravelOrder {
 
     public void addPlace(Place place) {
         if (places == null) {
-            places = new ArrayList<>();
+            places = new LinkedHashSet<>();
         }
         places.add(place);
         if(place.getTravelOrders() == null){
@@ -93,7 +94,7 @@ public class TravelOrder {
 
     public void addReportTo(ReportTo reportTo) {
         if (reportTos == null) {
-            reportTos = new ArrayList<>();
+            reportTos = new LinkedHashSet<>();
         }
         reportTos.add(reportTo);
 
