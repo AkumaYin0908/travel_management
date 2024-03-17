@@ -182,22 +182,8 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     @Override
     @Transactional
-    public TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id, Long employeeId) throws Exception {
+    public TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id) throws Exception {
         TravelOrder travelOrder = travelOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TravelOrder", "id", id));
-
-        Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
-        Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
-
-        Driver driver = null;
-        Passenger passenger = null;
-        if (employee.getEmployeeType().equals("DRIVER")) {
-            driver = (Driver) employee;
-        } else {
-            passenger = (Passenger) employee;
-        }
-
-        travelOrder.setEmployee(driver == null ? passenger : driver);
-
 
         Purpose purpose = purposeRepository.findByPurpose(travelOrderDTO.getPurpose().getPurpose()).orElse(new Purpose(travelOrderDTO.getPurpose().getPurpose()));
         purpose.addTravelOrder(travelOrder);

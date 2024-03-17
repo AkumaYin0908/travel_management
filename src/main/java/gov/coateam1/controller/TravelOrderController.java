@@ -34,10 +34,10 @@ public class TravelOrderController {
     }
 
     @PutMapping("/employees/{employeeId}/travelorders/{id}")
-    public ResponseEntity<TravelOrderDTO> updateTravelOrder(@RequestBody TravelOrderDTO travelOrderDTO, @PathVariable("id")Long id, @PathVariable("employeeId")Long employeeId) throws Exception {
+    public ResponseEntity<TravelOrderDTO> updateTravelOrder(@RequestBody TravelOrderDTO travelOrderDTO, @PathVariable("id")Long id) throws Exception {
 
         try{
-            return new ResponseEntity<>(travelOrderService.update(travelOrderDTO,id,employeeId),HttpStatus.OK);
+            return new ResponseEntity<>(travelOrderService.update(travelOrderDTO,id),HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
         }

@@ -17,7 +17,7 @@ public interface TravelOrderService {
 
     TravelOrderDTO add(Long employeeId, TravelOrderDTO travelOrderDTO) throws Exception;
 
-    TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id, Long employeeId) throws Exception;
+    TravelOrderDTO update(TravelOrderDTO travelOrderDTO, Long id) throws Exception;
 
 //    List<TravelOrderDTO> findTravelOrderAndReportTosById(Long id);
 //
