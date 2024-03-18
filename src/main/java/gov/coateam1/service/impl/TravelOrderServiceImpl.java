@@ -28,6 +28,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -152,15 +153,23 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         travelOrderRepository.deleteById(id);
     }
 
+    @Override
+    public List<TravelOrder> findTravelOrderByEmployeeId(Long employeeId) {
+        Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
+        Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
+
+        return employee.getTravelOrders();
+    }
+
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {
         Set<Place> places = new LinkedHashSet<>();
         for (PlaceDTO placeDTO : placeDTOs) {
             Optional<Place> placeOptional = placeRepository.findById(placeDTO.getId());
             Place place = null;
-            if(placeOptional.isPresent()){
-                place=placeOptional.get();
+            if (placeOptional.isPresent()) {
+                place = placeOptional.get();
                 place.setBuildingName(placeDTO.getBuildingName());
-            }else{
+            } else {
                 if (placeDTO.getDefaultPlace() == null) {
                     Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
                             placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
@@ -168,33 +177,33 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                             placeDTO.getProvince().getCode(),
                             placeDTO.getRegionDTO().getCode()
                     );
-                    if(optionalPlace.isPresent()){
+                    if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
-                    }else{
+                    } else {
                         place = new Place();
                         place.setBuildingName(placeDTO.getBuildingName());
 
                         if (placeDTO.getBarangay() == null) {
                             place.setBarangay(null);
                         } else {
-                            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(),AppConstant.BARANGAY_JSON, BarangayDTO.class);
+                            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
                             Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
                             barangay.addPlace(place);
                             place.setBarangay(barangay);
                             barangayRepository.save(barangay);
 
                         }
-                        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(),AppConstant.MUNICIPALITY_JSON,MunicipalityDTO.class);
+                        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
                         Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
                         municipality.addPlace(place);
                         municipalityRepository.save(municipality);
 
-                        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(),AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+                        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
                         Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
                         province.addPlace(place);
                         provinceRepository.save(province);
 
-                        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(),AppConstant.REGION_JSON,RegionDTO.class);
+                        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
                         Region region = new Region(regionDTO.getCode(), regionDTO.getName());
                         region.addPlace(place);
                         regionRepository.save(region);
@@ -210,8 +219,8 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         return places;
     }
 
-    private Set<ReportTo> getConvertedReportTos(Set<ReportToDTO> reportToDTOs){
-        Set<ReportTo>reportTos = new LinkedHashSet<>();
+    private Set<ReportTo> getConvertedReportTos(Set<ReportToDTO> reportToDTOs) {
+        Set<ReportTo> reportTos = new LinkedHashSet<>();
         for (ReportToDTO reportToDTO : reportToDTOs) {
             ReportTo reportTo = reportToRepository.findById(reportToDTO.getId()).orElse(new ReportTo(reportToDTO.getName()));
             ReportTo dbReportTo = reportToRepository.save(reportTo);
