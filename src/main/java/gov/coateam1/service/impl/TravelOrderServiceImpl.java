@@ -154,11 +154,13 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     }
 
     @Override
-    public List<TravelOrder> findTravelOrderByEmployeeId(Long employeeId) {
+    public List<TravelOrderDTO> findTravelOrderByEmployeeId(Long employeeId) {
         Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
         Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
-        return employee.getTravelOrders();
+        List<TravelOrderDTO> travelOrderDTOs = employee.getTravelOrders().stream().map(travelOrderMapper::mapToDTO).toList();
+
+        return travelOrderDTOs;
     }
 
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {

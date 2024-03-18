@@ -20,6 +20,6 @@ public interface TravelOrderService {
     void delete(Long id);
 
 
-    List<TravelOrder> findTravelOrderByEmployeeId(Long employeeId);
+    List<TravelOrderDTO> findTravelOrderByEmployeeId(Long employeeId);
 
 }
