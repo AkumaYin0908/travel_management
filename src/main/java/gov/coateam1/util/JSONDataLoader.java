@@ -75,6 +75,11 @@ public class JSONDataLoader {
         return list;
     }
 
+    public <T extends BasicDTO> T getFromCode(String code, String fileName,Class<T>clazz) throws Exception {
+       Map<String,T> map = fetchAsMap(fileName,clazz);
+       return map.get(code);
+    }
+
 
 
     private <T extends BasicDTO> T createObjectFROMJSON(JsonNode jsonNode, Class<T> clazz) throws Exception{
