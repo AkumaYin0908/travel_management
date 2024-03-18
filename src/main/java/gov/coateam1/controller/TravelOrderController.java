@@ -23,6 +23,11 @@ public class TravelOrderController {
         return new ResponseEntity<>(travelOrderService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/employees/{id}/travelorders")
+    public ResponseEntity<List<TravelOrderDTO>> getTravelOrdersByEmployee(@PathVariable("id")Long id){
+        return new ResponseEntity<>(travelOrderService.findTravelOrderByEmployeeId(id),HttpStatus.OK);
+    }
+
     @PostMapping("/employees/{id}/travelorders")
     public ResponseEntity<TravelOrderDTO> saveTravelOrder(@PathVariable("id")Long id, @RequestBody TravelOrderDTO travelOrderDTO) {
         try{
