@@ -22,4 +22,6 @@ public interface TravelOrderService {
 
     List<TravelOrderDTO> findTravelOrderByEmployeeId(Long employeeId);
 
+    List<TravelOrderDTO> findTravelOrderByDateIssued(String strDateIssued);
+
 }
