@@ -18,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="trip_ticket")
 public class TripTicket {
