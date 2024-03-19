@@ -87,68 +87,9 @@ public class TripTicketServiceImpl implements TripTicketService {
     }
 
     @Override
-    public List<TripTicketDTO> findByMonthAndYear(Integer month, Integer year) {
-        return tripTicketRepository.findByMonthAndYear(month,year).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public TripTicketDTO findByDateDepartureAndDateReturn(String dateDeparture, String dateReturn) {
-        LocalDate localDateDeparture = LocalDate.parse(dateDeparture,dateFormatter);
-        LocalDate localDateReturn = LocalDate.parse(dateReturn,dateFormatter);
-
-    TripTicket tripTicket = tripTicketRepository.findByDateDepartureAndDateReturn(localDateDeparture,localDateReturn)
-                .orElseThrow(() -> {
-
-                    String message = (dateDeparture.equals(dateReturn)) ? String.format("No Trip Ticket found with this following date: %s",dateDeparture)
-                            : String.format("No Trip Ticket found with these following dates: departure: %s , return : %s",dateDeparture, dateReturn);
-
-                    return new ResourceNotFoundException(message);
-                });
-
-
-    return this.convertToDTO(tripTicket);
-    }
-
-    @Override
     public TripTicketDTO findById(Long id) {
-        TripTicket tripTicket =  tripTicketRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("TripTicket","id",id));
-        return this.convertToDTO(tripTicket);
+        return null;
     }
-
-    @Override
-    public List<TripTicketDTO> findTripTicketAndPlacesById(Long id) {
-        return tripTicketRepository.findTripTicketAndPlacesById(id).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public List<TripTicketDTO> findByPlace(Long id) {
-        return tripTicketRepository.findByPlace(id).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public List<TripTicketDTO> findByBuildingName(String buildingName) {
-        return tripTicketRepository.findTripTicketAndPlacesByBuildingName(buildingName).stream().map(this::convertToDTO).toList();
-    }
-
-    @Override
-    public List<TripTicketDTO> findByDefaultPlace(String defaultPlace) {
-        return tripTicketRepository.findTripTicketAndPlacesByDefaultPlace(defaultPlace).stream().map(this::convertToDTO).toList();
-    }
-
-//    @Override
-//    public List<TripTicketDTO> findByBarangay(String barangay) {
-//        return tripTicketRepository.findTripTicketAndPlacesByBarangayName(barangay).stream().map(this::convertToDTO).toList();
-//    }
-//
-//    @Override
-//    public List<TripTicketDTO> findByMunicipality(String municipality) {
-//        return tripTicketRepository.findTripTicketAndPlacesByMunicipalityName(municipality).stream().map(this::convertToDTO).toList();
-//    }
-//
-//    @Override
-//    public List<TripTicketDTO> findByProvince(String province) {
-//        return tripTicketRepository.findTripTicketAndPlacesByProvinceName(province).stream().map(this::convertToDTO).toList();
-//    }
 
     @Override
     @Transactional
