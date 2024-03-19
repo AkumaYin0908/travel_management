@@ -1,0 +1,36 @@
+private TripTicketDTO convertToDTO(TripTicket tripTicket){
+        Converter<LocalDate, String> toDateString =
+                context -> context.getSource() == null ? null : DateTimeConverter.convertToString(context.getSource());
+
+        Converter<LocalTime,String> toTimeString =
+                context -> context.getSource() == null ? null : DateTimeConverter.convertToString(context.getSource());
+
+        modelMapper.typeMap(TripTicket.class, TripTicketDTO.class)
+                .addMappings(mapping -> mapping.using(toDateString).map(TripTicket::getDateDeparture,TripTicketDTO::setDateDeparture))
+                .addMappings(mapping -> mapping.using(toDateString).map(TripTicket::getDateReturn,TripTicketDTO::setDateReturn))
+                .addMappings(mapping -> mapping.using(toTimeString).map(TripTicket::getTimeOfficeDeparture,TripTicketDTO::setTimeOfficeDeparture))
+                .addMappings(mapping -> mapping.using(toTimeString).map(TripTicket::getTimePlaceArrival,TripTicketDTO::setTimePlaceArrival))
+                .addMappings(mapping -> mapping.using(toTimeString).map(TripTicket::getTimePlaceDeparture,TripTicketDTO::setTimePlaceDeparture))
+                .addMappings(mapping -> mapping.using(toTimeString).map(TripTicket::getTimeOfficeArrival,TripTicketDTO::setTimeOfficeArrival));
+
+    return modelMapper.map(tripTicket,TripTicketDTO.class);
+    }
+
+
+    private TripTicket convertToModel(TripTicketDTO tripTicketDTO){
+        Converter<String,LocalDate> toLocalDate=
+        context -> context.getSource() == null ? null : DateTimeConverter.convertToLocalDate(context.getSource());
+
+        Converter<String, LocalTime> toLocalTime =
+        context -> context.getSource() == null ? null : DateTimeConverter.convertToLocalTime(context.getSource());
+
+        modelMapper.typeMap(TripTicketDTO.class, TripTicket.class)
+                .addMappings(mapping -> mapping.using(toLocalDate).map(TripTicketDTO::getDateDeparture, TripTicket::setDateDeparture))
+                .addMappings(mapping -> mapping.using(toLocalDate).map(TripTicketDTO::getDateReturn, TripTicket::setDateReturn))
+                .addMappings(mapping -> mapping.using(toLocalTime).map(TripTicketDTO::getTimeOfficeDeparture, TripTicket::setTimeOfficeDeparture))
+                .addMappings(mapping -> mapping.using(toLocalTime).map(TripTicketDTO::getTimePlaceArrival, TripTicket::setTimePlaceArrival))
+                .addMappings(mapping -> mapping.using(toLocalTime).map(TripTicketDTO::getTimePlaceDeparture, TripTicket::setTimePlaceDeparture))
+                .addMappings(mapping -> mapping.using(toLocalTime).map(TripTicketDTO::getTimeOfficeArrival, TripTicket::setTimeOfficeArrival));
+
+        return modelMapper.map(tripTicketDTO,TripTicket.class);
+    }
