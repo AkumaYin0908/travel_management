@@ -19,7 +19,7 @@ public class TeamLeaderController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<SignatoryDTO>> getAllTeamLeaders(){
+    public ResponseEntity<List<SignatoryDTO>> getAllTeamLeader(){
         return new ResponseEntity<>(teamLeaderService.findAll(), HttpStatus.OK);
     }
 

@@ -24,7 +24,7 @@ public class DriverController {
     }
 
     @GetMapping("/drivers/all")
-    public ResponseEntity<List<EmployeeDTO>> getAllDrivers(){
+    public ResponseEntity<List<EmployeeDTO>> getAllDriver(){
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 

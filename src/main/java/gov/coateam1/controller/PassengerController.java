@@ -22,7 +22,7 @@ public class PassengerController {
     }
 
     @GetMapping("/passengers/all")
-    public ResponseEntity<List<EmployeeDTO>> getAllPassengers(){
+    public ResponseEntity<List<EmployeeDTO>> getAllPassenger(){
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 

@@ -20,7 +20,7 @@ public class TravelOrderController {
 
 
     @GetMapping("/travelorders/all")
-    public ResponseEntity<List<TravelOrderDTO>> getAllTravelOrders(){
+    public ResponseEntity<List<TravelOrderDTO>> getAllTravelOrder(){
         return new ResponseEntity<>(travelOrderService.findAll(), HttpStatus.OK);
     }
 
