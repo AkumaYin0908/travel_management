@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,11 @@ public class TravelOrderController {
     @GetMapping("/travelorders/all")
     public ResponseEntity<List<TravelOrderDTO>> getAllTravelOrders(){
         return new ResponseEntity<>(travelOrderService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/travelorders/{dateIssued}")
+    public ResponseEntity<List<TravelOrderDTO>> getAllTravelOrderByDateIssued(@PathVariable("dateIssued")String strDateIssued){
+        return new ResponseEntity<>(travelOrderService.findTravelOrderByDateIssued(strDateIssued),HttpStatus.OK);
     }
 
     @GetMapping("/employees/{id}/travelorders")
