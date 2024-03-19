@@ -35,25 +35,14 @@ public class TravelOrderController {
     }
 
     @PostMapping("/employees/{id}/travelorders")
-    public ResponseEntity<TravelOrderDTO> saveTravelOrder(@PathVariable("id")Long id, @RequestBody TravelOrderDTO travelOrderDTO) {
-        try{
-            return new ResponseEntity<>(travelOrderService.add(id,travelOrderDTO),HttpStatus.CREATED);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<TravelOrderDTO> saveTravelOrder(@PathVariable("id")Long id, @RequestBody TravelOrderDTO travelOrderDTO) throws Exception {
+        return new ResponseEntity<>(travelOrderService.add(id,travelOrderDTO),HttpStatus.CREATED);
     }
 
-    @PutMapping("/employees/{employeeId}/travelorders/{id}")
+    @PutMapping("/travelorders/{id}")
     public ResponseEntity<TravelOrderDTO> updateTravelOrder(@RequestBody TravelOrderDTO travelOrderDTO, @PathVariable("id")Long id) throws Exception {
 
-        try{
             return new ResponseEntity<>(travelOrderService.update(travelOrderDTO,id),HttpStatus.OK);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     @DeleteMapping("/travelorders/{id}")
