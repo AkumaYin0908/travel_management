@@ -1,6 +1,6 @@
 package gov.coateam1.service;
 
-import gov.coateam1.payload.TripTicketDTO;
+import gov.coateam1.payload.trip_ticket.TripTicketDTO;
 
 import java.util.List;
 
