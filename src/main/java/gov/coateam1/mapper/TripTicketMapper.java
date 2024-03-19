@@ -2,13 +2,11 @@ package gov.coateam1.mapper;
 
 
 import gov.coateam1.functionalinterface.CheckedFunction;
-import gov.coateam1.model.TripTicket;
+import gov.coateam1.model.trip_ticket.TripTicket;
 import gov.coateam1.model.employee.Driver;
-import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.Place;
 import gov.coateam1.payload.TripTicketDTO;
-import gov.coateam1.payload.employee.EmployeeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +28,7 @@ public class TripTicketMapper {
         Driver driver = employeeMapper.maptoModel(tripTicketDTO.getEmployee(), Driver.class);
         List<Place> places = tripTicketDTO.getPlaces().stream().map(placeMapper::mapToModel).toList();
         List<Passenger> passengers = tripTicketDTO.getPassengers().stream().map(throwingFunction(emp->employeeMapper.maptoModel(emp,Passenger.class))).toList();
+
 
 
 
