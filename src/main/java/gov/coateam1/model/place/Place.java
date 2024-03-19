@@ -2,12 +2,13 @@ package gov.coateam1.model.place;
 
 
 import gov.coateam1.model.TravelOrder;
-import gov.coateam1.model.TripTicket;
+import gov.coateam1.model.trip_ticket.TripTicket;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -46,25 +47,13 @@ public class Place {
     private String defaultPlace;
 
     @ToString.Exclude
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JoinTable(name="place_tripticket",
-            joinColumns = @JoinColumn(name="place_id"),
-            inverseJoinColumns = @JoinColumn(name="tripticket_id"))
-    private List<TripTicket> tripTickets;
+    @ManyToMany(mappedBy = "places")
+    private Set<TripTicket> tripTickets;
 
-
-//    @ToString.Exclude
-//    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-//    @JoinTable(name="place_travelorder",
-//            joinColumns ={
-//            @JoinColumn(name="place_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {
-//            @JoinColumn(name="travelorder_id",referencedColumnName = "id")})
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "places")
-    private List<TravelOrder> travelOrders;
+    private Set<TravelOrder> travelOrders;
 
     public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, Region region) {
         this.id = id;
@@ -78,30 +67,5 @@ public class Place {
     public Place(String defaultPlace) {
         this.defaultPlace  = defaultPlace;
     }
-
-//    public void addTravelOrder(TravelOrder travelOrder){
-//        if(travelOrders == null){
-//            travelOrders = new ArrayList<>();
-//        }
-//        travelOrders.add(travelOrder);
-//        travelOrder.addPlace(this);
-//    }
-
-    public void addTripTicket(TripTicket tripTicket){
-        if(tripTickets == null){
-            tripTickets = new ArrayList<>();
-        }
-        tripTickets.add(tripTicket);
-
-    }
-
-//    public void removeTravelOrder(TravelOrder travelOrder){
-//        travelOrders.remove(travelOrder);
-//    }
-
-    public void removeTripTicket(TripTicket tripTicket){
-        tripTickets.remove(tripTicket);
-    }
-
 
 }
