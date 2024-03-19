@@ -82,7 +82,7 @@ public class TravelOrder {
         }
         places.add(place);
         if(place.getTravelOrders() == null){
-            place.setTravelOrders(new ArrayList<>());
+            place.setTravelOrders(new LinkedHashSet<>());
         }
         place.getTravelOrders().add(this);
     }
@@ -99,7 +99,7 @@ public class TravelOrder {
         reportTos.add(reportTo);
 
         if(reportTo.getTravelOrders() == null){
-            reportTo.setTravelOrders(new ArrayList<>());
+            reportTo.setTravelOrders(new LinkedHashSet<>());
         }
         reportTo.getTravelOrders().add(this);
 
