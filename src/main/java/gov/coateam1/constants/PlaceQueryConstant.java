@@ -2,7 +2,7 @@ package gov.coateam1.constants;
 
 public interface PlaceQueryConstant {
 
-    String FINDBY_BUILDINGNAME = "select" +
+    String FIND_BY_BUILDINGNAME = "select" +
             " building_name," +
             " b.barangay_code," +
             " b.barangay_name," +
@@ -16,9 +16,9 @@ public interface PlaceQueryConstant {
             " inner join municipality as m on place.municipality = m.municipality_code" +
             " inner join province as p on place.province = p.province_code" +
             " inner join region as r on place.region = r.region_code" +
-            " where building_name = ?1";
+            " where building_name = ?";
 
 
-    String FINDBY_CODES = "select * from place where ( barangay_code is null or barangay_code =?1) and municipality_code =?2 and province_code = ?3 and region_code = ?4";
+    String FIND_BY_CODES = "select * from place where ( barangay_code is null or barangay_code =?) and municipality_code =? and province_code = ? and region_code = ?";
 
 }
