@@ -29,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -162,6 +163,14 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
         return travelOrderDTOs;
     }
+
+    @Override
+    public List<TravelOrderDTO> findTravelOrderByDateIssued(String strDateIssued) {
+        LocalDate dateIssued = DateTimeConverter.convertToLocalDate(strDateIssued);
+        List<TravelOrder> travelOrders = travelOrderRepository.findByDateIssued(dateIssued);
+        return travelOrders.stream().map(travelOrderMapper::mapToDTO).toList();
+    }
+
 
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {
         Set<Place> places = new LinkedHashSet<>();
