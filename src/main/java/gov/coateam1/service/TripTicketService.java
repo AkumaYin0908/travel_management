@@ -1,9 +1,7 @@
 package gov.coateam1.service;
 
-import gov.coateam1.model.TripTicket;
 import gov.coateam1.payload.TripTicketDTO;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface TripTicketService {
