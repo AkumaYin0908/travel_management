@@ -1,13 +1,17 @@
-package gov.coateam1.payload;
+package gov.coateam1.payload.trip_ticket;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import gov.coateam1.payload.PurposeDTO;
+import gov.coateam1.payload.VehicleDTO;
 import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.payload.place.PlaceDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,37 +27,19 @@ public class TripTicketDTO {
 
     private String dateReturn;
 
-    private List<PlaceDTO> places;
+    private TripTimeDTO tripTime;
 
-    private List<EmployeeDTO> passengers;
+    private Set<PlaceDTO> places;
 
-    private String timeOfficeDeparture;
+    private Set<EmployeeDTO> passengers;
 
-    private String timePlaceArrival;
-
-    private String timePlaceDeparture;
-
-    private String timeOfficeArrival;
-
-    private BigDecimal fuelBalance;
-
-    private BigDecimal issuedFuel;
-
-    private BigDecimal purchasedFuel;
-
-    private BigDecimal consumedFuel;
-
-    private BigDecimal remainingFuel;
+    private TripFuelDTO tripFuel;
 
     private BigDecimal gearOil;
 
     private BigDecimal lubricantOil;
 
-    private Long startDistance;
-
-    private Long endDistance;
-
-    private Integer distanceTravelled;
+    private TripDistanceDTO tripDistance;
 
     private String remarks;
 
