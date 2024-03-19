@@ -1,14 +1,12 @@
 package gov.coateam1.model.employee;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import gov.coateam1.model.Position;
-import gov.coateam1.model.TripTicket;
+import gov.coateam1.model.trip_ticket.TripTicket;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 
 
 @Getter
@@ -26,7 +24,7 @@ public class Passenger extends Employee {
             joinColumns = @JoinColumn(name="employee_id"),
             inverseJoinColumns = @JoinColumn(name="tripticket_id"))
 
-    private List<TripTicket> tripTickets;
+    private Set<TripTicket> tripTickets;
 
 
     public Passenger(Long id, String name, Position position) {

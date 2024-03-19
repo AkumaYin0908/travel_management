@@ -8,9 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Getter
@@ -42,7 +40,7 @@ public abstract class Employee {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "employee",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    private List<TravelOrder> travelOrders;
+    private Set<TravelOrder> travelOrders;
 
     public Employee(Long id, String name, Position position) {
         this.id = id;
@@ -55,7 +53,7 @@ public abstract class Employee {
         this.position = position;
     }
 
-    public Employee(Long id, String name, Position position, List<TravelOrder> travelOrders) {
+    public Employee(Long id, String name, Position position, Set<TravelOrder> travelOrders) {
         this.id = id;
         this.name = name;
         this.position = position;
@@ -64,11 +62,17 @@ public abstract class Employee {
 
     public void addTravelOrder(TravelOrder travelOrder){
         if(travelOrders == null){
-            travelOrders = new ArrayList<>();
+            travelOrders = new LinkedHashSet<>();
         }
 
         travelOrders.add(travelOrder);
         travelOrder.setEmployee(this);
+    }
+
+    public void removeTravelOrder(TravelOrder travelOrder){
+        this.getTravelOrders().remove(travelOrder);
+        travelOrder.setEmployee(null);
+
     }
 
 }
