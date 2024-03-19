@@ -8,13 +8,13 @@ import java.util.List;
 public interface VehicleService {
 
     List<VehicleDTO> findAll();
-    VehicleDTO findByBrand(String brand);
+    List<VehicleDTO> findByBrand(String brand);
 
     VehicleDTO findByPlateNo(String plateNo);
 
-    VehicleDTO findByModel(String model);
+    List<VehicleDTO> findByModel(String model);
 
-    VehicleDTO findByType(String type);
+    List<VehicleDTO> findByType(String type);
 
     VehicleDTO add(VehicleDTO vehicleDTO);
 

@@ -26,9 +26,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleDTO findByBrand(String brand) {
-        Vehicle vehicle = vehicleRepository.findByBrand(brand).orElseThrow(() -> new ResourceNotFoundException("Vehicle","brand",brand));
-        return modelMapper.map(vehicle, VehicleDTO.class);
+    public List<VehicleDTO> findByBrand(String brand) {
+      return vehicleRepository.findByBrand(brand).stream().map((element) -> modelMapper.map(element, VehicleDTO.class)).toList();
     }
 
     @Override
@@ -38,16 +37,13 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleDTO findByModel(String model) {
-        Vehicle vehicle =  vehicleRepository.findByModel(model).orElseThrow(() -> new ResourceNotFoundException("Vehicle","model",model));
-        return modelMapper.map(vehicle, VehicleDTO.class);
+    public List<VehicleDTO> findByModel(String model) {
+        return vehicleRepository.findByModel(model).stream().map((element) -> modelMapper.map(element, VehicleDTO.class)).toList();
     }
 
     @Override
-    public VehicleDTO findByType(String type) {
-        Vehicle vehicle = vehicleRepository.findByType(type).orElseThrow(() -> new ResourceNotFoundException("Vehicle","type",type));
-
-        return modelMapper.map(vehicle, VehicleDTO.class);
+    public List<VehicleDTO> findByType(String type) {
+       return vehicleRepository.findByType(type).stream().map((element) -> modelMapper.map(element, VehicleDTO.class)).toList();
     }
 
     @Override

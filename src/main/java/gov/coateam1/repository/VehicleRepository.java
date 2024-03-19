@@ -1,5 +1,6 @@
 package gov.coateam1.repository;
 
+import gov.coateam1.constants.VehicleQueryConstant;
 import gov.coateam1.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,19 +8,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
 
-    Optional<Vehicle> findByBrand(String brand);
+
+    @Query(value = VehicleQueryConstant.FIND_BY_BRAND,nativeQuery = true)
+    List<Vehicle> findByBrand(String brand);
 
     Optional<Vehicle> findByPlateNo(String plateNo);
 
-    Optional<Vehicle> findByModel(String model);
+    @Query(value = VehicleQueryConstant.FIND_BY_MODEL,nativeQuery = true)
+    List<Vehicle>  findByModel(String model);
 
-    Optional<Vehicle> findByType(String type);
+    @Query(value = VehicleQueryConstant.FIND_BY_TYPE,nativeQuery = true)
+    List<Vehicle>  findByType(String type);
 
 
 }

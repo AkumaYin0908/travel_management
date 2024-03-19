@@ -39,13 +39,13 @@ public class VehicleController {
     }
 
     @GetMapping("/{brand}")
-    public ResponseEntity<VehicleDTO> getVehicleByBrand(@PathVariable("brand")String brand){
-        return  new ResponseEntity<>(vehicleService.findByBrand(brand),HttpStatus.FOUND);
+    public ResponseEntity<List<VehicleDTO>> getVehicleByBrand(@PathVariable("brand")String brand){
+        return  new ResponseEntity<>(vehicleService.findByBrand(brand),HttpStatus.OK);
     }
 
     @GetMapping("/{model}")
-    public ResponseEntity<VehicleDTO> getVehicleByModel(@PathVariable("brand")String model){
-        return  new ResponseEntity<>(vehicleService.findByModel(model),HttpStatus.FOUND);
+    public ResponseEntity<List<VehicleDTO>> getVehicleByModel(@PathVariable("brand")String model){
+        return  new ResponseEntity<>(vehicleService.findByModel(model),HttpStatus.OK);
     }
 
     @GetMapping("/{plateNo}")
@@ -54,8 +54,8 @@ public class VehicleController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<VehicleDTO> getVehicleByType(@PathVariable("type")String type){
-        return  new ResponseEntity<>(vehicleService.findByType(type),HttpStatus.FOUND);
+    public ResponseEntity<List<VehicleDTO>> getVehicleByType(@PathVariable("type")String type){
+        return  new ResponseEntity<>(vehicleService.findByType(type),HttpStatus.OK);
     }
 
 
