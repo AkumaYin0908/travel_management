@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,7 +26,7 @@ public class ReportTo {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "reportTos")
-    private List<TravelOrder> travelOrders;
+    private Set<TravelOrder> travelOrders;
 
 
     public ReportTo(String name) {
