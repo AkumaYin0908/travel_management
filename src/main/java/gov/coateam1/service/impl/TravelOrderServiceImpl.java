@@ -24,6 +24,7 @@ import gov.coateam1.repository.place.*;
 import gov.coateam1.service.TravelOrderService;
 import gov.coateam1.util.DateTimeConverter;
 import gov.coateam1.util.JSONDataLoader;
+import gov.coateam1.util.PlaceBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -41,7 +42,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private final TravelOrderRepository travelOrderRepository;
     private final EmployeeRepository employeeRepository;
     private final TravelOrderMapper travelOrderMapper;
-    private final ModelMapper modelMapper;
+    private final PlaceBuilder placeBuilder;
     private final VehicleRepository vehicleRepository;
     private final PurposeRepository purposeRepository;
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
@@ -191,33 +192,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                     if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
                     } else {
-                        place = new Place();
-                        place.setBuildingName(placeDTO.getBuildingName());
-
-                        if (placeDTO.getBarangay() == null) {
-                            place.setBarangay(null);
-                        } else {
-                            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
-                            Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
-                            barangay.addPlace(place);
-                            place.setBarangay(barangay);
-                            barangayRepository.save(barangay);
-
-                        }
-                        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
-                        Municipality municipality = new Municipality(municipalityDTO.getCode(), municipalityDTO.getName());
-                        municipality.addPlace(place);
-                        municipalityRepository.save(municipality);
-
-                        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
-                        Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
-                        province.addPlace(place);
-                        provinceRepository.save(province);
-
-                        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
-                        Region region = new Region(regionDTO.getCode(), regionDTO.getName());
-                        region.addPlace(place);
-                        regionRepository.save(region);
+                        place = placeBuilder.constructPlace(placeDTO);
                     }
 
                 } else {
