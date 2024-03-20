@@ -11,6 +11,11 @@ import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.Place;
 import gov.coateam1.model.trip_ticket.TripTime;
+import gov.coateam1.payload.PurposeDTO;
+import gov.coateam1.payload.VehicleDTO;
+import gov.coateam1.payload.employee.EmployeeDTO;
+import gov.coateam1.payload.place.PlaceDTO;
+import gov.coateam1.payload.trip_ticket.TripDistanceDTO;
 import gov.coateam1.payload.trip_ticket.TripFuelDTO;
 import gov.coateam1.payload.trip_ticket.TripTicketDTO;
 import gov.coateam1.payload.trip_ticket.TripTimeDTO;
@@ -76,7 +81,8 @@ public class TripTicketMapper {
         LocalDate dateReturn = DateTimeConverter.convertToLocalDate(tripTicketDTO.getDateReturn());
         Driver driver = modelMapper.map(tripTicketDTO.getEmployee(),Driver.class);
         Set<Place> places = tripTicketDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
-        Set<Passenger> passengers = tripTicketDTO.getPassengers().stream().map(throwingFunction(emp->employeeMapper.maptoModel(emp,Passenger.class))).collect(Collectors.toSet());
+      //  Set<Passenger> passengers = tripTicketDTO.getPassengers().stream().map(throwingFunction(emp->employeeMapper.maptoModel(emp,Passenger.class))).collect(Collectors.toSet());
+        Set<Passenger> passengers = tripTicketDTO.getPassengers().stream().map(passengerDTO ->modelMapper.map(passengerDTO,Passenger.class)).collect(Collectors.toSet());
         TripTime tripTime = this.convertToModel(tripTicketDTO.getTripTime());
         TripFuel tripFuel = modelMapper.map(tripTicketDTO.getTripFuel(),TripFuel.class);
         TripDistance tripDistance = modelMapper.map(tripTicketDTO.getTripDistance(),TripDistance.class);
@@ -93,12 +99,24 @@ public class TripTicketMapper {
 
 
     public TripTicketDTO mapToDTO(TripTicket tripTicket){
-        return null;
+        String strDateDeparture = DateTimeConverter.convertToString(tripTicket.getDateDeparture());
+        String strDateReturn = DateTimeConverter.convertToString(tripTicket.getDateReturn());
+        EmployeeDTO employeeDTO = modelMapper.map(tripTicket.getDriver(), EmployeeDTO.class);
+        Set<PlaceDTO> placeDTOs = tripTicket.getPlaces().stream().map(place -> modelMapper.map(place, PlaceDTO.class)).collect(Collectors.toSet());
+        Set<EmployeeDTO> employeeDTOs = tripTicket.getPassengers().stream().map(passenger -> modelMapper.map(passenger, EmployeeDTO.class)).collect(Collectors.toSet());
+        TripTimeDTO tripTimeDTO = this.convertToDTO(tripTicket.getTripTime());
+        TripFuelDTO tripFuelDTO = modelMapper.map(tripTicket.getTripFuel(),TripFuelDTO.class);
+        TripDistanceDTO tripDistanceDTO = modelMapper.map(tripTicket.getTripDistance(),TripDistanceDTO.class);
+        PurposeDTO purposeDTO = modelMapper.map(tripTicket.getPurpose(),PurposeDTO.class);
+        VehicleDTO vehicleDTO = modelMapper.map(tripTicket.getVehicle(),VehicleDTO.class);
+
+        return new TripTicketDTO(
+                tripTicket.getId(),employeeDTO,strDateDeparture,strDateReturn,tripTimeDTO,
+                placeDTOs,employeeDTOs,tripFuelDTO,tripTicket.getGearOil(),tripTicket.getLubricantOil(),
+                tripDistanceDTO,tripTicket.getRemarks(),purposeDTO,vehicleDTO);
     }
 
-    public TripTicket mapToModel(TripTicketDTO tripTicketDTO,TripTicket tripTicket){
-        return null;
-    }
+
 
     public static  <T,R,E extends Exception>Function<T,R> throwingFunction(CheckedFunction<T,R,E> checkedFunction){
 
