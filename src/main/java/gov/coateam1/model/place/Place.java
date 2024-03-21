@@ -24,26 +24,26 @@ public class Place {
     private Long id;
 
 
-    @Column(name="building_name")
+    @Column(name="building_name",columnDefinition = "varchar(255) default 'N/A'")
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="barangay_code")
+    @JoinColumn(name="barangay_code",columnDefinition = "varchar(255) default 'N/A'")
     private Barangay barangay;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="municipality_code")
+    @JoinColumn(name="municipality_code",columnDefinition = "varchar(255) default 'N/A'")
     private Municipality municipality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="province_code")
+    @JoinColumn(name="province_code",columnDefinition = "varchar(255) default 'N/A'")
     private Province province;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="region_code")
+    @JoinColumn(name="region_code",columnDefinition = "varchar(255) default 'N/A'")
     private Region region;
 
-    @Column(name="default_place")
+    @Column(name="default_place",columnDefinition = "varchar(255) default 'N/A'")
     private String defaultPlace;
 
     @ToString.Exclude
