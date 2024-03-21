@@ -17,6 +17,7 @@ import gov.coateam1.payload.TravelOrderDTO;
 import gov.coateam1.service.PurposeService;
 import gov.coateam1.service.VehicleService;
 import gov.coateam1.service.employee.EmployeeService;
+import gov.coateam1.util.DateTimeConverter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -35,64 +36,38 @@ import java.util.stream.Collectors;
 public class TravelOrderMapper {
 
    private final PlaceMapper placeMapper;
-   private final VehicleMapper vehicleMapper;
-   private final ReportToMapper reportToMapper;
-   private final PurposeMapper purposeMapper;
    private final ModelMapper modelMapper;
 
-   private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
    public  TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) {
-      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
+      Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
       Set<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
-      Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).collect(Collectors.toSet());
-      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
+      Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToDTO -> modelMapper.map(reportToDTO,ReportTo.class)).collect(Collectors.toSet());
+      Vehicle vehicle = modelMapper.map(travelOrderDTO.getVehicle(),Vehicle.class);
 
 
       return new TravelOrder(travelOrderDTO.getId(),
-              LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter),LocalDate.parse(travelOrderDTO.getDateDeparture(),dateTimeFormatter),
-              LocalDate.parse(travelOrderDTO.getDateReturn(),dateTimeFormatter),purpose,vehicle, reportTos,places,LocalDate.parse(travelOrderDTO.getLastTravel(),dateTimeFormatter));
+              DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()),DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()),
+              DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()),purpose,vehicle, reportTos,places,DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
    }
 
    public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
-      PurposeDTO purposeDTO = purposeMapper.mapToDTO(travelOrder.getPurpose());
+      PurposeDTO purposeDTO = modelMapper.map(travelOrder.getPurpose(),PurposeDTO.class);
       Set<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).collect(Collectors.toSet());
-      Set<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportToMapper::mapToDTO).collect(Collectors.toSet());
-      VehicleDTO vehicleDTO =vehicleMapper.mapToDTO(travelOrder.getVehicle());
-
+      Set<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportTo -> modelMapper.map(reportTo, ReportToDTO.class)).collect(Collectors.toSet());
+      VehicleDTO vehicleDTO = modelMapper.map(travelOrder.getVehicle(), VehicleDTO.class);
       EmployeeDTO employeeDTO = modelMapper.map(travelOrder.getEmployee(), EmployeeDTO.class);
-
+      System.out.println(travelOrder);
       return new TravelOrderDTO(travelOrder.getId(),
               employeeDTO,
-              dateTimeFormatter.format(travelOrder.getDateIssued()),
-              dateTimeFormatter.format(travelOrder.getDateDeparture()),
-              dateTimeFormatter.format(travelOrder.getDateReturn()),
+              DateTimeConverter.convertToString(travelOrder.getDateIssued()),
+              DateTimeConverter.convertToString(travelOrder.getDateDeparture()),
+              DateTimeConverter.convertToString(travelOrder.getDateReturn()),
               purposeDTO,
               vehicleDTO,
               reportToDTOS,
               placeDTOS,
-              dateTimeFormatter.format(travelOrder.getLastTravel()));
-
-
+              DateTimeConverter.convertToString(travelOrder.getLastTravel()));
 
    }
-
-   public void mapToModel(TravelOrderDTO travelOrderDTO, TravelOrder travelOrder) throws Exception {
-
-      Purpose purpose = purposeMapper.mapToModel(travelOrderDTO.getPurpose());
-      Set<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
-      Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToMapper::mapToModel).collect(Collectors.toSet());
-      Vehicle vehicle = vehicleMapper.mapToModel(travelOrderDTO.getVehicle());
-
-      travelOrder.setDateIssued(LocalDate.parse(travelOrderDTO.getDateIssued(),dateTimeFormatter));
-      travelOrder.setDateDeparture(LocalDate.parse(travelOrderDTO.getDateDeparture(),dateTimeFormatter));
-      travelOrder.setDateReturn(LocalDate.parse(travelOrderDTO.getDateReturn(),dateTimeFormatter));
-      travelOrder.setPurpose(purpose);
-      travelOrder.setVehicle(vehicle);
-      travelOrder.setReportTos(reportTos);
-      travelOrder.setPlaces(places);
-      travelOrder.setLastTravel(LocalDate.parse(travelOrderDTO.getLastTravel(),dateTimeFormatter));
-
-   }
-
 
 }
