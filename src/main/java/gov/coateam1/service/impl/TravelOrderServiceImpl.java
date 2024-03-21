@@ -62,19 +62,6 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         return travelOrderRepository.findAll().stream().map(travelOrderMapper::mapToDTO).toList();
     }
 
-//    @Override
-//    public TravelOrderDTO findByDateDepartureAndDateReturn(LocalDate dateDeparture, LocalDate dateReturn) {
-//        TravelOrder travelOrder = travelOrderRepository.findByDateDepartureAndDateReturn(dateDeparture, dateReturn)
-//                .orElseThrow(() -> {
-//                    String message = (dateDeparture.isEqual(dateReturn)) ? String.format("No Travel Order found with this following date: %s", dateTimeFormatter.format(dateDeparture))
-//                            : String.format("No Travel Order found with these following dates: departure: %s , return : %s", dateTimeFormatter.format(dateDeparture), dateTimeFormatter.format(dateReturn));
-//
-//                    return new ResourceNotFoundException(message);
-//                });
-//
-//
-//        return travelOrderMapper.mapToDTO(travelOrder);
-//    }
 
     @Override
     public TravelOrderDTO findById(Long id) {
@@ -184,19 +171,17 @@ public class TravelOrderServiceImpl implements TravelOrderService {
             } else {
                 if (placeDTO.getDefaultPlace().equals("N/A")) {
 
-                    Optional<Place> optionalPlaceWithBarangay =placeRepository.findPlaceByCodes(
-                            placeDTO.getBarangay().getCode(),
-                            placeDTO.getMunicipality().getCode(),
-                            placeDTO.getProvince().getCode(),
-                            placeDTO.getRegionDTO().getCode());
 
                     Optional<Place> optionalPlaceWithoutBarangay =placeRepository.findPlaceByCodes(
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
                             placeDTO.getRegionDTO().getCode());
 
-                    Optional<Place> optionalPlace = placeDTO.getBarangay() == null ? optionalPlaceWithoutBarangay : optionalPlaceWithBarangay;
-
+                    Optional<Place> optionalPlace = placeDTO.getBarangay() == null ? optionalPlaceWithoutBarangay : placeRepository.findPlaceByCodes(
+                            placeDTO.getBarangay().getCode(),
+                            placeDTO.getMunicipality().getCode(),
+                            placeDTO.getProvince().getCode(),
+                            placeDTO.getRegionDTO().getCode());
                     if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
                     } else {
