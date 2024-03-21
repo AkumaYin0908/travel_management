@@ -19,6 +19,7 @@ public interface PlaceQueryConstant {
             " where building_name = ?";
 
 
-    String FIND_BY_CODES = "select * from place where barangay_code = ? and municipality_code =? and province_code = ? and region_code = ?";
+    String FIND_BY_CODES_NO_BRGY = "select * from place where barangay_code is null and municipality_code =? and province_code = ? and region_code = ?";
+    String FIND_BY_CODES_WITH_BRGY = "select * from place where barangay_code = ? and municipality_code =? and province_code = ? and region_code = ?";
 
 }
