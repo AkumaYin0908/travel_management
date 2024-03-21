@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class DateTimeConverter {
+
+    private DateTimeConverter(){}
     private final static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
     private final static DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
 
