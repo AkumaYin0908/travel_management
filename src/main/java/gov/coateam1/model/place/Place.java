@@ -5,6 +5,8 @@ import gov.coateam1.model.TravelOrder;
 import gov.coateam1.model.trip_ticket.TripTicket;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DialectOverride;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,8 @@ public class Place {
     private Long id;
 
 
-    @Column(name="building_name",columnDefinition = "varchar(255) default 'N/A'")
+    @Column(name="building_name")
+    @Getter(AccessLevel.NONE)
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +46,8 @@ public class Place {
     @JoinColumn(name="region_code")
     private Region region;
 
-    @Column(name="default_place",columnDefinition = "varchar(255) default 'N/A'")
+    @Column(name="default_place")
+    @Getter(AccessLevel.NONE)
     private String defaultPlace;
 
     @ToString.Exclude
@@ -68,4 +72,11 @@ public class Place {
         this.defaultPlace  = defaultPlace;
     }
 
+    public String getBuildingName() {
+        return buildingName == null ? "N/A" : buildingName;
+    }
+
+    public String getDefaultPlace() {
+        return defaultPlace == null ? "N/A" : defaultPlace ;
+    }
 }
