@@ -28,19 +28,19 @@ public class Place {
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="barangay_code",columnDefinition = "varchar(255) default 'N/A'")
+    @JoinColumn(name="barangay_code")
     private Barangay barangay;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="municipality_code",columnDefinition = "varchar(255) default 'N/A'")
+    @JoinColumn(name="municipality_code")
     private Municipality municipality;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="province_code",columnDefinition = "varchar(255) default 'N/A'")
+    @JoinColumn(name="province_code")
     private Province province;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="region_code",columnDefinition = "varchar(255) default 'N/A'")
+    @JoinColumn(name="region_code")
     private Region region;
 
     @Column(name="default_place",columnDefinition = "varchar(255) default 'N/A'")
