@@ -42,12 +42,9 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private final TravelOrderRepository travelOrderRepository;
     private final EmployeeRepository employeeRepository;
     private final TravelOrderMapper travelOrderMapper;
-    private final PlaceBuilder placeBuilder;
     private final VehicleRepository vehicleRepository;
     private final PurposeRepository purposeRepository;
-    private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
-
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+    private final ModelMapper modelMapper;
     private final PlaceRepository placeRepository;
     private final ReportToRepository reportToRepository;
     private final BarangayRepository barangayRepository;
@@ -167,12 +164,9 @@ public class TravelOrderServiceImpl implements TravelOrderService {
             Place place = null;
             if (placeOptional.isPresent()) {
                 place = placeOptional.get();
-                place.setBuildingName(placeDTO.getBuildingName());
             } else {
-                if (placeDTO.getDefaultPlace().equals("N/A")) {
-
-
-                    Optional<Place> optionalPlaceWithoutBarangay =placeRepository.findPlaceByCodes(
+                if (placeDTO.getDefaultPlace() == null || placeDTO.getDefaultPlace().equals("N/A")) {
+                    Optional<Place> optionalPlaceWithoutBarangay = placeRepository.findPlaceByCodes(
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
                             placeDTO.getRegionDTO().getCode());
@@ -182,10 +176,11 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
                             placeDTO.getRegionDTO().getCode());
+
                     if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
                     } else {
-                        place = placeBuilder.constructPlace(placeDTO);
+                        place = constructPlace(placeDTO);
                     }
 
                 } else {
@@ -196,6 +191,35 @@ public class TravelOrderServiceImpl implements TravelOrderService {
             places.add(place);
         }
         return places;
+    }
+
+    public Place constructPlace(PlaceDTO placeDTO) throws Exception {
+        Place place = new Place();
+        if (placeDTO.getBarangay() == null) {
+            place.setBarangay(null);
+        } else {
+            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
+            Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
+            barangay.addPlace(place);
+            barangayRepository.save(barangay);
+
+        }
+        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+        Municipality municipality = modelMapper.map(municipalityDTO, Municipality.class);
+        municipality.addPlace(place);
+        municipalityRepository.save(municipality);
+
+        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+        Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+        province.addPlace(place);
+        provinceRepository.save(province);
+
+        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
+        Region region = new Region(regionDTO.getCode(), regionDTO.getName());
+        region.addPlace(place);
+        regionRepository.save(region);
+
+        return place;
     }
 
     private Set<ReportTo> getConvertedReportTos(Set<ReportToDTO> reportToDTOs) {
