@@ -30,7 +30,10 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
     @Query("SELECT p FROM Place p WHERE  p.defaultPlace = :defaultPlace")
     Optional<Place> findByDefaultPlace(@Param("defaultPlace") String defaultPlace);
 
-    @Query(value = PlaceQueryConstant.FIND_BY_CODES,nativeQuery = true)
+    @Query(value = PlaceQueryConstant.FIND_BY_CODES_NO_BRGY,nativeQuery = true)
+    Optional<Place> findPlaceByCodes(String municipalityCode,String provinceCode,String regionCode);
+
+    @Query(value = PlaceQueryConstant.FIND_BY_CODES_WITH_BRGY,nativeQuery = true)
     Optional<Place> findPlaceByCodes(String barangayCode, String municipalityCode,String provinceCode,String regionCode);
 
 
