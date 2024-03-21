@@ -1,6 +1,7 @@
 package gov.coateam1.model;
 
 
+import gov.coateam1.model.trip_ticket.TripTicket;
 import jakarta.persistence.*;
 import lombok.*;
 
