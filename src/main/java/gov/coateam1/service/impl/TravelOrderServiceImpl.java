@@ -182,13 +182,21 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                 place = placeOptional.get();
                 place.setBuildingName(placeDTO.getBuildingName());
             } else {
-                if (placeDTO.getDefaultPlace() == null) {
-                    Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
+                if (placeDTO.getDefaultPlace().equals("N/A")) {
+
+                    Optional<Place> optionalPlaceWithBarangay =placeRepository.findPlaceByCodes(
                             placeDTO.getBarangay().getCode(),
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
-                            placeDTO.getRegionDTO().getCode()
-                    );
+                            placeDTO.getRegionDTO().getCode());
+
+                    Optional<Place> optionalPlaceWithoutBarangay =placeRepository.findPlaceByCodes(
+                            placeDTO.getMunicipality().getCode(),
+                            placeDTO.getProvince().getCode(),
+                            placeDTO.getRegionDTO().getCode());
+
+                    Optional<Place> optionalPlace = placeDTO.getBarangay() == null ? optionalPlaceWithoutBarangay : optionalPlaceWithBarangay;
+
                     if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
                     } else {
