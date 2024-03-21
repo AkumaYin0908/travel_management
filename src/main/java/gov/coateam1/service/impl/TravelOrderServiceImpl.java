@@ -184,7 +184,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
             } else {
                 if (placeDTO.getDefaultPlace() == null) {
                     Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
-                            placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
+                            placeDTO.getBarangay().getCode(),
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
                             placeDTO.getRegionDTO().getCode()
