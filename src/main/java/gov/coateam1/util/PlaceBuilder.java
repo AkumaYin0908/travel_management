@@ -31,7 +31,7 @@ public class PlaceBuilder {
         Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
         province.addPlace(place);
 
-        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
+        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegion().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
         Region region = new Region(regionDTO.getCode(), regionDTO.getName());
         region.addPlace(place);
 

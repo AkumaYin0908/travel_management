@@ -54,7 +54,7 @@ public class PlaceMapper {
         Barangay barangay=this.toBarangay(placeDTO.getBarangay());
         Municipality municipality=this.toMunicipality(placeDTO.getMunicipality());
         Province province=this.toProvince(placeDTO.getProvince());
-        Region region = this.toRegion(placeDTO.getRegionDTO());
+        Region region = this.toRegion(placeDTO.getRegion());
 
         return new Place(placeDTO.getId(), placeDTO.getBuildingName(),
                 barangay, municipality, province,region);
