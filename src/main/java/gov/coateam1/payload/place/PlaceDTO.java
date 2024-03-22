@@ -17,18 +17,18 @@ public class PlaceDTO {
     private BarangayDTO barangay;
     private MunicipalityDTO municipality;
     private ProvinceDTO province;
-    private RegionDTO regionDTO;
+    private RegionDTO region;
 
     @Getter(AccessLevel.NONE)
     private String defaultPlace;
 
-    public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO regionDTO) {
+    public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO region) {
         this.id = id;
         this.buildingName = buildingName;
         this.barangay = barangay;
         this.municipality = municipality;
         this.province = province;
-        this.regionDTO = regionDTO;
+        this.region = region;
     }
 
     public PlaceDTO(String defaultPlace) {
