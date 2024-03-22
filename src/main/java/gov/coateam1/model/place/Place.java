@@ -27,7 +27,6 @@ public class Place {
 
 
     @Column(name="building_name")
-    @Getter(AccessLevel.NONE)
     private String buildingName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +46,6 @@ public class Place {
     private Region region;
 
     @Column(name="default_place")
-    @Getter(AccessLevel.NONE)
     private String defaultPlace;
 
     @ToString.Exclude
@@ -72,11 +70,5 @@ public class Place {
         this.defaultPlace  = defaultPlace;
     }
 
-    public String getBuildingName() {
-        return buildingName == null ? "N/A" : buildingName;
-    }
 
-    public String getDefaultPlace() {
-        return defaultPlace == null ? "N/A" : defaultPlace ;
-    }
 }
