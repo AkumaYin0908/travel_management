@@ -10,11 +10,16 @@ import lombok.*;
 public class PlaceDTO {
 
     private Long id;
+
+
+    @Getter(AccessLevel.NONE)
     private String buildingName;
     private BarangayDTO barangay;
     private MunicipalityDTO municipality;
     private ProvinceDTO province;
     private RegionDTO regionDTO;
+
+    @Getter(AccessLevel.NONE)
     private String defaultPlace;
 
     public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO regionDTO) {
@@ -28,5 +33,13 @@ public class PlaceDTO {
 
     public PlaceDTO(String defaultPlace) {
         this.defaultPlace = defaultPlace;
+    }
+
+    public String getBuildingName() {
+        return buildingName == null ? "N/A" : buildingName;
+    }
+
+    public String getDefaultPlace() {
+        return defaultPlace == null ? "N/A" : defaultPlace;
     }
 }
