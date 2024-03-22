@@ -166,16 +166,15 @@ public class TravelOrderServiceImpl implements TravelOrderService {
                 place = placeOptional.get();
             } else {
                 if (placeDTO.getDefaultPlace() == null || placeDTO.getDefaultPlace().equals("N/A")) {
-                    Optional<Place> optionalPlaceWithoutBarangay = placeRepository.findPlaceByCodes(
-                            placeDTO.getMunicipality().getCode(),
-                            placeDTO.getProvince().getCode(),
-                            placeDTO.getRegionDTO().getCode());
 
-                    Optional<Place> optionalPlace = placeDTO.getBarangay() == null ? optionalPlaceWithoutBarangay : placeRepository.findPlaceByCodes(
-                            placeDTO.getBarangay().getCode(),
+
+                    Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
+                            placeDTO.getBuildingName(),
+                            placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
                             placeDTO.getMunicipality().getCode(),
                             placeDTO.getProvince().getCode(),
-                            placeDTO.getRegionDTO().getCode());
+                            placeDTO.getRegion().getCode()
+                    );
 
                     if (optionalPlace.isPresent()) {
                         place = optionalPlace.get();
@@ -195,6 +194,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     public Place constructPlace(PlaceDTO placeDTO) throws Exception {
         Place place = new Place();
+        place.setBuildingName(placeDTO.getBuildingName());
         if (placeDTO.getBarangay() == null) {
             place.setBarangay(null);
         } else {
@@ -214,7 +214,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         province.addPlace(place);
         provinceRepository.save(province);
 
-        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegionDTO().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
+        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegion().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
         Region region = new Region(regionDTO.getCode(), regionDTO.getName());
         region.addPlace(place);
         regionRepository.save(region);
