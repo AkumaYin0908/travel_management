@@ -38,24 +38,24 @@ public class VehicleController {
         return new ResponseEntity<>(new APIResponse("Delete successful!",true,HttpStatus.OK.value()),HttpStatus.OK);
     }
 
-    @GetMapping("/{brand}")
+    @GetMapping("/brand/{brand}")
     public ResponseEntity<List<VehicleDTO>> getVehicleByBrand(@PathVariable("brand")String brand){
-        return  new ResponseEntity<>(vehicleService.findByBrand(brand),HttpStatus.OK);
+        return  new ResponseEntity<>(vehicleService.findByBrand(brand),HttpStatus.FOUND);
     }
 
-    @GetMapping("/{model}")
+    @GetMapping("/model/{model}")
     public ResponseEntity<List<VehicleDTO>> getVehicleByModel(@PathVariable("brand")String model){
-        return  new ResponseEntity<>(vehicleService.findByModel(model),HttpStatus.OK);
+        return  new ResponseEntity<>(vehicleService.findByModel(model),HttpStatus.FOUND);
     }
 
-    @GetMapping("/{plateNo}")
+    @GetMapping("/plate_no/{plateNo}")
     public ResponseEntity<VehicleDTO> getVehicleByPlateNo(@PathVariable("plateNo")String plateNo){
         return  new ResponseEntity<>(vehicleService.findByPlateNo(plateNo),HttpStatus.FOUND);
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("/type/{type}")
     public ResponseEntity<List<VehicleDTO>> getVehicleByType(@PathVariable("type")String type){
-        return  new ResponseEntity<>(vehicleService.findByType(type),HttpStatus.OK);
+        return  new ResponseEntity<>(vehicleService.findByType(type),HttpStatus.FOUND);
     }
 
 
