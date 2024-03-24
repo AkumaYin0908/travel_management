@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,18 @@ public class VehicleController {
 
     @GetMapping("/all")
     public ResponseEntity<List<VehicleDTO>> getAllVehicle(){
-        return new ResponseEntity<>(vehicleService.findAll(), HttpStatus.OK);
+        List<VehicleDTO> vehicles = vehicleService.findAll();
+        if(vehicles.isEmpty()){
+            return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NO_CONTENT);
+        }else{
+            return new ResponseEntity<>(vehicles, HttpStatus.OK);
+        }
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VehicleDTO> getVehicleById(@PathVariable("id")Long id){
+        return new ResponseEntity<>(vehicleService.findById(id),HttpStatus.FOUND);
     }
 
     @PostMapping
