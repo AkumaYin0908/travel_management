@@ -1,6 +1,7 @@
 package gov.coateam1.mapper;
 
 
+import gov.coateam1.functionalinterface.ThrowFunction;
 import gov.coateam1.model.Purpose;
 import gov.coateam1.model.ReportTo;
 import gov.coateam1.model.TravelOrder;
@@ -50,9 +51,9 @@ public class TravelOrderMapper {
               DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()),purpose,vehicle, reportTos,places,DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
    }
 
-   public TravelOrderDTO mapToDTO(TravelOrder travelOrder){
+   public TravelOrderDTO mapToDTO(TravelOrder travelOrder) throws Exception{
       PurposeDTO purposeDTO = modelMapper.map(travelOrder.getPurpose(),PurposeDTO.class);
-      Set<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(placeMapper::mapToDTO).collect(Collectors.toSet());
+      Set<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(ThrowFunction.throwingFunction(placeMapper::mapToDTO)).collect(Collectors.toSet());
       Set<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportTo -> modelMapper.map(reportTo, ReportToDTO.class)).collect(Collectors.toSet());
       VehicleDTO vehicleDTO = modelMapper.map(travelOrder.getVehicle(), VehicleDTO.class);
       EmployeeDTO employeeDTO = modelMapper.map(travelOrder.getEmployee(), EmployeeDTO.class);
