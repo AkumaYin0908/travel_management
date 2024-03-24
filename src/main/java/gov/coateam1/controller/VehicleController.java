@@ -56,7 +56,7 @@ public class VehicleController {
     }
 
     @GetMapping("/model/{model}")
-    public ResponseEntity<List<VehicleDTO>> getVehicleByModel(@PathVariable("brand")String model){
+    public ResponseEntity<List<VehicleDTO>> getVehicleByModel(@PathVariable("model")String model){
         return  new ResponseEntity<>(vehicleService.findByModel(model),HttpStatus.FOUND);
     }
 
