@@ -8,6 +8,8 @@ import java.util.List;
 public interface VehicleService {
 
     List<VehicleDTO> findAll();
+
+    VehicleDTO findById(Long id);
     List<VehicleDTO> findByBrand(String brand);
 
     VehicleDTO findByPlateNo(String plateNo);

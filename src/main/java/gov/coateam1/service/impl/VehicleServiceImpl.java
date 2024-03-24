@@ -26,6 +26,12 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public VehicleDTO findById(Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Vehicle","id",id));
+        return modelMapper.map(vehicle,VehicleDTO.class);
+    }
+
+    @Override
     public List<VehicleDTO> findByBrand(String brand) {
       return vehicleRepository.findByBrand(brand).stream().map((element) -> modelMapper.map(element, VehicleDTO.class)).toList();
     }
