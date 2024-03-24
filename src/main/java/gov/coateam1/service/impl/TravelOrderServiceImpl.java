@@ -4,6 +4,8 @@ package gov.coateam1.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.coateam1.constants.AppConstant;
 import gov.coateam1.exception.ResourceNotFoundException;
+import gov.coateam1.functionalinterface.CheckedFunction;
+import gov.coateam1.functionalinterface.ThrowFunction;
 import gov.coateam1.mapper.TravelOrderMapper;
 import gov.coateam1.model.Purpose;
 import gov.coateam1.model.ReportTo;
@@ -33,6 +35,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
 
 
 @Service
@@ -56,12 +59,12 @@ public class TravelOrderServiceImpl implements TravelOrderService {
 
     @Override
     public List<TravelOrderDTO> findAll() {
-        return travelOrderRepository.findAll().stream().map(travelOrderMapper::mapToDTO).toList();
+        return travelOrderRepository.findAll().stream().map(ThrowFunction.throwingFunction(travelOrderMapper::mapToDTO)).toList();
     }
 
 
     @Override
-    public TravelOrderDTO findById(Long id) {
+    public TravelOrderDTO findById(Long id) throws Exception {
         TravelOrder travelOrder = travelOrderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TravelOrder", "id", id));
         return travelOrderMapper.mapToDTO(travelOrder);
     }
@@ -144,7 +147,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
         Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
-        List<TravelOrderDTO> travelOrderDTOs = employee.getTravelOrders().stream().map(travelOrderMapper::mapToDTO).toList();
+        List<TravelOrderDTO> travelOrderDTOs = employee.getTravelOrders().stream().map(ThrowFunction.throwingFunction(travelOrderMapper::mapToDTO)).toList();
 
         return travelOrderDTOs;
     }
@@ -153,7 +156,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     public List<TravelOrderDTO> findTravelOrderByDateIssued(String strDateIssued) {
         LocalDate dateIssued = DateTimeConverter.convertToLocalDate(strDateIssued);
         List<TravelOrder> travelOrders = travelOrderRepository.findByDateIssued(dateIssued);
-        return travelOrders.stream().map(travelOrderMapper::mapToDTO).toList();
+        return travelOrders.stream().map(ThrowFunction.throwingFunction(travelOrderMapper::mapToDTO)).toList();
     }
 
 
@@ -231,6 +234,8 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         }
         return reportTos;
     }
+
+
 
 
 }
