@@ -122,6 +122,7 @@ public class VehicleControllerTest {
         Mockito.when(vehicleService.findByPlateNo(plateNo)).thenThrow(new ResourceNotFoundException("Vehicle", "plateNo", plateNo));
 
         ResultActions response = mockMvc.perform(createGetRequest("/vehicles/plate_no/" + plateNo)
+
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(vehicleDTO)));
 
@@ -260,6 +261,27 @@ public class VehicleControllerTest {
                 .andExpect(jsonPath("$.model", CoreMatchers.is(vehicleDTO.getModel())))
                 .andExpect(jsonPath("$.type", CoreMatchers.is(vehicleDTO.getType())))
                 .andExpect(jsonPath("$.plateNo", CoreMatchers.is(vehicleDTO.getPlateNo())))
+                .andDo(print());
+    }
+
+    @Test
+    public void testUpdateVehicleShouldReturn404NOTFOUND() throws Exception{
+        Long id = 12L;
+
+        VehicleDTO vehicleDTO1 = new VehicleDTO();
+        vehicleDTO1.setId(1L);
+        vehicleDTO1.setBrand("Toyota");
+        vehicleDTO1.setModel("Fortuner");
+        vehicleDTO1.setType("SUV");
+
+        Mockito.when(vehicleService.update(vehicleDTO, id)).thenThrow(new ResourceNotFoundException("Vehicle","id",id));
+
+        ResultActions response = mockMvc.perform(put("/coa/vehicles/{id}", id)
+                .contextPath(path).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(vehicleDTO1)));
+
+
+        response.andExpect(status().isNotFound())
                 .andDo(print());
     }
 
