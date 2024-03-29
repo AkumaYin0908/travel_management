@@ -51,4 +51,12 @@ public class Purpose {
         travelOrders.add(travelOrder);
         travelOrder.setPurpose(this);
     }
+
+    public void addTripTicket(TripTicket tripTicket){
+        if(tripTickets == null){
+            tripTickets = new ArrayList<>();
+        }
+        tripTickets.add(tripTicket);
+        tripTicket.setPurpose(this);
+    }
 }
