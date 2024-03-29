@@ -12,7 +12,7 @@ public interface TripTicketService {
 
     TripTicketDTO findById(Long id);
 
-    TripTicketDTO add(TripTicketDTO tripTicketDTO);
+    TripTicketDTO add(Long driverId, TripTicketDTO tripTicketDTO) throws Exception;
 
     TripTicketDTO update(TripTicketDTO tripTicketDTO, Long id);
 
