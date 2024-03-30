@@ -35,6 +35,11 @@ public class PlaceDTO {
         this.defaultPlace = defaultPlace;
     }
 
+    public PlaceDTO(Long id, String defaultPlace) {
+        this.id = id;
+        this.defaultPlace = defaultPlace;
+    }
+
     public String getBuildingName() {
         return buildingName == null ? "N/A" : buildingName;
     }
