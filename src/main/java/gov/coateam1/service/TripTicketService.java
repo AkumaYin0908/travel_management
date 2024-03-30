@@ -14,7 +14,7 @@ public interface TripTicketService {
 
     TripTicketDTO add(Long driverId, TripTicketDTO tripTicketDTO) throws Exception;
 
-    TripTicketDTO update(TripTicketDTO tripTicketDTO, Long id);
+    TripTicketDTO update(TripTicketDTO tripTicketDTO, Long id) throws Exception;
 
     void delete(Long id);
 }
