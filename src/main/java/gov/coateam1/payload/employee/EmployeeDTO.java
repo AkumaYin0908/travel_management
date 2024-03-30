@@ -19,4 +19,9 @@ public class EmployeeDTO{
 
     private PositionDTO position;
 
+    public EmployeeDTO(Long id, String name, PositionDTO position) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+    }
 }
