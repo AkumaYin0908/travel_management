@@ -1,12 +1,12 @@
 package gov.coateam1.service.impl;
 
+import gov.coateam1.constants.AppConstant;
 import gov.coateam1.exception.ResourceNotFoundException;
-import gov.coateam1.mapper.TripTicketMapper;
 import gov.coateam1.model.Purpose;
 import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
 import gov.coateam1.model.employee.Passenger;
-import gov.coateam1.model.place.Place;
+import gov.coateam1.model.place.*;
 import gov.coateam1.model.trip_ticket.TripDistance;
 import gov.coateam1.model.trip_ticket.TripFuel;
 import gov.coateam1.model.trip_ticket.TripTicket;
@@ -14,7 +14,7 @@ import gov.coateam1.model.trip_ticket.TripTime;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.payload.VehicleDTO;
 import gov.coateam1.payload.employee.EmployeeDTO;
-import gov.coateam1.payload.place.PlaceDTO;
+import gov.coateam1.payload.place.*;
 import gov.coateam1.payload.trip_ticket.TripDistanceDTO;
 import gov.coateam1.payload.trip_ticket.TripFuelDTO;
 import gov.coateam1.payload.trip_ticket.TripTicketDTO;
@@ -23,10 +23,10 @@ import gov.coateam1.repository.PurposeRepository;
 import gov.coateam1.repository.TripTicketRepository;
 import gov.coateam1.repository.VehicleRepository;
 import gov.coateam1.repository.employee.EmployeeRepository;
-import gov.coateam1.repository.place.PlaceRepository;
+import gov.coateam1.repository.place.*;
 import gov.coateam1.service.TripTicketService;
 import gov.coateam1.util.DateTimeConverter;
-import gov.coateam1.util.PlaceBuilder;
+import gov.coateam1.util.JSONDataLoader;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -48,7 +48,11 @@ public class TripTicketServiceImpl implements TripTicketService {
     private final EmployeeRepository employeeRepository;
     private final VehicleRepository vehicleRepository;
     private final PlaceRepository placeRepository;
-    private final PlaceBuilder placeBuilder;
+    private final JSONDataLoader jsonDataLoader;
+    private final BarangayRepository barangayRepository;
+    private  final MunicipalityRepository municipalityRepository;
+    private final ProvinceRepository provinceRepository;
+    private final RegionRepository regionRepository;
     private final ModelMapper modelMapper;
     private final PurposeRepository purposeRepository;
 
@@ -154,36 +158,67 @@ public class TripTicketServiceImpl implements TripTicketService {
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {
         Set<Place> places = new LinkedHashSet<>();
         for (PlaceDTO placeDTO : placeDTOs) {
-            Optional<Place> placeOptional = placeRepository.findById(placeDTO.getId());
-            Place place = null;
-            if (placeOptional.isPresent()) {
-                place = placeOptional.get();
-            } else {
-                if (placeDTO.getDefaultPlace() == null || placeDTO.getDefaultPlace().equals("N/A")) {
-
-
-                    Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
-                            placeDTO.getBuildingName(),
-                            placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
-                            placeDTO.getMunicipality().getCode(),
-                            placeDTO.getProvince().getCode(),
-                            placeDTO.getRegion().getCode()
-                    );
-
-                    if (optionalPlace.isPresent()) {
-                        place = optionalPlace.get();
-                    } else {
-                        place = placeBuilder.constructPlace(placeDTO);
-                    }
-
-                } else {
-                    place = placeRepository.findByDefaultPlace(placeDTO.getDefaultPlace()).orElse(new Place(placeDTO.getDefaultPlace()));
-                }
-            }
-
+            Place place = getPlaceFromDTO(placeDTO);
             places.add(place);
         }
+
         return places;
+    }
+
+    public Place getPlaceFromDTO(PlaceDTO placeDTO) throws Exception {
+        Optional<Place> placeOptional = placeRepository.findById(placeDTO.getId());
+        if (placeOptional.isPresent()) {
+            return placeOptional.get();
+        } else {
+            if (placeDTO.getDefaultPlace() == null || placeDTO.getDefaultPlace().equals("N/A")) {
+                return getPlaceFromRepository(placeDTO);
+            } else {
+                return placeRepository.findByDefaultPlace(placeDTO.getDefaultPlace()).orElse(new Place(placeDTO.getDefaultPlace()));
+            }
+        }
+    }
+
+    public Place getPlaceFromRepository(PlaceDTO placeDTO) throws Exception {
+        Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
+                placeDTO.getBuildingName(),
+                placeDTO.getBarangay() == null ? null : placeDTO.getBarangay().getCode(),
+                placeDTO.getMunicipality().getCode(),
+                placeDTO.getProvince().getCode(),
+                placeDTO.getRegion().getCode()
+        );
+
+        return  optionalPlace.orElse(constructPlace(placeDTO));
+
+    }
+
+    private Place constructPlace(PlaceDTO placeDTO) throws Exception {
+        Place place = new Place();
+        place.setBuildingName(placeDTO.getBuildingName());
+        if (placeDTO.getBarangay() == null) {
+            place.setBarangay(null);
+        } else {
+            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
+            Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
+            barangay.addPlace(place);
+            barangayRepository.save(barangay);
+
+        }
+        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+        Municipality municipality = modelMapper.map(municipalityDTO, Municipality.class);
+        municipality.addPlace(place);
+        municipalityRepository.save(municipality);
+
+        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+        Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+        province.addPlace(place);
+        provinceRepository.save(province);
+
+        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegion().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
+        Region region = new Region(regionDTO.getCode(), regionDTO.getName());
+        region.addPlace(place);
+        regionRepository.save(region);
+
+        return place;
     }
 
     private Set<Passenger> getConvertedPassengers(Set<EmployeeDTO> employeeDTOs){
@@ -217,8 +252,6 @@ public class TripTicketServiceImpl implements TripTicketService {
 
         Converter<String, LocalTime> toLocalTime =
                 context -> context.getSource() == null ? null : DateTimeConverter.convertToLocalTime(context.getSource());
-
-
 
         modelMapper.typeMap(TripTimeDTO.class,TripTime.class)
                 .addMappings(mapping -> mapping.using(toLocalTime).map(TripTimeDTO::getTimeOfficeDeparture,TripTime::setTimeOfficeDeparture))
