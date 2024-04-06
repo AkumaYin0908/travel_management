@@ -143,9 +143,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeId);
         Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeId));
 
-        List<TravelOrderDTO> travelOrderDTOs = employee.getTravelOrders().stream().map(ThrowFunction.throwingFunction(this::mapToDTO)).toList();
-
-        return travelOrderDTOs;
+        return employee.getTravelOrders().stream().map(ThrowFunction.throwingFunction(this::mapToDTO)).toList();
     }
 
     @Override
@@ -232,25 +230,14 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         return reportTos;
     }
 
-//    public  TravelOrder mapToModel(TravelOrderDTO travelOrderDTO) {
-//        Purpose purpose = modelMapper.map(travelOrderDTO.getPurpose(),Purpose.class);
-//        Set<Place> places  = travelOrderDTO.getPlaces().stream().map(placeMapper::mapToModel).collect(Collectors.toSet());
-//        Set<ReportTo> reportTos = travelOrderDTO.getReportTos().stream().map(reportToDTO -> modelMapper.map(reportToDTO,ReportTo.class)).collect(Collectors.toSet());
-//        Vehicle vehicle = modelMapper.map(travelOrderDTO.getVehicle(),Vehicle.class);
-//
-//
-//        return new TravelOrder(travelOrderDTO.getId(),
-//                DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateIssued()),DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateDeparture()),
-//                DateTimeConverter.convertToLocalDate(travelOrderDTO.getDateReturn()),purpose,vehicle, reportTos,places,DateTimeConverter.convertToLocalDate(travelOrderDTO.getLastTravel()));
-//    }
 
-    public TravelOrderDTO mapToDTO(TravelOrder travelOrder) throws Exception{
+    public TravelOrderDTO mapToDTO(TravelOrder travelOrder) {
         PurposeDTO purposeDTO = modelMapper.map(travelOrder.getPurpose(),PurposeDTO.class);
         Set<PlaceDTO> placeDTOS = travelOrder.getPlaces().stream().map(ThrowFunction.throwingFunction(placeMapper::mapToDTO)).collect(Collectors.toSet());
         Set<ReportToDTO> reportToDTOS = travelOrder.getReportTos().stream().map(reportTo -> modelMapper.map(reportTo, ReportToDTO.class)).collect(Collectors.toSet());
         VehicleDTO vehicleDTO = modelMapper.map(travelOrder.getVehicle(), VehicleDTO.class);
         EmployeeDTO employeeDTO = modelMapper.map(travelOrder.getEmployee(), EmployeeDTO.class);
-        System.out.println(travelOrder);
+
         return new TravelOrderDTO(travelOrder.getId(),
                 employeeDTO,
                 DateTimeConverter.convertToString(travelOrder.getDateIssued()),
