@@ -21,10 +21,10 @@ public class PlaceMapper {
             return new Place(placeDTO.getDefaultPlace());
         }
 
-        Barangay barangay= modelMapper.map(placeDTO.getBarangay(),Barangay.class);
-        Municipality municipality=modelMapper.map(placeDTO.getMunicipality(), Municipality.class);
-        Province province=modelMapper.map(placeDTO.getProvince(), Province.class);
-        Region region = modelMapper.map(placeDTO.getRegion(),Region.class);
+        Barangay barangay= placeDTO.getBarangay() == null ? null : modelMapper.map(placeDTO.getBarangay(),Barangay.class);
+        Municipality municipality=placeDTO.getMunicipality() == null ? null : modelMapper.map(placeDTO.getMunicipality(), Municipality.class);
+        Province province=placeDTO.getProvince() == null ? null : modelMapper.map(placeDTO.getProvince(), Province.class);
+        Region region = placeDTO.getRegion() == null ? null :modelMapper.map(placeDTO.getRegion(),Region.class);
 
         return new Place(placeDTO.getId(), placeDTO.getBuildingName(),
                 barangay, municipality, province,region);
@@ -35,10 +35,10 @@ public class PlaceMapper {
             return new PlaceDTO(place.getDefaultPlace());
         }
 
-        BarangayDTO barangayDTO = jsonDataLoader.getFromCode(place.getBarangay().getBrgyCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
-        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(place.getMunicipality().getMunicipalityCode(),AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
-        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(place.getProvince().getProvinceCode(),AppConstant.PROVINCE_JSON, ProvinceDTO.class);
-        RegionDTO regionDTO = jsonDataLoader.getFromCode(place.getRegion().getRegionCode(),AppConstant.REGION_JSON, RegionDTO.class);
+        BarangayDTO barangayDTO = place.getBarangay() == null ? null : jsonDataLoader.getFromCode(place.getBarangay().getBrgyCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
+        MunicipalityDTO municipalityDTO = place.getMunicipality() == null ? null : jsonDataLoader.getFromCode(place.getMunicipality().getMunicipalityCode(),AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+        ProvinceDTO provinceDTO = place.getProvince() == null ? null :  jsonDataLoader.getFromCode(place.getProvince().getProvinceCode(),AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+        RegionDTO regionDTO = place.getRegion() == null ? null : jsonDataLoader.getFromCode(place.getRegion().getRegionCode(),AppConstant.REGION_JSON, RegionDTO.class);
 
         return new PlaceDTO(place.getId(), place.getBuildingName(),
         barangayDTO,municipalityDTO,provinceDTO,regionDTO);
