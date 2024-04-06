@@ -5,6 +5,7 @@ import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.model.employee.Employee;
 import gov.coateam1.payload.PositionDTO;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,10 @@ import org.springframework.stereotype.Component;
 public class EmployeeMapper {
 
 
-    private final PositionMapper positionMapper;
+    private final ModelMapper modelMapper;
 
     public EmployeeDTO mapToDTO(Employee employee){
-        PositionDTO positionDTO = positionMapper.mapToDTO(employee.getPosition());
+        PositionDTO positionDTO = modelMapper.map(employee.getPosition(),PositionDTO.class);
         return new EmployeeDTO(employee.getId(), employee.getName(),employee.getEmployeeType(),positionDTO);
     }
 
