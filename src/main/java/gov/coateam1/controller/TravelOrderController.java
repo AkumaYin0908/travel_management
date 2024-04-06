@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,10 @@ public class TravelOrderController {
 
     @GetMapping("/travelorders/all")
     public ResponseEntity<List<TravelOrderDTO>> getAllTravelOrder(){
+        List<TravelOrderDTO> travelOrders = travelOrderService.findAll();
+        if(travelOrders.isEmpty()){
+            return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(travelOrderService.findAll(), HttpStatus.OK);
     }
 
