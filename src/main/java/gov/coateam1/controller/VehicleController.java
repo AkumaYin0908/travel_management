@@ -24,10 +24,8 @@ public class VehicleController {
         List<VehicleDTO> vehicles = vehicleService.findAll();
         if(vehicles.isEmpty()){
             return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity<>(vehicles, HttpStatus.OK);
         }
-
+            return new ResponseEntity<>(vehicles, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
