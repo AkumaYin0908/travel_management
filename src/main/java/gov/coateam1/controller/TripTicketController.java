@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,9 +18,12 @@ public class TripTicketController {
 
     private  final TripTicketService tripTicketService;
 
-
-    @GetMapping("/all")
+    @GetMapping("/triptickets/all")
     public ResponseEntity<List<TripTicketDTO>> getAllTripTicket(){
+        List<TripTicketDTO> tripTickets = tripTicketService.findAll();
+        if(tripTickets.isEmpty()){
+            return new ResponseEntity<>(new ArrayList<>(),HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(tripTicketService.findAll(), HttpStatus.OK);
     }
 
