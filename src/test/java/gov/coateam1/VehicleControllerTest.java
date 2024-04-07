@@ -96,7 +96,7 @@ public class VehicleControllerTest {
 
 
     @Test
-    public void testGetVehicleByPlateNoShouldReturn302Found() throws Exception {
+    public void testGetVehicleByPlateNoShouldReturn302FOUND() throws Exception {
         String plateNo = "SJH410";
 
 
