@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TripDistanceDTO {
 
-    @JsonIgnore
+
     private Long tripDistanceId;
 
     private Long startDistance;
