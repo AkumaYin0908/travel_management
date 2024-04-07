@@ -2,7 +2,8 @@ package gov.coateam1;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.coateam1.model.trip_ticket.TripTicket;
+import gov.coateam1.controller.TripTicketController;
+import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.payload.PositionDTO;
 import gov.coateam1.payload.PurposeDTO;
 import gov.coateam1.payload.VehicleDTO;
@@ -13,26 +14,36 @@ import gov.coateam1.payload.trip_ticket.TripFuelDTO;
 import gov.coateam1.payload.trip_ticket.TripTicketDTO;
 import gov.coateam1.payload.trip_ticket.TripTimeDTO;
 import gov.coateam1.service.TripTicketService;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(TripTicket.class)
+@WebMvcTest(TripTicketController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:application.yml")
@@ -44,7 +55,7 @@ public class TripTicketControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
+    @MockBean
     private TripTicketService tripTicketService;
 
     @Value("${server.servlet.context-path}")
@@ -54,6 +65,10 @@ public class TripTicketControllerTest {
 
     private List<TripTicketDTO> tripTickets;
 
+    private PlaceDTO placeDTO;
+
+    private EmployeeDTO passenger;
+
     @BeforeEach
     void setup() {
         assertThat(path).isNotBlank();
@@ -62,6 +77,8 @@ public class TripTicketControllerTest {
 
     @BeforeEach
     public void init(){
+
+
         List<TripTimeDTO> tripTimeDTOs = List.of(
                 new TripTimeDTO(1L,"07:30 AM","09:00 AM", "03:00 PM", "05:00 PM"),
                 new TripTimeDTO(2L,"06:00 AM","10:00 AM", "04:00 PM", "07:00 PM"),
@@ -158,7 +175,166 @@ public class TripTicketControllerTest {
 
         );
 
+        tripTicketDTO = tripTickets.get(0);
+
     }
+
+    @Test
+    public void testGetAllTripTicketShouldReturn200OK() throws Exception{
+        Mockito.when(tripTicketService.findAll()).thenReturn(tripTickets);
+
+        ResultActions response = mockMvc.perform(createGetRequest("/triptickets/all").contentType(MediaType.APPLICATION_JSON));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", CoreMatchers.is(1)))
+                .andExpect(jsonPath("$[1].id", CoreMatchers.is(2)))
+                .andExpect(jsonPath("$[2].id", CoreMatchers.is(3)))
+                .andDo(print());
+    }
+
+    @Test
+    public void testGetAllTripTicketShouldReturn204NOCONTENT() throws Exception{
+        Mockito.when((tripTicketService.findAll())).thenReturn(new ArrayList<>());
+
+        ResultActions response = mockMvc.perform(createGetRequest("/triptickets/all").contentType(MediaType.APPLICATION_JSON));
+
+        response.andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    @Test
+    public void testAddTripTicketShouldReturn201CREATED() throws Exception{
+
+
+        given(tripTicketService.add(ArgumentMatchers.anyLong(),ArgumentMatchers.any())).willAnswer(invocation -> invocation.getArgument(1));
+
+
+        ResultActions response = mockMvc.perform(post("/coa/employees/{id}/triptickets", tripTicketDTO.getEmployee().getId()).contextPath(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripTicketDTO)));
+
+        response.andExpect(status().isCreated())
+                .andDo(print());
+
+        Mockito.verify(tripTicketService,times(1)).add(ArgumentMatchers.anyLong(),ArgumentMatchers.any());
+    }
+
+    @Test
+    public void testGetTripTicketByIdShouldReturn302FOUND() throws Exception{
+        Long id = 1L;
+
+        Mockito.when(tripTicketService.findById(id)).thenReturn(tripTicketDTO);
+
+        placeDTO = tripTicketDTO.getPlaces().stream().findFirst().orElse(null);
+
+        passenger = tripTicketDTO.getPassengers().stream().findFirst().orElse(null);
+
+        ResultActions response = mockMvc.perform(createGetRequest("/triptickets/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripTicketDTO)));
+
+        response.andExpect(status().isFound())
+                .andExpect(jsonPath("$.employee.id").value(tripTicketDTO.getEmployee().getId().intValue()))
+                .andExpect(jsonPath("$.dateDeparture", CoreMatchers.is(tripTicketDTO.getDateDeparture())))
+                .andExpect(jsonPath("$.dateReturn", CoreMatchers.is((tripTicketDTO.getDateReturn()))))
+                .andExpect(jsonPath("$.tripTime.tripTimeId").value(tripTicketDTO.getTripTime().getTripTimeId().intValue()))
+                .andExpect(jsonPath("$.places[0].id").value(placeDTO.getId().intValue()))
+                .andExpect(jsonPath("$.passengers[0].id").value(passenger.getId().intValue()))
+                .andExpect(jsonPath("$.tripFuel.tripFuelId").value(tripTicketDTO.getTripFuel().getTripFuelId().intValue()))
+                .andExpect(jsonPath("$.gearOil", CoreMatchers.is(tripTicketDTO.getGearOil().intValue())))
+                .andExpect(jsonPath("$.lubricantOil", CoreMatchers.is(tripTicketDTO.getLubricantOil().intValue())))
+                .andExpect(jsonPath("$.tripDistance.tripDistanceId").value(tripTicketDTO.getTripDistance().getTripDistanceId().intValue()))
+                .andExpect(jsonPath("$.remarks", CoreMatchers.is(tripTicketDTO.getRemarks())))
+                .andExpect(jsonPath("$.purpose.id").value(tripTicketDTO.getPurpose().getId().intValue()))
+                .andExpect(jsonPath("$.vehicle.id").value(tripTicketDTO.getVehicle().getId().intValue()))
+                .andDo(print());
+
+    }
+
+    @Test
+    public void testGetTripTicketByIdShouldReturn404NOTFOUND() throws Exception{
+        Long id = 1L;
+
+        Mockito.when(tripTicketService.findById(id)).thenThrow(new ResourceNotFoundException("TripTicket", "id",id));
+
+
+
+        ResultActions response = mockMvc.perform(createGetRequest("/triptickets/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripTicketDTO)));
+
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testUpdateTripTicketShouldReturn200OK() throws Exception{
+        Long id =1L;
+
+        Mockito.when(tripTicketService.update(tripTicketDTO,id)).thenReturn(tripTicketDTO);
+
+        placeDTO = tripTicketDTO.getPlaces().stream().findFirst().orElse(null);
+
+        passenger = tripTicketDTO.getPassengers().stream().findFirst().orElse(null);
+
+        ResultActions response = mockMvc.perform(put("/coa/triptickets/{id}",id)
+                .contextPath(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripTicketDTO)));
+
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(tripTicketDTO.getId().intValue()))
+                .andExpect(jsonPath("$.employee.id").value(tripTicketDTO.getEmployee().getId().intValue()))
+                .andExpect(jsonPath("$.dateDeparture", CoreMatchers.is(tripTicketDTO.getDateDeparture())))
+                .andExpect(jsonPath("$.dateReturn", CoreMatchers.is((tripTicketDTO.getDateReturn()))))
+                .andExpect(jsonPath("$.tripTime.tripTimeId").value(tripTicketDTO.getTripTime().getTripTimeId().intValue()))
+                .andExpect(jsonPath("$.places[0].id").value(placeDTO.getId().intValue()))
+                .andExpect(jsonPath("$.passengers[0].id").value(passenger.getId().intValue()))
+                .andExpect(jsonPath("$.tripFuel.tripFuelId").value(tripTicketDTO.getTripFuel().getTripFuelId().intValue()))
+                .andExpect(jsonPath("$.gearOil", CoreMatchers.is(tripTicketDTO.getGearOil().intValue())))
+                .andExpect(jsonPath("$.lubricantOil", CoreMatchers.is(tripTicketDTO.getLubricantOil().intValue())))
+                .andExpect(jsonPath("$.tripDistance.tripDistanceId").value(tripTicketDTO.getTripDistance().getTripDistanceId().intValue()))
+                .andExpect(jsonPath("$.remarks", CoreMatchers.is(tripTicketDTO.getRemarks())))
+                .andExpect(jsonPath("$.purpose.id").value(tripTicketDTO.getPurpose().getId().intValue()))
+                .andExpect(jsonPath("$.vehicle.id").value(tripTicketDTO.getVehicle().getId().intValue()))
+                .andDo(print());
+    }
+
+    @Test
+    public void testUpdateTripTicketShouldReturn404NOTFOUND() throws Exception{
+        Long id = 12L;
+
+        Mockito.when(tripTicketService.update(tripTicketDTO,id)).thenThrow(new ResourceNotFoundException("TripTicket", "id", id));
+
+        ResultActions response = mockMvc.perform(put("/coa/triptickets/{id}",id)
+                .contextPath(path)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(tripTicketDTO)));
+
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    public void testDeleteTripTicketShouldReturn200OK() throws Exception {
+        Long id = 1L;
+        doNothing().when(tripTicketService).delete(id);
+
+        ResultActions response = mockMvc.perform(delete("/coa/tripticket/{id}",id)
+                .contextPath(path)
+                .contentType(MediaType.APPLICATION_JSON));
+
+        response.andExpect(status().isOk())
+                .andDo(print());
+
+    }
+
+    protected MockHttpServletRequestBuilder createGetRequest(String request) {
+        return get(path + request).contextPath(path);
+    }
+
+
+
 
 
 
