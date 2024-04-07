@@ -11,6 +11,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -47,19 +48,16 @@ public class TripTicketDTO {
 
     private VehicleDTO vehicle;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TripTicketDTO that = (TripTicketDTO) o;
+        return Objects.equals(id, that.id);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
