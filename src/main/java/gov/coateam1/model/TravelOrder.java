@@ -54,7 +54,7 @@ public class TravelOrder {
             inverseJoinColumns = @JoinColumn(name = "reportto_id"))
     private Set<ReportTo> reportTos;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "place_travelorder",
             joinColumns = @JoinColumn(name = "travelorder_id"),
             inverseJoinColumns = @JoinColumn(name = "place_id"))
