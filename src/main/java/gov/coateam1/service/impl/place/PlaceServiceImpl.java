@@ -3,6 +3,7 @@ package gov.coateam1.service.impl.place;
 import gov.coateam1.constants.AppConstant;
 import gov.coateam1.exception.ResourceNotFoundException;
 import gov.coateam1.functionalinterface.ThrowFunction;
+import gov.coateam1.functionalinterface.ThrowSupplier;
 import gov.coateam1.mapper.PlaceMapper;
 import gov.coateam1.model.place.*;
 import gov.coateam1.payload.place.*;
@@ -38,7 +39,6 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @Transactional
     public PlaceDTO findPlaceByCodes(PlaceDTO placeDTO) throws Exception {
         Optional<Place> optionalPlace = placeRepository.findPlaceByCodes(
                 placeDTO.getBuildingName(),
@@ -47,7 +47,9 @@ public class PlaceServiceImpl implements PlaceService {
                 placeDTO.getProvince().getCode(),
                 placeDTO.getRegion().getCode()
         );
-        return placeMapper.mapToDTO(optionalPlace.orElse(constructPlace(placeDTO)));
+
+        return optionalPlace.map(ThrowFunction.throwingFunction(placeMapper::mapToDTO))
+                .orElseGet(ThrowSupplier.throwingSupplier(()->placeMapper.mapToDTO(constructPlace(placeDTO))));
     }
 
 
