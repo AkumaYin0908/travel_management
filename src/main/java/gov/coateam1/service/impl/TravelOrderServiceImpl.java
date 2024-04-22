@@ -21,11 +21,9 @@ import gov.coateam1.repository.ReportToRepository;
 import gov.coateam1.repository.TravelOrderRepository;
 import gov.coateam1.repository.VehicleRepository;
 import gov.coateam1.repository.employee.EmployeeRepository;
-import gov.coateam1.repository.place.*;
 import gov.coateam1.service.TravelOrderService;
 import gov.coateam1.service.place.PlaceService;
 import gov.coateam1.util.DateTimeConverter;
-import gov.coateam1.util.JSONDataLoader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -156,6 +154,7 @@ public class TravelOrderServiceImpl implements TravelOrderService {
         for (PlaceDTO placeDTO : placeDTOs) {
             Place place = placeMapper.mapToModel(placeService.findPlaceByCodes(placeDTO));
             places.add(place);
+
         }
         return places;
     }
@@ -163,8 +162,9 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private Set<ReportTo> getConvertedReportTos(Set<ReportToDTO> reportToDTOs) {
         Set<ReportTo> reportTos = new LinkedHashSet<>();
         for (ReportToDTO reportToDTO : reportToDTOs) {
-            ReportTo reportTo = reportToRepository.findById(reportToDTO.getId()).orElse(new ReportTo(reportToDTO.getName()));
-            ReportTo dbReportTo = reportToRepository.save(reportTo);
+            Optional<ReportTo> reportToOptional = reportToRepository.findById(reportToDTO.getId());
+            ReportTo reportTo = reportToOptional.orElseGet(() -> new ReportTo(reportToDTO.getName()));
+            ReportTo dbReportTo=reportToRepository.save(reportTo);
             reportTos.add(dbReportTo);
         }
         return reportTos;
