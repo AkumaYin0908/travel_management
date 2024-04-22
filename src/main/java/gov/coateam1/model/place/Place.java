@@ -70,5 +70,8 @@ public class Place {
         this.defaultPlace  = defaultPlace;
     }
 
-
+    public Place(Long id, String defaultPlace) {
+        this.id = id;
+        this.defaultPlace = defaultPlace;
+    }
 }
