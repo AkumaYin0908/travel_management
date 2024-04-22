@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 public class ThrowFunction {
 
+    private ThrowFunction(){}
+
     public static  <T,R,E extends Exception> Function<T,R> throwingFunction(CheckedFunction<T,R,E> checkedFunction){
 
         return empDTO->{
