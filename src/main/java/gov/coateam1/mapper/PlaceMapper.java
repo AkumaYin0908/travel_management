@@ -17,8 +17,8 @@ public class PlaceMapper {
 
 
     public Place mapToModel(PlaceDTO placeDTO){
-        if(placeDTO.getDefaultPlace()!=null){
-            return new Place(placeDTO.getDefaultPlace());
+        if(!placeDTO.getDefaultPlace().equals("N/A")){
+            return new Place(placeDTO.getId(), placeDTO.getDefaultPlace());
         }
 
         Barangay barangay= placeDTO.getBarangay() == null ? null : modelMapper.map(placeDTO.getBarangay(),Barangay.class);
@@ -31,8 +31,8 @@ public class PlaceMapper {
     }
 
     public PlaceDTO mapToDTO(Place place) throws Exception{
-        if(place.getDefaultPlace()!=null){
-            return new PlaceDTO(place.getDefaultPlace());
+        if(place.getDefaultPlace() != null){
+            return new PlaceDTO(place.getId(), place.getDefaultPlace());
         }
 
         BarangayDTO barangayDTO = place.getBarangay() == null ? null : jsonDataLoader.getFromCode(place.getBarangay().getBrgyCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
