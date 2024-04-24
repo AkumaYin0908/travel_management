@@ -5,9 +5,11 @@ import gov.coateam1.model.employee.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableCaching
 public class  TravelManagementApplication {
 
 	public static void main(String[] args) {
