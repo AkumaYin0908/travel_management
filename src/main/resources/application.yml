@@ -7,8 +7,8 @@ spring:
     password: coa_team1
 
   jpa:
-    hibernate:
-      ddl-auto: create
+#    hibernate:
+#      ddl-auto: create
 
     show-sql: TRUE
 
@@ -27,9 +27,13 @@ logging:
             bind: TRACE
 
 
-
 server:
   port: 8010
   servlet:
     context-path: /coa
+
+redis:
+  host: localhost
+  port: 6379
+
 
