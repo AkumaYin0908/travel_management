@@ -14,14 +14,20 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@EnableCaching
 public class DriverServiceImpl implements EmployeeService {
 
     private final EmployeeRepository<Driver> employeeRepository;
@@ -29,12 +35,14 @@ public class DriverServiceImpl implements EmployeeService {
     private final ModelMapper modelMapper;
 
 
+    @Cacheable("driver")
     @Override
     public EmployeeDTO findById(Long id) {
         Driver driver = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Driver","id",id));
         return modelMapper.map(driver,EmployeeDTO.class);
     }
 
+    @Cacheable("driver")
     @Override
     public EmployeeDTO findByName(String name) {
         log.info("DriverServiceImpl : findByName execution started");
@@ -57,22 +65,30 @@ public class DriverServiceImpl implements EmployeeService {
         return modelMapper.map(dbDriver,EmployeeDTO.class);
     }
 
+    @Cacheable("drivers")
     @Override
     public List<EmployeeDTO> findAll() {
-        return employeeRepository.findAll().stream().map(emp->modelMapper.map(emp,EmployeeDTO.class)).toList();
+        return employeeRepository.findAll().stream().map(emp->modelMapper.map(emp,EmployeeDTO.class)).collect(Collectors.toList());
     }
 
+    @CachePut(value = "driver", key = "#id")
     @Override
     @Transactional
     public EmployeeDTO update(EmployeeDTO employeeDTO, Long id)  {
 
         Driver driver = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Driver", "id", id));
         driver.setName(employeeDTO.getName());
-        driver.setPosition(modelMapper.map(employeeDTO.getPosition(),Position.class));
+
+        String positionName = employeeDTO.getPosition().getName();
+        Position position = positionRepository.findByName(positionName).orElse(new Position(positionName));
+        positionRepository.save(position);
+
+        driver.setPosition(position);
         Driver dbDriver = employeeRepository.save(driver);
         return modelMapper.map(dbDriver,EmployeeDTO.class);
     }
 
+    @CacheEvict(value="driver", key="#id")
     @Override
     public void delete(Long id) {
         employeeRepository.deleteById(id);
