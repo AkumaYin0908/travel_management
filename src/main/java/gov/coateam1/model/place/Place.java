@@ -57,13 +57,14 @@ public class Place {
     @ManyToMany(mappedBy = "places")
     private Set<TravelOrder> travelOrders;
 
-    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, Region region) {
+    public Place(Long id, String buildingName, Barangay barangay, Municipality municipality, Province province, Region region, String defaultPlace) {
         this.id = id;
         this.buildingName = buildingName;
         this.barangay = barangay;
         this.municipality = municipality;
         this.province = province;
         this.region = region;
+        this.defaultPlace = defaultPlace;
     }
 
     public Place(String defaultPlace) {
