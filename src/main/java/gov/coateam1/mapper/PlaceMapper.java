@@ -27,11 +27,11 @@ public class PlaceMapper {
         Region region = placeDTO.getRegion() == null ? null :modelMapper.map(placeDTO.getRegion(),Region.class);
 
         return new Place(placeDTO.getId(), placeDTO.getBuildingName(),
-                barangay, municipality, province,region);
+                barangay, municipality, province,region,placeDTO.getDefaultPlace());
     }
 
     public PlaceDTO mapToDTO(Place place) throws Exception{
-        if(place.getDefaultPlace() != null){
+        if(!place.getDefaultPlace().equals("N/A")){
             return new PlaceDTO(place.getId(), place.getDefaultPlace());
         }
 
@@ -41,7 +41,7 @@ public class PlaceMapper {
         RegionDTO regionDTO = place.getRegion() == null ? null : jsonDataLoader.getFromCode(place.getRegion().getRegionCode(),AppConstant.REGION_JSON, RegionDTO.class);
 
         return new PlaceDTO(place.getId(), place.getBuildingName(),
-        barangayDTO,municipalityDTO,provinceDTO,regionDTO);
+        barangayDTO,municipalityDTO,provinceDTO,regionDTO,place.getDefaultPlace());
     }
 
 }
