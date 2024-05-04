@@ -1,9 +1,9 @@
 package gov.coateam1.payload;
 
-import gov.coateam1.model.employee.Employee;
-import lombok.*;
 
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 
 @Getter
@@ -13,6 +13,9 @@ import java.util.List;
 public class PositionDTO{
 
     private Long id;
+
+    @NotNull(message = "position title is required")
+    @Size(min = 5, message = "position title must not be lower than 5 characters!")
     private String name;
 
 

@@ -1,5 +1,7 @@
 package gov.coateam1.payload;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Objects;
@@ -11,9 +13,21 @@ import java.util.Objects;
 public class VehicleDTO {
 
     private Long id;
+
+    @NotNull(message = "brand is required!")
+    @Size(min = 3, message = "brand should consist of at least 3 characters!")
     private String brand;
+
+    @NotNull(message = "model is required!")
+    @Size(min = 3, message = "model should consist of at least 3 characters!")
     private String model;
+
+    @NotNull(message = "type is required!")
+    @Size(min = 3, message = "type should consist of at least 3 characters!")
     private String type;
+
+    @NotNull(message = "brand is required!")
+    @Size(min = 5, message = "brand should consist of at least 5 characters!")
     private String plateNo;
 
     @Override
