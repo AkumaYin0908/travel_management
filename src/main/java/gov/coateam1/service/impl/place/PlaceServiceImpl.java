@@ -55,8 +55,10 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public PlaceDTO findByDefaultPlace(String defaultPlace) throws Exception {
-        Place place =  placeRepository.findByDefaultPlace(defaultPlace).orElse(new Place(defaultPlace));
-        return placeMapper.mapToDTO(place);
+        Optional<Place> optionalPlace = placeRepository.findByDefaultPlace(defaultPlace);
+
+        return  optionalPlace.map(ThrowFunction.throwingFunction(placeMapper::mapToDTO))
+                .orElseGet(ThrowSupplier.throwingSupplier(()->placeMapper.mapToDTO(constructPlace(new PlaceDTO(defaultPlace)))));
     }
 
 
@@ -70,9 +72,9 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     @Transactional
     public PlaceDTO add(PlaceDTO placeDTO) throws Exception {
-        Place place = placeMapper.mapToModel(findPlaceByCodes(placeDTO));
+        Place place = placeMapper.mapToModel(placeDTO);
         Place dbPlace = placeRepository.save(place);
-        return placeMapper.mapToDTO(place);
+        return placeMapper.mapToDTO(dbPlace);
     }
 
     @Override
@@ -93,30 +95,37 @@ public class PlaceServiceImpl implements PlaceService {
 
     private Place constructPlace(PlaceDTO placeDTO) throws Exception {
         Place place = new Place();
-        place.setBuildingName(placeDTO.getBuildingName());
-        if (placeDTO.getBarangay() == null) {
-            place.setBarangay(null);
-        } else {
-            BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
-            Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
-            barangay.addPlace(place);
-            barangayRepository.save(barangay);
+        if(placeDTO.getDefaultPlace().equals("N/A")){
+            place.setBuildingName(placeDTO.getBuildingName());
+            if (placeDTO.getBarangay() == null) {
+                place.setBarangay(null);
+            } else {
+                BarangayDTO barangayDTO = jsonDataLoader.getFromCode(placeDTO.getBarangay().getCode(), AppConstant.BARANGAY_JSON, BarangayDTO.class);
+                Barangay barangay = new Barangay(barangayDTO.getCode(), barangayDTO.getName());
+                barangay.addPlace(place);
+                barangayRepository.save(barangay);
 
+            }
+            MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
+            Municipality municipality = modelMapper.map(municipalityDTO, Municipality.class);
+            municipality.addPlace(place);
+            municipalityRepository.save(municipality);
+
+            ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
+            Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
+            province.addPlace(place);
+            provinceRepository.save(province);
+
+            RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegion().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
+            Region region = new Region(regionDTO.getCode(), regionDTO.getName());
+            region.addPlace(place);
+            regionRepository.save(region);
+
+            place.setDefaultPlace("N/A");
+        }else{
+            place.setDefaultPlace(placeDTO.getDefaultPlace());
         }
-        MunicipalityDTO municipalityDTO = jsonDataLoader.getFromCode(placeDTO.getMunicipality().getCode(), AppConstant.MUNICIPALITY_JSON, MunicipalityDTO.class);
-        Municipality municipality = modelMapper.map(municipalityDTO, Municipality.class);
-        municipality.addPlace(place);
-        municipalityRepository.save(municipality);
 
-        ProvinceDTO provinceDTO = jsonDataLoader.getFromCode(placeDTO.getProvince().getCode(), AppConstant.PROVINCE_JSON, ProvinceDTO.class);
-        Province province = new Province(provinceDTO.getCode(), provinceDTO.getName());
-        province.addPlace(place);
-        provinceRepository.save(province);
-
-        RegionDTO regionDTO = jsonDataLoader.getFromCode(placeDTO.getRegion().getCode(), AppConstant.REGION_JSON, RegionDTO.class);
-        Region region = new Region(regionDTO.getCode(), regionDTO.getName());
-        region.addPlace(place);
-        regionRepository.save(region);
 
        return  place;
     }
