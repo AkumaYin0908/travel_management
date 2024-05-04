@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class TravelOrderServiceImpl implements TravelOrderService {
 
     private final TravelOrderRepository travelOrderRepository;
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository<Employee> employeeRepository;
     private final PlaceMapper placeMapper;
     private final VehicleRepository vehicleRepository;
     private final PurposeRepository purposeRepository;
@@ -152,7 +152,12 @@ public class TravelOrderServiceImpl implements TravelOrderService {
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {
         Set<Place> places = new LinkedHashSet<>();
         for (PlaceDTO placeDTO : placeDTOs) {
-            Place place = placeMapper.mapToModel(placeService.findPlaceByCodes(placeDTO));
+            Place place;
+            if(placeDTO.getDefaultPlace().equals("N/A")){
+                place = placeMapper.mapToModel(placeService.findPlaceByCodes(placeDTO));
+            }else{
+                place = placeMapper.mapToModel(placeService.findByDefaultPlace(placeDTO.getDefaultPlace()));
+            }
             places.add(place);
 
         }
