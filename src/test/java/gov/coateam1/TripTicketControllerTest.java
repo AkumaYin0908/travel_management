@@ -108,9 +108,9 @@ public class TripTicketControllerTest {
 
 
         List<PlaceDTO> placeDTOS = List.of(
-                new PlaceDTO(1L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO),
-                new PlaceDTO(2L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO),
-                new PlaceDTO(3L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO),
+                new PlaceDTO(1L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO,"N/A"),
+                new PlaceDTO(2L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO ,"N/A"),
+                new PlaceDTO(3L,"N/A",null,municipalityDTOs.get((int)(Math.random() * municipalityDTOs.size())),provinceDTO,regionDTO,"N/A"),
                 new PlaceDTO(4L,"to any point of Calapan City")
         );
 
