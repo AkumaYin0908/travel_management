@@ -6,6 +6,7 @@ import gov.coateam1.mapper.PlaceMapper;
 import gov.coateam1.model.Purpose;
 import gov.coateam1.model.Vehicle;
 import gov.coateam1.model.employee.Driver;
+import gov.coateam1.model.employee.Employee;
 import gov.coateam1.model.employee.Passenger;
 import gov.coateam1.model.place.*;
 import gov.coateam1.model.trip_ticket.TripDistance;
@@ -48,7 +49,7 @@ import java.util.stream.Collectors;
 public class TripTicketServiceImpl implements TripTicketService {
 
     private final TripTicketRepository tripTicketRepository;
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository<Employee> employeeRepository;
     private final VehicleRepository vehicleRepository;
     private final PlaceMapper placeMapper;
     private final ModelMapper modelMapper;
@@ -71,8 +72,11 @@ public class TripTicketServiceImpl implements TripTicketService {
     public TripTicketDTO add(Long driverId, TripTicketDTO tripTicketDTO) throws Exception {
         TripTicket tripTicket = new TripTicket();
 
-        Optional<Driver> optionalDriver = employeeRepository.findById(driverId);
-        Driver driver = optionalDriver.orElseThrow(()->new ResourceNotFoundException("Employee","id",driverId));
+
+        Optional<? extends Employee> optionalEmployee = employeeRepository.findById(driverId);
+        Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", driverId));
+
+        Driver driver = (Driver)employee;
 
         tripTicket.setDriver(driver);
 
@@ -158,7 +162,12 @@ public class TripTicketServiceImpl implements TripTicketService {
     private Set<Place> getConvertedPlaces(Set<PlaceDTO> placeDTOs) throws Exception {
         Set<Place> places = new LinkedHashSet<>();
         for (PlaceDTO placeDTO : placeDTOs) {
-            Place place = placeMapper.mapToModel(placeService.findPlaceByCodes(placeDTO));
+            Place place;
+            if(placeDTO.getDefaultPlace().equals("N/A")){
+                place = placeMapper.mapToModel(placeService.findPlaceByCodes(placeDTO));
+            }else{
+                place = placeMapper.mapToModel(placeService.findByDefaultPlace(placeDTO.getDefaultPlace()));
+            }
             places.add(place);
 
         }
@@ -170,8 +179,9 @@ public class TripTicketServiceImpl implements TripTicketService {
     private Set<Passenger> getConvertedPassengers(Set<EmployeeDTO> employeeDTOs){
         Set<Passenger> passengers = new LinkedHashSet<>();
         for(EmployeeDTO employeeDTO : employeeDTOs){
-            Optional<Passenger> optionalPassenger = employeeRepository.findById(employeeDTO.getId());
-            Passenger passenger = optionalPassenger.orElseThrow(()->new ResourceNotFoundException("Employee","id",employeeDTO.getName()));
+            Optional<? extends Employee> optionalEmployee = employeeRepository.findById(employeeDTO.getId());
+            Employee employee = optionalEmployee.orElseThrow(() -> new ResourceNotFoundException("Employee", "id", employeeDTO.getId()));
+            Passenger passenger = (Passenger) employee;
             passengers.add(passenger);
         }
 
