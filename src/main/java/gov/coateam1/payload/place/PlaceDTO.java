@@ -1,7 +1,6 @@
 package gov.coateam1.payload.place;
 
 
-import gov.coateam1.model.place.Municipality;
 import lombok.*;
 
 @Getter
@@ -22,13 +21,14 @@ public class PlaceDTO {
     @Getter(AccessLevel.NONE)
     private String defaultPlace;
 
-    public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO region) {
+    public PlaceDTO(Long id, String buildingName, BarangayDTO barangay, MunicipalityDTO municipality, ProvinceDTO province, RegionDTO region, String defaultPlace) {
         this.id = id;
         this.buildingName = buildingName;
         this.barangay = barangay;
         this.municipality = municipality;
         this.province = province;
         this.region = region;
+        this.defaultPlace = defaultPlace;
     }
 
     public PlaceDTO(String defaultPlace) {
