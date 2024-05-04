@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpsServer;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.ReportToDTO;
 import gov.coateam1.service.ReportToService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,12 @@ public class ReportToController {
     }
 
     @PostMapping
-    public ResponseEntity<ReportToDTO> saveReportTo(@RequestBody ReportToDTO reportToDTO){
+    public ResponseEntity<ReportToDTO> saveReportTo(@Valid @RequestBody ReportToDTO reportToDTO){
         return new ResponseEntity<>(reportToService.add(reportToDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReportToDTO> updateReportTo(@RequestBody ReportToDTO reportToDTO, @PathVariable("id") Long id){
+    public ResponseEntity<ReportToDTO> updateReportTo(@Valid @RequestBody ReportToDTO reportToDTO, @PathVariable("id") Long id){
         return new ResponseEntity<>(reportToService.update(reportToDTO,id),HttpStatus.OK);
     }
 

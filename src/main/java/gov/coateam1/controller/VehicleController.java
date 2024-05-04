@@ -4,6 +4,7 @@ import gov.coateam1.model.Vehicle;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.VehicleDTO;
 import gov.coateam1.service.VehicleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +35,12 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<VehicleDTO> saveVehicle(@RequestBody VehicleDTO vehicleDTO){
+    public ResponseEntity<VehicleDTO> saveVehicle(@Valid @RequestBody VehicleDTO vehicleDTO){
         return new ResponseEntity<>(vehicleService.add(vehicleDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VehicleDTO> updateVehicle(@RequestBody VehicleDTO vehicleDTO, @PathVariable("id")Long id){
+    public ResponseEntity<VehicleDTO> updateVehicle(@Valid @RequestBody VehicleDTO vehicleDTO, @PathVariable("id")Long id){
         return new ResponseEntity<>(vehicleService.update(vehicleDTO,id),HttpStatus.OK);
     }
 

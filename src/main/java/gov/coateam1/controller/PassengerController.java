@@ -3,6 +3,7 @@ package gov.coateam1.controller;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.employee.EmployeeDTO;
 import gov.coateam1.service.employee.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class PassengerController {
     }
 
     @PostMapping("/passengers")
-    public ResponseEntity<EmployeeDTO> savePassenger(@RequestBody EmployeeDTO employeeDTO) throws Exception {
+    public ResponseEntity<EmployeeDTO> savePassenger(@Valid  @RequestBody EmployeeDTO employeeDTO) throws Exception {
             return new ResponseEntity<>(employeeService.add(employeeDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("/passengers/{id}")
-    public ResponseEntity<EmployeeDTO> updatePassenger(@RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
+    public ResponseEntity<EmployeeDTO> updatePassenger(@Valid @RequestBody EmployeeDTO employeeDTO,@PathVariable("id")Long id) throws Exception {
 
            return new ResponseEntity<>(employeeService.update(employeeDTO,id), HttpStatus.OK);
 

@@ -3,6 +3,7 @@ package gov.coateam1.controller;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.service.ApproverService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,13 @@ public class ApproverController {
     }
 
     @PostMapping
-    public ResponseEntity<SignatoryDTO> saveApprover(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
+    public ResponseEntity<SignatoryDTO> saveApprover(@Valid @RequestBody SignatoryDTO signatoryDTO) throws Exception {
         return new ResponseEntity<>(approverService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<SignatoryDTO> updateApprover(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
+    public ResponseEntity<SignatoryDTO> updateApprover(@Valid @RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
         return new ResponseEntity<>(approverService.update(signatoryDTO,id), HttpStatus.OK);
     }
 

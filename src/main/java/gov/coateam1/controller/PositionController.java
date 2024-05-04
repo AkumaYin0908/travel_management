@@ -4,6 +4,7 @@ package gov.coateam1.controller;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.PositionDTO;
 import gov.coateam1.service.PositionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,12 @@ public class PositionController {
     }
 
     @PostMapping
-    public ResponseEntity<PositionDTO> savePosition(@RequestBody PositionDTO positionDTO){
+    public ResponseEntity<PositionDTO> savePosition( @Valid @RequestBody PositionDTO positionDTO){
         return new ResponseEntity<>(positionService.add(positionDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PositionDTO> updatePosition(@RequestBody PositionDTO positionDTO, @PathVariable("id") Long id){
+    public ResponseEntity<PositionDTO> updatePosition(@Valid @RequestBody PositionDTO positionDTO, @PathVariable("id") Long id){
         return  new ResponseEntity<>(positionService.update(positionDTO,id), HttpStatus.OK);
     }
 

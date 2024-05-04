@@ -3,6 +3,7 @@ package gov.coateam1.controller;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.TravelOrderDTO;
 import gov.coateam1.service.TravelOrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,12 +41,12 @@ public class TravelOrderController {
     }
 
     @PostMapping("/employees/{id}/travelorders")
-    public ResponseEntity<TravelOrderDTO> saveTravelOrder(@PathVariable("id")Long id, @RequestBody TravelOrderDTO travelOrderDTO) throws Exception {
+    public ResponseEntity<TravelOrderDTO> saveTravelOrder( @PathVariable("id")Long id, @Valid @RequestBody TravelOrderDTO travelOrderDTO) throws Exception {
         return new ResponseEntity<>(travelOrderService.add(id,travelOrderDTO),HttpStatus.CREATED);
     }
 
     @PutMapping("/travelorders/{id}")
-    public ResponseEntity<TravelOrderDTO> updateTravelOrder(@RequestBody TravelOrderDTO travelOrderDTO, @PathVariable("id")Long id) throws Exception {
+    public ResponseEntity<TravelOrderDTO> updateTravelOrder(@Valid @RequestBody TravelOrderDTO travelOrderDTO, @PathVariable("id")Long id) throws Exception {
 
             return new ResponseEntity<>(travelOrderService.update(travelOrderDTO,id),HttpStatus.OK);
     }

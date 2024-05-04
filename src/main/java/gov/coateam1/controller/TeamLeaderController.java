@@ -3,6 +3,7 @@ package gov.coateam1.controller;
 import gov.coateam1.payload.APIResponse;
 import gov.coateam1.payload.SignatoryDTO;
 import gov.coateam1.service.TeamLeaderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class TeamLeaderController {
     }
 
     @PostMapping
-    public ResponseEntity<SignatoryDTO> saveTeamLeader(@RequestBody SignatoryDTO signatoryDTO) throws Exception {
+    public ResponseEntity<SignatoryDTO> saveTeamLeader(@Valid  @RequestBody SignatoryDTO signatoryDTO) throws Exception {
         return new ResponseEntity<>(teamLeaderService.add(signatoryDTO),HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<SignatoryDTO> updateTeamLeader(@RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
+    public ResponseEntity<SignatoryDTO> updateTeamLeader(@Valid @RequestBody SignatoryDTO signatoryDTO, @PathVariable("id")Long id){
         return new ResponseEntity<>(teamLeaderService.update(signatoryDTO,id), HttpStatus.OK);
     }
 
